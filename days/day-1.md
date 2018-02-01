@@ -7,7 +7,25 @@ Today we will setup the development environment, install Symfony 4.0 and display
 [3]: https://symfony.com/doc/4.0/reference/requirements.html
 
 ## Docker configuration
-After you install [Docker][1] and [Docker Compose][2], create a new folder named jobeet and unarchive next [archive](/files/archives/jobeet.zip).
+After you install [Docker][1] and [Docker Compose][2], create a new folder named jobeet and unarchive there next [archive](/files/archives/jobeet.zip).
+It is initial configuration for generic php project. It includes PHP 7.2, MySQL 5.7 and nginx. To start containers just run next command:
+```bash
+docker-compose up -d
+```
+After several minutes containers will be raised and you can check it with next command:
+```bash
+docker-compose ps
+```
+the result should be the same:
+```bash
+      Name                   Command             State           Ports          
+-------------------------------------------------------------------------------
+jobeet-mysql       docker-entrypoint.sh mysqld   Up      0.0.0.0:3306->3306/tcp 
+jobeet-php-fpm     /bin/sh -c /usr/bin/php-fpm   Up      9000/tcp               
+jobeet-webserver   nginx -g daemon off;          Up      0.0.0.0:80->80/tcp
+```
+
+Congratulations! Now you have prepared environment for jobeet project.
 
 ## Download and install symfony 4.0
 
