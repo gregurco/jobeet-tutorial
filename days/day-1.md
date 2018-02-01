@@ -6,9 +6,8 @@ Today we will setup the development environment, install Symfony 4.0 and display
 [2]: https://hub.docker.com/
 [3]: https://symfony.com/doc/4.0/reference/requirements.html
 
-## Create repository
-
 ## Docker configuration
+After you install [Docker][1] and [Docker Compose][2], create a new folder named jobeet and unarchive next [archive](/files/archives/jobeet.zip).
 
 ## Download and install symfony 4.0
 
@@ -21,3 +20,6 @@ Today we will setup the development environment, install Symfony 4.0 and display
 ## Next Steps
 
 Continue this tutorial here: ~~Jobeet Day 2: The Project~~
+
+[1]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+[2]: https://docs.docker.com/compose/install/
