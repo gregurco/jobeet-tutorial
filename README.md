@@ -10,7 +10,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 2: The Project](/days/day-2.md)
 
-~~Jobeet Day 3: The Data Model~~
+[Jobeet Day 3: The Data Model](/days/day-3.md)
 
 ~~Jobeet Day 4: The Controller and the View~~
 

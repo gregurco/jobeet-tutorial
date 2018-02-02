@@ -77,6 +77,10 @@ The admin can create or edit affiliates. He is responsible for activating an aff
 
 ## Next Steps
 
-Continue this tutorial here: ~~Jobeet Day 3: The Data Model~~
+Continue this tutorial here: [Jobeet Day 3: The Data Model](/days/day-3.md)
+
+Previous post is available here: [Jobeet Day 1: Starting up the Project](/days/day-1.md)
+
+Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
 [1]: http://symfony.com/legacy/doc/jobeet/1_4/en/02?orm=Propel
