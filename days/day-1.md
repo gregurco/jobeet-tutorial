@@ -66,7 +66,7 @@ That’s all for today. You can find the code from this day here: [https://githu
 
 ## Next Steps
 
-Continue this tutorial here: ~~Jobeet Day 2: The Project~~
+Continue this tutorial here: [Jobeet Day 2: The Project](/days/day-2.md)
 
 [1]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 [2]: https://docs.docker.com/compose/install/

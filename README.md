@@ -6,9 +6,9 @@ In the following weeks I will begin to post the parts of making the Jobeet websi
 
 Please be free to make any observations and improvements you consider important by commenting on the posts that will follow.
 
-[Jobeet Day 1: Starting up the Project](days/day-1.md)
+[Jobeet Day 1: Starting up the Project](/days/day-1.md)
 
-~~Jobeet Day 2: The Project~~
+[Jobeet Day 2: The Project](/days/day-2.md)
 
 ~~Jobeet Day 3: The Data Model~~
 
