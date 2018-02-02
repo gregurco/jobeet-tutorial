@@ -2,6 +2,7 @@
 
 ## The Relational Model
 The user stories from the previous day describe the main objects of our project: jobs, affiliates, and categories. Here is the corresponding entity relationship diagram:
+
 ![DB schema](/files/images/screenshot_6.png)
 
 In addition to the columns described in the stories, we have also added `created_at` and `updated_at` columns. We will configure Symfony 4 to set their value automatically when an object is saved or updated.
