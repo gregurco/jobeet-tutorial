@@ -1042,10 +1042,32 @@ class Affiliate
 }
 ```
 
+## Creating the Database Tables/Schema
+
+Now we have usable entity classes with mapping information so Doctrine knows exactly how to persist it.
+Of course, we don’t yet have the corresponding product table in our database.
+Fortunately, Doctrine Migration Bundle can automatically create migrations with SQL to sync DB with entities. To do this, let's install the bundle:
+```bash
+composer require doctrine/doctrine-migrations-bundle
+```
+
+After that let's generate first migration:
+```bash
+bin/console doctrine:migration:diff
+```
+
+New migration was generated in folder `src/Migrations` but this migration is not executed yet. Let's execute it:
+```bash
+bin/console doctrine:migration:migrate
+```
+
+Now DB will have all information described in entities.
+
 ## Additional information
 - [Databases and the Doctrine ORM][1]
 - [How to Work with Doctrine Associations / Relations][2]
 - [How to Work with Lifecycle Callbacks][3]
+- [DoctrineMigrationsBundle][4]
 
 ## Next Steps
 
@@ -1058,3 +1080,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [1]: https://symfony.com/doc/4.0/doctrine.html
 [2]: https://symfony.com/doc/4.0/doctrine/associations.html
 [3]: https://symfony.com/doc/4.0/doctrine/lifecycle_callbacks.html
+[4]: https://symfony.com/doc/master/bundles/DoctrineMigrationsBundle/index.html
