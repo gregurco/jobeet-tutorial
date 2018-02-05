@@ -283,14 +283,6 @@ class Affiliate
     private $id;
 
     /**
-     * @var Category[]|ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Category", inversedBy="affiliates")
-     * @ORM\JoinTable(name="affiliates_categories")
-     */
-    private $categories;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="string", length=255)
@@ -324,6 +316,14 @@ class Affiliate
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+    
+    /**
+     * @var Category[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="affiliates")
+     * @ORM\JoinTable(name="affiliates_categories")
+     */
+    private $categories;
 }
 ```
 
@@ -336,16 +336,71 @@ This is what you should get:
 ```bash
 Mapping
 -------
-                                                                                                                  
- [OK] The mapping files are correct.                                                                                    
-                                                                                                                        
+
+ [OK] The mapping files are correct.
+
 Database
 --------
-                                                                                                                      
- [ERROR] The database schema is not in sync with the current mapping file.    
+
+ [ERROR] The database schema is not in sync with the current mapping file.
 ```
 
 Don’t worry about that error for now. We will fix it in a few minutes.
+
+## Constructors, Getters and Setters
+
+Fists of all we should create constructors in entities with OneToMany or ManyToMany relations.
+Collection property, such as $categories, must be a collection object that implements Doctrine's Collection interface. In this case, an ArrayCollection object is used.
+This looks and acts almost exactly like an array, but has some added flexibility. Just imagine that it's an array and you'll be in good shape.
+
+src/Entity/Category.php:
+```php
+namespace App\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="category")
+ */
+class Category
+{
+    // properties
+    
+    public function __construct()
+    {
+        $this->jobs = new ArrayCollection();
+        $this->affiliates = new ArrayCollection();
+    }
+    
+    // setters and getters
+}
+```
+
+src/Entity/Affiliate.php:
+```php
+namespace App\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="affiliate")
+ */
+class Affiliate
+{
+    // properties
+    
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+    
+    // setters and getters
+}
+```
 
 ## Additional information
 - [Databases and the Doctrine ORM][1]
