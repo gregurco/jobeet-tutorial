@@ -956,18 +956,6 @@ class Affiliate
     }
 
     /**
-     * @param \DateTime $createdAt
-     *
-     * @return self
-     */
-    public function setCreatedAt(\DateTime $createdAt) : self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
      * @return Category[]|ArrayCollection
      */
     public function getCategories()
@@ -989,9 +977,75 @@ class Affiliate
 }
 ```
 
+## Lifecycle Callbacks
+
+Sometimes, you need to perform an action right before or after an entity is inserted, updated, or deleted. These types of actions are known as “lifecycle” callbacks, as they’re callback methods that you need to execute during different stages of the lifecycle of an entity (e.g. the entity is inserted, updated, deleted, etc).
+
+We already added the created_at and updated_at properties in our Job and Affiliate classes, and it will be great if Doctrine will update them automatically when needed.
+
+To enable the lifecycle callbacks for an entity we need to add a new `HasLifecycleCallbacks` annotation to our class. We will also add methods to be called when specified by the PrePersist and PreUpdate annotations:
+
+For Job:
+```php
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="jobs")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Job
+{
+    // properties
+    
+    // getters/setters
+    
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+}
+```
+
+For Affiliate:
+```php
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="affiliates")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Affiliate
+{
+    // properties
+    
+    // contructor
+    
+    // getters/setters
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime();
+    }
+}
+```
+
 ## Additional information
 - [Databases and the Doctrine ORM][1]
 - [How to Work with Doctrine Associations / Relations][2]
+- [How to Work with Lifecycle Callbacks][3]
 
 ## Next Steps
 
@@ -1003,3 +1057,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
 [1]: https://symfony.com/doc/4.0/doctrine.html
 [2]: https://symfony.com/doc/4.0/doctrine/associations.html
+[3]: https://symfony.com/doc/4.0/doctrine/lifecycle_callbacks.html
