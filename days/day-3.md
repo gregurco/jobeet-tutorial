@@ -1063,11 +1063,158 @@ bin/console doctrine:migration:migrate
 
 Now DB will have all information described in entities.
 
+## The Initial Data
+
+The tables have been created in the database but there is no data in them. For any web application, there are three types of data: **initial data** (this is needed for the application to work, in our case we some initial categories and an admin user), **test data** (needed for the application to be tested) and **user data** (created by the users during the normal life of the application).
+
+To populate the database with some initial data we will use [DoctrineFixturesBundle][5]. To setup this bundle we have to follow the next steps:
+
+Let's download the Bundle
+```bash
+composer require --dev doctrine/doctrine-fixtures-bundle
+```
+
+Now that everything is set up we will create some new classes to load data in a new folder in our bundle: `src/DataFixtures`.
+
+First we need some categories. Create the `src/DataFixtures/CategoryFixtures.php` file:
+```php
+namespace App\DataFixtures;
+
+use App\Entity\Category;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
+class CategoryFixtures extends Fixture implements OrderedFixtureInterface
+{
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
+    public function load(ObjectManager $manager) : void
+    {
+        $designCategory = new Category();
+        $designCategory->setName('Design');
+
+        $programmingCategory = new Category();
+        $programmingCategory->setName('Programming');
+
+        $managerCategory = new Category();
+        $managerCategory->setName('Manager');
+
+        $administratorCategory = new Category();
+        $administratorCategory->setName('Administrator');
+
+        $manager->persist($designCategory);
+        $manager->persist($programmingCategory);
+        $manager->persist($managerCategory);
+        $manager->persist($administratorCategory);
+
+        $manager->flush();
+
+        $this->addReference('category-design', $designCategory);
+        $this->addReference('category-programming', $programmingCategory);
+        $this->addReference('category-manager', $managerCategory);
+        $this->addReference('category-administrator', $administratorCategory);
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder() : int
+    {
+        return 1;
+    }
+}
+```
+
+And now some jobs (src/DataFixtures/JobFixtures.php):
+```php
+namespace App\DataFixtures;
+
+use App\Entity\Job;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
+class JobFixtures extends Fixture implements OrderedFixtureInterface
+{
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
+    public function load(ObjectManager $manager) : void
+    {
+        $jobSensioLabs = new Job();
+        $jobSensioLabs->setCategory($manager->merge($this->getReference('category-programming')));
+        $jobSensioLabs->setType('full-time');
+        $jobSensioLabs->setCompany('Sensio Labs');
+        $jobSensioLabs->setLogo('sensio-labs.gif');
+        $jobSensioLabs->setUrl('http://www.sensiolabs.com/');
+        $jobSensioLabs->setPosition('Web Developer');
+        $jobSensioLabs->setLocation('Paris, France');
+        $jobSensioLabs->setDescription('You\'ve already developed websites with symfony and you want to work with Open-Source technologies. You have a minimum of 3 years experience in web development with PHP or Java and you wish to participate to development of Web 2.0 sites using the best frameworks available.');
+        $jobSensioLabs->setHowToApply('Send your resume to fabien.potencier [at] sensio.com');
+        $jobSensioLabs->setPublic(true);
+        $jobSensioLabs->setActivated(true);
+        $jobSensioLabs->setToken('job_sensio_labs');
+        $jobSensioLabs->setEmail('job@example.com');
+        $jobSensioLabs->setExpiresAt(new \DateTime('2017-10-10'));
+
+        $jobExtremeSensio = new Job();
+        $jobExtremeSensio->setCategory($manager->merge($this->getReference('category-design')));
+        $jobExtremeSensio->setType('part-time');
+        $jobExtremeSensio->setCompany('Extreme Sensio');
+        $jobExtremeSensio->setLogo('extreme-sensio.gif');
+        $jobExtremeSensio->setUrl('http://www.extreme-sensio.com/');
+        $jobExtremeSensio->setPosition('Web Designer');
+        $jobExtremeSensio->setLocation('Paris, France');
+        $jobExtremeSensio->setDescription('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in.');
+        $jobExtremeSensio->setHowToApply('Send your resume to fabien.potencier [at] sensio.com');
+        $jobExtremeSensio->setPublic(true);
+        $jobExtremeSensio->setActivated(true);
+        $jobExtremeSensio->setToken('job_extreme_sensio');
+        $jobExtremeSensio->setEmail('job@example.com');
+        $jobExtremeSensio->setExpiresAt(new \DateTime('2017-10-10'));
+
+        $manager->persist($jobSensioLabs);
+        $manager->persist($jobExtremeSensio);
+
+        $manager->flush();
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder() : int
+    {
+        return 2;
+    }
+}
+```
+
+Once your fixtures have been written, you can load them via the command line by using the following command:
+```bash
+bin/console doctrine:fixtures:load
+```
+
+Now check your database, you should see the data loaded into tables.
+
+The job fixtures file references two images. You can download them from below and put them under the `public/uploads/jobs/` directory:
+
+![Save this as sensio-labs.gif](/files/images/sensio-labs.gif)
+
+![Save this as extreme-sensio.gif](/files/images/extreme-sensio.gif)
+
 ## Additional information
 - [Databases and the Doctrine ORM][1]
 - [How to Work with Doctrine Associations / Relations][2]
 - [How to Work with Lifecycle Callbacks][3]
 - [DoctrineMigrationsBundle][4]
+- [DoctrineFixturesBundle][5]
+- [Faker][6]
 
 ## Next Steps
 
@@ -1081,3 +1228,5 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [2]: https://symfony.com/doc/4.0/doctrine/associations.html
 [3]: https://symfony.com/doc/4.0/doctrine/lifecycle_callbacks.html
 [4]: https://symfony.com/doc/master/bundles/DoctrineMigrationsBundle/index.html
+[5]: https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
+[6]: https://github.com/fzaninotto/Faker
