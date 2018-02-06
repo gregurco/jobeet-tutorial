@@ -1208,6 +1208,8 @@ The job fixtures file references two images. You can download them from below an
 
 ![Save this as extreme-sensio.gif](/files/images/extreme-sensio.gif)
 
+You can find the code from day 3 here: [https://github.com/gregurco/jobeet/tree/day3][7].
+
 ## Additional information
 - [Databases and the Doctrine ORM][1]
 - [How to Work with Doctrine Associations / Relations][2]
@@ -1230,3 +1232,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [4]: https://symfony.com/doc/master/bundles/DoctrineMigrationsBundle/index.html
 [5]: https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 [6]: https://github.com/fzaninotto/Faker
+[7]: https://github.com/gregurco/jobeet/tree/day3
