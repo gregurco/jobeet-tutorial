@@ -1,11 +1,37 @@
 # Jobeet Day 4: The Controller and the View
 
+Today, we are going to create the basic job controller. It will has the code we need for Jobeet:
+- A page to list all jobs
+- A page to create a new job
+- A page to update an existing job
+- A page to delete a job
+
 ## The MVC Architecture
 For web development, the most common solution for organizing your code nowadays is the [MVC design pattern][1]. In short, the MVC design pattern defines a way to organize your code according to its nature. This pattern separates the code into **three layers**:
 
 - The **Model** layer defines the business logic (the database belongs to this layer). You already know that Symfony stores all the classes and files related to the Model in the `src/Entity/` directory of your bundles.
 - The **View** is what the user interacts with (a template engine is part of this layer). In Symfony, the View layer is mainly made of Twig templates. They are stored in various `templates/` directories as we will see later.
 - The **Controller** is a piece of code that calls the Model to get some data that it passes to the View for rendering to the client. When we installed Symfony at the beginning of this tutorial, we saw that all requests are managed by front controller (`public/index.php`). This front controller delegate the real work to actions.
+
+## Controller
+
+Let's create our first controller. Create file `JobController.php` in `src/Controller` folder and put there next code:
+```php
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("job")
+ */
+class JobController extends AbstractController
+{
+
+}
+```
+
+For now it has no actions, but not for long.
 
 ## The Layout
 If you have a closer look at the mockups, you will notice that much of each page looks the same. You already know that code duplication is bad, whether we are talking about HTML or PHP code, so we need to find a way to prevent these common view elements from resulting in code duplication.
@@ -20,94 +46,117 @@ If you take a look in the `templates` folder, you will find there a `base.html.t
 <head>
     <title>{% block title %}Jobeet - Your best job board{% endblock %}</title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('css/main.css') }}" type="text/css" media="all" />
-    {% endblock %}
+    {% block stylesheets %}{% endblock %}
 
-    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
+    {% block javascripts %}{% endblock %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-<div id="container">
-    <div id="header">
-        <div class="content">
-            <h1><a href="{{ path('job_index') }}">
-                    <img src="{{ asset('images/logo.jpg') }}" alt="Jobeet Job Board" />
-                </a></h1>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Jobeet</a>
+        </div>
 
-            <div id="sub_header">
-                <div class="post">
-                    <h2>Ask for people</h2>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
                     <div>
-                        <a href="{{ path('job_index') }}">Post a Job</a>
+                        <a href="#" class="btn btn-default navbar-btn">Post a Job</a>
                     </div>
-                </div>
-
-                <div class="search">
-                    <h2>Ask for a job</h2>
-                    <form action="" method="get">
-                        <input type="text" name="keywords" id="search_keywords" />
-                        <input type="submit" value="search" />
-                        <div class="help">
-                            Enter some keywords (city, country, position, ...)
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="content">
-        {% if app.session.flashbag.has('notice') %}
-            {% for message in app.session.flashBag.get('notice') %}
-                <div class="flash_notice">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        {% if app.session.flashbag.has('error') %}
-            {% for message in app.session.flashBag.get('error') %}
-                <div class="flash_error">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        <div class="content">
-            {% block body %}
-            {% endblock %}
-        </div>
-    </div>
-
-    <div id="footer">
-        <div class="content">
-          <span class="symfony">
-            <img src="{{ asset('images/jobeet-mini.png') }}" />
-            powered by <a href="http://www.symfony.com/">
-              <img src="{{ asset('images/symfony.gif') }}" alt="symfony framework" />
-            </a>
-          </span>
-            <ul>
-                <li><a href="">About Jobeet</a></li>
-                <li class="feed"><a href="">Full feed</a></li>
-                <li><a href="">Jobeet API</a></li>
-                <li class="last"><a href="">Affiliates</a></li>
+                </li>
             </ul>
         </div>
     </div>
+</nav>
+
+<div class="container">
+    {% block body %}{% endblock %}
 </div>
-
-{% block javascripts %}{% endblock %}
-
 </body>
 </html>
-
 ```
-## Twig Blocks
-In Twig, the default Symfony template engine, you can define **blocks** as we did above. A twig block can have a default content (look at the title block for example) that can be replaced or extended in the child template as you will see in a moment.
 
+## The Stylesheets
+
+As this tutorial is not about web design, we will use [bootstrap][3].
+Bootstrap is one of the most popular front-end library. It provides styles for frequently used elements, such as: grid, tables, forms, buttons and etc.
+We already connected it from [CDN][4] in layout from previous step:
+```twig
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+```
+
+
+## The Job Homepage Action
+
+Each action is represented by a method of a class. For the jobs list, the class is `JobController` and the method will be `listAction()`. Let's create this action:
+
+```php
+class JobController extends AbstractController
+{
+    /**
+     * Lists all job entities.
+     *
+     * @Route("/", name="job.list")
+     * @Method("GET")
+     *
+     * @return Response
+     */
+    public function listAction() : Response
+    {
+        $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
+
+        return $this->render('job/list.html.twig', [
+            'jobs' => $jobs,
+        ]);
+    }
+}
+```
+
+Let’s have a closer look at the code: the listAction() method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs. It returns a Doctrine `ArrayCollection` of Job objects that are passed to the template (the View).
+
+## The Job Homepage Template
+
+In `listAction` we passed jobs to `job/list.html.twig` but we don't have this file yet. Let's create it in `templates/job` folder:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table class="table text-center">
+        <tr>
+            <th class="active text-center">City</th>
+            <th class="active text-center">Position</th>
+            <th class="active text-center">Company</th>
+        </tr>
+
+        {% for job in jobs %}
+            <tr>
+                <td>{{ job.location }}</td>
+                <td>
+                    <a href="#">
+                        {{ job.position }}
+                    </a>
+                </td>
+                <td>{{ job.company }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+```
+
+## Twig Blocks
+In Twig, the default Symfony template engine, you can define **blocks** as we did above.
+A twig block can have a default content (look at the title block for example) that can be replaced or extended in the child template as you will see in a moment.
+
+`extends` tag used in `list.html.twig` means that this template extends base template `base.html.twig` and can redefine blocks from it. In our case we define content for `body` block.
+
+## The Job Page Action
+
+## The Job Page Template
 
 ## Additional information
 
@@ -121,3 +170,5 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
 [1]: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
 [2]: https://en.wikipedia.org/wiki/Decorator_pattern
+[3]: https://getbootstrap.com/docs/3.3/
+[4]: https://en.wikipedia.org/wiki/Content_delivery_network
