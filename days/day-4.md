@@ -95,6 +95,10 @@ We already connected it from [CDN][4] in layout from previous step:
 Each action is represented by a method of a class. For the jobs list, the class is `JobController` and the method will be `listAction()`. Let's create this action:
 
 ```php
+use App\Entity\Job;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+
 class JobController extends AbstractController
 {
     /**
@@ -117,6 +121,8 @@ class JobController extends AbstractController
 ```
 
 Let’s have a closer look at the code: the listAction() method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs. It returns a Doctrine `ArrayCollection` of Job objects that are passed to the template (the View).
+
+@TODO write about `@Route` and `@Method`
 
 ## The Job Homepage Template
 
@@ -156,9 +162,126 @@ A twig block can have a default content (look at the title block for example) th
 
 ## The Job Page Action
 
+We have action to list all jobs, now let's create action to see one job:
+```php
+class JobController extends AbstractController
+{
+    ...
+
+    /**
+     * Finds and displays a job entity.
+     *
+     * @Route("/{id}", name="job.show", requirements={"id"="\d+"})
+     * @Method("GET")
+     *
+     * @param Job $job
+     *
+     * @return Response
+     */
+    public function showAction(Job $job) : Response
+    {
+        return $this->render('job/show.html.twig', [
+            'job' => $job,
+        ]);
+    }
+}
+```
+
+@TODO write about `requirements` in route
+
 ## The Job Page Template
 
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Job</h1>
+
+    <table>
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ job.id }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ job.type }}</td>
+        </tr>
+        <tr>
+            <th>Company</th>
+            <td>{{ job.company }}</td>
+        </tr>
+        <tr>
+            <th>Logo</th>
+            <td>{{ job.logo }}</td>
+        </tr>
+        <tr>
+            <th>Url</th>
+            <td>{{ job.url }}</td>
+        </tr>
+        <tr>
+            <th>Position</th>
+            <td>{{ job.position }}</td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>{{ job.location }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ job.description }}</td>
+        </tr>
+        <tr>
+            <th>Howtoapply</th>
+            <td>{{ job.howToApply }}</td>
+        </tr>
+        <tr>
+            <th>Token</th>
+            <td>{{ job.token }}</td>
+        </tr>
+        <tr>
+            <th>Ispublic</th>
+            <td>{% if job.isPublic %}Yes{% else %}No{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Isactivated</th>
+            <td>{% if job.isActivated %}Yes{% else %}No{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ job.email }}</td>
+        </tr>
+        <tr>
+            <th>Expiresat</th>
+            <td>{% if job.expiresAt %}{{ job.expiresAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Createdat</th>
+            <td>{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Updatedat</th>
+            <td>{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('job.list') }}">Back to the list</a>
+        </li>
+
+        <li>
+            <a href="#">Edit</a>
+        </li>
+    </ul>
+{% endblock %}
+```
+
+@TODO write about `date` filter and `path` function
+
 ## Additional information
+- [Twig Official Documentation][5]
 
 ## Next Steps
 
@@ -172,3 +295,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [2]: https://en.wikipedia.org/wiki/Decorator_pattern
 [3]: https://getbootstrap.com/docs/3.3/
 [4]: https://en.wikipedia.org/wiki/Content_delivery_network
+[5]: https://twig.symfony.com/doc/2.x/
