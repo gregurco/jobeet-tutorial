@@ -1,5 +1,12 @@
 # Jobeet Day 5: The Routing
 
+In previous day we created two actions with two templates but did not link them. It's impossible to move from list page to view job description page.
+Let's do that! Let's open and do changes in file `templates/job/list.html.twig`
+
+```diff
+- <a href="#">
++ <a href="{{ path('job.show', {id: job.id}) }}">
+```
 
 ## Additional information
 
