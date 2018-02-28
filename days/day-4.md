@@ -95,7 +95,6 @@ Each action is represented by a method of a class. For the jobs list, the class 
 
 ```php
 use App\Entity\Job;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Response;
 
 class JobController extends AbstractController
@@ -266,7 +265,7 @@ Now let's create `show.html.twig` file in `templates/job` folder:
 
     <ul>
         <li>
-            <a href="{{ path('job.list') }}">Back to the list</a>
+            <a href="#">Back to the list</a>
         </li>
 
         <li>
@@ -277,6 +276,8 @@ Now let's create `show.html.twig` file in `templates/job` folder:
 ```
 
 Twig comes with a long list of [filters][7] and [functions][8] that are available by default. In previous template we used [date][9]. This function is used to format a date.
+
+You can find the code from day 4 here: [https://github.com/gregurco/jobeet/tree/day4][10].
 
 ## Additional information
 - [Twig Official Documentation][5]
@@ -298,3 +299,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [7]: https://twig.symfony.com/doc/2.x/filters/index.html
 [8]: https://twig.symfony.com/doc/2.x/functions/index.html
 [9]: https://twig.symfony.com/doc/2.x/filters/date.html
+[10]: https://github.com/gregurco/jobeet/tree/day4
