@@ -26,6 +26,47 @@ Why is the job retrieved with the `$job` parameter in the action? Here, we will 
 
 Symfony uses the `path` template helper function to generate the url for the job which has the id 1. The `job.show` is the name of the route used, defined in the configuration as you will see below.
 
+## Routing Configuration
+
+In Symfony, routing configuration is usually done in the `config/routes/annotations.yaml`. This imports routing configuration.
+In our case, the routing is imported from all controllers in folder `src/Controller`, using annotations:
+
+```yaml
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+```
+
+In the `JobController` you will find every job related route defined:
+```php
+/**
+ * @Route("job")
+ */
+class JobController extends AbstractController
+{
+    /**
+     * Lists all job entities.
+     *
+     * @Route("/", name="job.list")
+     */
+    public function listAction() : Response
+    ...
+
+    /**
+     * Finds and displays a job entity.
+     *
+     * @Route("/{id}", name="job.show")
+     */
+    public function showAction(Job $job) : Response
+    ...
+}
+```
+
+Let’s have a closer look to the `job.show` route. The pattern defined by the this route acts like `/job/*` where the wildcard is given the name id (the `/job` part comes from the `@Route(“job”)` definition found at the beginning of the class that acts like a prefix for all the routes defined in that class).
+For the URL `/job/1`, the id variable gets a value of 1, which is used by the [Doctrine Converter][1] to retrieve the corresponding job and then made available for you to use in your controller.
+
+The route parameters are especially important because each is made available as an argument to the controller method.
+
 ## Additional information
 
 ## Next Steps
@@ -35,3 +76,5 @@ Continue this tutorial here: [Jobeet Day 6: More with the Model](/days/day-6.md)
 Previous post is available here: [Jobeet Day 4: The Controller and the View](/days/day-4.md)
 
 Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
+
+[1]: http://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
