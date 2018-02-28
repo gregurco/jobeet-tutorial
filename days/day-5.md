@@ -67,6 +67,29 @@ For the URL `/job/1`, the id variable gets a value of 1, which is used by the [D
 
 The route parameters are especially important because each is made available as an argument to the controller method.
 
+## Routing Configuration in Dev Environment
+
+The dev environment loads files from `config/routes/dev` folder which contains the routes used by the Web Debug Toolbar, among others.
+These files loads, at the end, the main routing configuration file.
+
+`config/routes/dev/web_profiler.yaml`:
+```yaml
+web_profiler_wdt:
+    resource: '@WebProfilerBundle/Resources/config/routing/wdt.xml'
+    prefix: /_wdt
+
+web_profiler_profiler:
+    resource: '@WebProfilerBundle/Resources/config/routing/profiler.xml'
+    prefix: /_profiler
+```
+
+`config/routes/dev/twig.yaml`:
+```yaml
+_errors:
+    resource: '@TwigBundle/Resources/config/routing/errors.xml'
+    prefix: /_error
+```
+
 ## Additional information
 
 ## Next Steps
