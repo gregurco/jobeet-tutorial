@@ -187,6 +187,8 @@ class JobController extends AbstractController
 
 ## The Job Page Template
 
+Now let's create `show.html.twig` file in `templates/job` folder:
+
 ```twig
 {% extends 'base.html.twig' %}
 

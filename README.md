@@ -14,7 +14,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 4: The Controller and the View](/days/day-4.md)
 
-~~Jobeet Day 5: The Routing~~
+[Jobeet Day 5: The Routing](/days/day-5.md)
 
 ~~Jobeet Day 6: More with the Model~~
 
