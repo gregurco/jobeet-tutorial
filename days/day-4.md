@@ -89,7 +89,6 @@ We already connected it from [CDN][4] in layout from previous step:
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 ```
 
-
 ## The Job Homepage Action
 
 Each action is represented by a method of a class. For the jobs list, the class is `JobController` and the method will be `listAction()`. Let's create this action:
@@ -105,7 +104,6 @@ class JobController extends AbstractController
      * Lists all job entities.
      *
      * @Route("/", name="job.list")
-     * @Method("GET")
      *
      * @return Response
      */
@@ -122,7 +120,8 @@ class JobController extends AbstractController
 
 Let’s have a closer look at the code: the listAction() method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs. It returns a Doctrine `ArrayCollection` of Job objects that are passed to the template (the View).
 
-@TODO write about `@Route` and `@Method`
+Probably you observed line starting with `@Route` in comment block above method. This line is not simple comment. This line is related to [Routing component][6].
+It tells to symfony which URL path is related to which action in controller. We will learn more about that in next lesson.
 
 ## The Job Homepage Template
 
@@ -171,8 +170,7 @@ class JobController extends AbstractController
     /**
      * Finds and displays a job entity.
      *
-     * @Route("/{id}", name="job.show", requirements={"id"="\d+"})
-     * @Method("GET")
+     * @Route("/{id}", name="job.show")
      *
      * @param Job $job
      *
@@ -186,8 +184,6 @@ class JobController extends AbstractController
     }
 }
 ```
-
-@TODO write about `requirements` in route
 
 ## The Job Page Template
 
@@ -232,7 +228,7 @@ class JobController extends AbstractController
             <td>{{ job.description }}</td>
         </tr>
         <tr>
-            <th>Howtoapply</th>
+            <th>How to apply</th>
             <td>{{ job.howToApply }}</td>
         </tr>
         <tr>
@@ -240,11 +236,11 @@ class JobController extends AbstractController
             <td>{{ job.token }}</td>
         </tr>
         <tr>
-            <th>Ispublic</th>
+            <th>Is public</th>
             <td>{% if job.isPublic %}Yes{% else %}No{% endif %}</td>
         </tr>
         <tr>
-            <th>Isactivated</th>
+            <th>Is activated</th>
             <td>{% if job.isActivated %}Yes{% else %}No{% endif %}</td>
         </tr>
         <tr>
@@ -252,15 +248,15 @@ class JobController extends AbstractController
             <td>{{ job.email }}</td>
         </tr>
         <tr>
-            <th>Expiresat</th>
+            <th>Expires at</th>
             <td>{% if job.expiresAt %}{{ job.expiresAt|date('Y-m-d H:i:s') }}{% endif %}</td>
         </tr>
         <tr>
-            <th>Createdat</th>
+            <th>Created at</th>
             <td>{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
         </tr>
         <tr>
-            <th>Updatedat</th>
+            <th>Updated at</th>
             <td>{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
         </tr>
         </tbody>
@@ -278,7 +274,7 @@ class JobController extends AbstractController
 {% endblock %}
 ```
 
-@TODO write about `date` filter and `path` function
+Twig comes with a long list of [filters][7] and [functions][8] that are available by default. In previous template we used [date][9]. This function is used to format a date.
 
 ## Additional information
 - [Twig Official Documentation][5]
@@ -296,3 +292,7 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [3]: https://getbootstrap.com/docs/3.3/
 [4]: https://en.wikipedia.org/wiki/Content_delivery_network
 [5]: https://twig.symfony.com/doc/2.x/
+[6]: https://symfony.com/doc/4.0/routing.html
+[7]: https://twig.symfony.com/doc/2.x/filters/index.html
+[8]: https://twig.symfony.com/doc/2.x/functions/index.html
+[9]: https://twig.symfony.com/doc/2.x/filters/date.html
