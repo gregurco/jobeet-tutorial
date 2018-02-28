@@ -90,7 +90,107 @@ _errors:
     prefix: /_error
 ```
 
+## Route Customizations
+
+For now, when you request the `/` URL in a browser, you will get `"No route found"` error. That’s because this URL does match any route defined in controllers. Let’s change the `job.list` route from the `JobController` it to match the `/` URL. To make this work we will need to make several changes:
+
+- we need to remove the `@Route(“job”)` annotation from the beginning of the `JobController` class that sets a `/job` prefix for all the routes defined below
+- we need to add the `/job` prefix to `job.show` route (because we just removed it and it will not work anymore).
+
+```php
+class JobController extends AbstractController
+{
+    /**
+     * Lists all job entities.
+     *
+     * @Route("/", name="job.list")
+     */
+    public function listAction() : Response
+    ...
+
+    /**
+     * Finds and displays a job entity.
+     *
+     * @Route("job/{id}", name="job.show")
+     */
+     public function showAction(Job $job) : Response
+    ...
+}
+```
+
+Now, if you go to [http://127.0.0.1/][2] from your browser, you will see the Job homepage.
+
+## Route Requirements
+
+The routing system has a built-in validation feature. Each pattern variable can be validated by a regular expression defined using the requirements entry of a route definition:
+
+```php
+class JobController extends AbstractController
+{
+    ...
+
+    /**
+     * Finds and displays a job entity.
+     *
+     * @Route("job/{id}", name="job.show", requirements={"id" = "\d+"})
+     */
+    public function showAction(Job $job) : Response
+    ...
+}
+```
+
+The above `requirements` entry forces the id to be a numeric value. If not, the route won’t match.
+
+Now let's restrict methods allowed for our routes. For now we should accept only `GET` methods:
+```php
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
+class JobController extends AbstractController
+{
+    /**
+     * Lists all job entities.
+     *
+     * @Route("/", name="job.list")
+     * @Method("GET")
+     */
+    public function listAction() : Response
+    ...
+
+    /**
+     * Finds and displays a job entity.
+     *
+     * @Route("job/{id}", name="job.show", requirements={"id" = "\d+"})
+     * @Method("GET")
+     */
+    public function showAction(Job $job) : Response
+    ...
+}
+```
+
+## Route Debugging
+
+While adding and customizing routes, it’s helpful to be able to visualize and get detailed information about your routes.
+A great way to see every route in your application is via the `debug:router` console command. Execute the command by running the following from the root of your project:
+```bash
+bin/console debug:router
+```
+
+The command will print a helpful list of all the configured routes in your application.
+You can also get very specific information on a single route by including the route name after the command:
+```bash
+bin/console debug:router job.show
+```
+
+### Final Thoughts
+That’s all for today! To learn more about the Symfony routing system read the [Routing chapter][3] from the documentation.
+
+You can find the code from today here: [https://github.com/gregurco/jobeet/tree/day5][7]
+
 ## Additional information
+- [HTTP Methods][6]
+- [Routing Component][3]
+- [How to Define Route Requirements][4]
+- [@Method Guide][5]
 
 ## Next Steps
 
@@ -100,4 +200,10 @@ Previous post is available here: [Jobeet Day 4: The Controller and the View](/da
 
 Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
-[1]: http://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
+[1]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
+[2]: http://127.0.0.1/
+[3]: https://symfony.com/doc/4.0/routing.html
+[4]: https://symfony.com/doc/4.0/routing/requirements.html
+[5]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/routing.html#route-method
+[6]: https://www.w3schools.com/tags/ref_httpmethods.asp
+[7]: https://github.com/gregurco/jobeet/tree/day5
