@@ -61,7 +61,7 @@ class Job
 
 src/Entity/Affiliate.php:
 ```php
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 class Affiliate
 {

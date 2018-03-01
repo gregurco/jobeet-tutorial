@@ -10,11 +10,17 @@ Let's do that! Let's open and do changes in file `templates/job/list.html.twig`:
 + <a href="{{ path('job.show', {id: job.id}) }}">
 ```
 
-And also in `templates/job/show.html.twig`:
+in `templates/job/show.html.twig`:
 
 ```diff
 - <a href="#">Back to the list</a>
 + <a href="{{ path('job.list') }}">Back to the list</a>
+```
+
+and also in `templates/base.html.twig`:
+```diff
+- <a class="navbar-brand" href="#">Jobeet</a>
++ <a class="navbar-brand" href="{{ path('job.list') }}">Jobeet</a>
 ```
 
 Now it's possible to view job description and go back to list action.
