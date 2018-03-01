@@ -194,7 +194,7 @@ You can find the code from today here: [https://github.com/gregurco/jobeet/tree/
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 6: More with the Model](/days/day-6.md)
+Continue this tutorial here: [Jobeet Day 6: More with the Entity](/days/day-6.md)
 
 Previous post is available here: [Jobeet Day 4: The Controller and the View](/days/day-4.md)
 

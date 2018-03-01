@@ -16,7 +16,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 5: The Routing](/days/day-5.md)
 
-~~Jobeet Day 6: More with the Model~~
+[Jobeet Day 6: More with the Entity](/days/day-6.md)
 
 ~~Jobeet Day 7: Playing with the Category Page~~
 
