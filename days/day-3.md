@@ -1161,7 +1161,7 @@ class JobFixtures extends Fixture implements OrderedFixtureInterface
         $jobSensioLabs->setActivated(true);
         $jobSensioLabs->setToken('job_sensio_labs');
         $jobSensioLabs->setEmail('job@example.com');
-        $jobSensioLabs->setExpiresAt(new \DateTime('2017-10-10'));
+        $jobSensioLabs->setExpiresAt(new \DateTime('+30 days'));
 
         $jobExtremeSensio = new Job();
         $jobExtremeSensio->setCategory($manager->merge($this->getReference('category-design')));
@@ -1177,7 +1177,7 @@ class JobFixtures extends Fixture implements OrderedFixtureInterface
         $jobExtremeSensio->setActivated(true);
         $jobExtremeSensio->setToken('job_extreme_sensio');
         $jobExtremeSensio->setEmail('job@example.com');
-        $jobExtremeSensio->setExpiresAt(new \DateTime('2017-10-10'));
+        $jobExtremeSensio->setExpiresAt(new \DateTime('+30 days'));
 
         $manager->persist($jobSensioLabs);
         $manager->persist($jobExtremeSensio);
