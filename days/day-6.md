@@ -85,6 +85,39 @@ public function listAction(EntityManagerInterface $em) : Response
 }
 ```
 
+## More with Fixtures
+
+Refreshing the Jobeet homepage in your browser won’t change anything as the jobs in the database have been posted just a few days ago.
+Let’s change the fixtures to add a job that is already expired (`src/DataFixtures/JobFixtures.php`):
+
+```php
+$jobExpired = new Job();
+$jobExpired->setCategory($manager->merge($this->getReference('category-programming')));
+$jobExpired->setType('full-time');
+$jobExpired->setCompany('Sensio Labs');
+$jobExpired->setLogo('sensio-labs.gif');
+$jobExpired->setUrl('http://www.sensiolabs.com/');
+$jobExpired->setPosition('Web Developer Expired');
+$jobExpired->setLocation('Paris, France');
+$jobExpired->setDescription('Lorem ipsum dolor sit amet, consectetur adipisicing elit.');
+$jobExpired->setHowToApply('Send your resume to lorem.ipsum [at] dolor.sit');
+$jobExpired->setPublic(true);
+$jobExpired->setActivated(true);
+$jobExpired->setToken('job_expired');
+$jobExpired->setEmail('job@example.com');
+$jobExpired->setExpiresAt(new \DateTime('-10 days'));
+
+// ...
+
+$manager->persist($jobExpired);
+```
+
+Reload the fixtures and refresh your browser to ensure that the old job does not show up:
+
+```bash
+bin/console doctrine:fixtures:load
+```
+
 ## Additional information
 
 ## Next Steps
