@@ -354,6 +354,38 @@ This can now be accessed from a template:
 + {% for job in category.activeJobs|slice(0, max_jobs_on_homepage) %}
 ```
 
+## Dynamic Fixtures
+
+For now, you won’t see any difference because we have a very small amount of jobs in our database.
+We need to add a bunch of jobs to the fixture. So, you can copy and paste an existing job ten or twenty times by hand… but there’s a better way.
+Duplication is bad, even in fixture files. Let's create more jobs in `src/DataFixtures/JobFixtures.php`:
+
+```php
+public function load(ObjectManager $manager) : void
+{
+    // ...
+
+    for ($i = 100; $i <= 130; $i++) {
+        $job = new Job();
+        $job->setCategory($manager->merge($this->getReference('category-programming')));
+        $job->setType('full-time');
+        $job->setCompany('Company ' . $i);
+        $job->setPosition('Web Developer');
+        $job->setLocation('Paris, France');
+        $job->setDescription('Lorem ipsum dolor sit amet, consectetur adipisicing elit.');
+        $job->setHowToApply('Send your resume to lorem.ipsum [at] dolor.sit');
+        $job->setPublic(true);
+        $job->setActivated(true);
+        $job->setToken('job_' . $i);
+        $job->setEmail('job@example.com');
+
+        $manager->persist($job);
+    }
+}
+```
+
+You can now reload the fixtures with the `doctrine:fixtures:load` task and see if only 10 jobs are displayed on the homepage for the Programming category.
+
 ## Additional information
 - [How to Inject Variables into all Templates (i.e. global Variables)][1]
 
