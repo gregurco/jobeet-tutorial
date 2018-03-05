@@ -118,6 +118,88 @@ Reload the fixtures and refresh your browser to ensure that the old job does not
 bin/console doctrine:fixtures:load
 ```
 
+## Refactoring
+
+Although the code we have written works fine, it’s not quite right yet. Can you spot the problem?
+
+The Doctrine query code does not belong to the action (the Controller layer), it belongs to the Model layer.
+In the MVC model, the Model defines all the business logic, and the Controller only calls the Model to retrieve data from it.
+As the code returns a collection of jobs, let’s move the code to the repository, that is part of model layer.
+For that we will need to create a custom `repository` class for Job entity and to add the query to that class.
+
+Open `src/Entity/Job.php` and modify `@ORM\Entity` annotation to specify the repository class for this entity:
+
+```php
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
+ * @ORM\Table(name="jobs")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Job
+```
+
+Now let's create file `JobRepository.php` in `src/Repository` folder:
+```php
+namespace App\Repository;
+
+use Doctrine\ORM\EntityRepository;
+
+class JobRepository extends EntityRepository
+{
+
+}
+```
+
+Next, add a new method, `getActiveJobs()`, to the newly created repository class.
+This method will query for all of the active Job entities sorted by the expiresAt column (and filtered by category if it receives the $categoryId parameter).
+
+```php
+// ...
+use App\Entity\Job;
+
+class JobRepository extends EntityRepository
+{
+    /**
+     * @param int|null $categoryId
+     *
+     * @return Job[]
+     */
+    public function getActiveJobs(int $categoryId = null)
+    {
+        $qb = $this->createQueryBuilder('j')
+            ->where('j.expiresAt > :date')
+            ->setParameter('date', new \DateTime())
+            ->orderBy('j.expiresAt', 'DESC');
+
+        if ($categoryId) {
+            $qb->andWhere('j.category = :categoryId')
+                ->setParameter('categoryId', $categoryId);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+}
+```
+
+Now the action code can use this new method to retrieve the active jobs:
+
+```php
+public function listAction(EntityManagerInterface $em) : Response
+{
+    $jobs = $em->getRepository(Job::class)->getActiveJobs();
+
+    return $this->render('job/list.html.twig', [
+        'jobs' => $jobs,
+    ]);
+}
+```
+
+This refactoring has several benefits over the previous code:
+
+- The logic to get the active jobs is now in the Repository, where it belongs
+- The code in the controller is thinner and much more readable
+- The `getActiveJobs()` method is re-usable (for instance in another action)
+
 ## Additional information
 
 ## Next Steps
