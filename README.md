@@ -18,13 +18,13 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 6: More with the Entity](/days/day-6.md)
 
-~~Jobeet Day 7: Playing with the Category Page~~
+[Jobeet Day 7: Playing with the Category Page](/days/day-7.md)
 
-~~Jobeet Day 8: The Unit Tests~~
+~~Jobeet Day 8: The Forms~~
 
-~~Jobeet Day 9: The Functional Tests~~
+~~Jobeet Day 9: The Unit Tests~~
 
-~~Jobeet Day 10: the Forms~~
+~~Jobeet Day 10: The Functional Tests~~
 
 ~~Jobeet Day 11: Testing Your Forms~~
 
