@@ -386,8 +386,65 @@ public function load(ObjectManager $manager) : void
 
 You can now reload the fixtures with the `doctrine:fixtures:load` task and see if only 10 jobs are displayed on the homepage for the Programming category.
 
+## Secure the Job Page
+
+When a job expires, even if you know the URL, it must not be possible to access it anymore. Find expired job in DB and try the URL.
+Instead of displaying the job, we need to forward the user to a 404 page. For this we will create a new method in the `JobRepository`:
+
+```php
+/**
+ * @param int $id
+ *
+ * @return Job|null
+ */
+public function findActiveJob(int $id) : ?Job
+{
+    return $this->createQueryBuilder('j')
+        ->where('j.id = :id')
+        ->andWhere('j.expiresAt > :date')
+        ->setParameter('id', $id)
+        ->setParameter('date', new \DateTime())
+        ->getQuery()
+        ->getOneOrNullResult();
+}
+```
+
+Now to change the `showAction` from the `JobController` to use the new repository method, we need to specify it to the Doctrine Entity by adding a new annotation (and also add use `Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity` to the beginning of the file):
+
+```php
+// ...
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
+class JobController extends AbstractController
+{
+    // ...
+    
+    /**
+     * Finds and displays a job entity.
+     *
+     * @Route("job/{id}", name="job.show", requirements={"id" = "\d+"})
+     * @Method("GET")
+     *
+     * @Entity("job", expr="repository.findActiveJob(id)")
+     *
+     * @param Job $job
+     *
+     * @return Response
+     */
+    public function showAction(Job $job) : Response
+    // ...
+}
+```
+
+Now, if you try to get an expired job, you will be forwarded to a 404 page.
+
+That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day6][3]
+
+See you tomorrow!
+
 ## Additional information
 - [How to Inject Variables into all Templates (i.e. global Variables)][1]
+- [@ParamConverter and @Entity][2]
 
 ## Next Steps
 
@@ -398,3 +455,5 @@ Previous post is available here: [Jobeet Day 5: The Routing](/days/day-5.md)
 Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
 [1]: http://symfony.com/doc/4.0/templating/global_variables.html
+[2]: http://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
+[3]: https://github.com/gregurco/jobeet/tree/day6
