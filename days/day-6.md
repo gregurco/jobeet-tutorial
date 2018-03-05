@@ -150,7 +150,7 @@ class JobRepository extends EntityRepository
 }
 ```
 
-Next, add a new method, `getActiveJobs()`, to the newly created repository class.
+Next, add a new method, `findActiveJobs()`, to the newly created repository class.
 This method will query for all of the active Job entities sorted by the expiresAt column (and filtered by category if it receives the $categoryId parameter).
 
 ```php
@@ -164,7 +164,7 @@ class JobRepository extends EntityRepository
      *
      * @return Job[]
      */
-    public function getActiveJobs(int $categoryId = null)
+    public function findActiveJobs(int $categoryId = null)
     {
         $qb = $this->createQueryBuilder('j')
             ->where('j.expiresAt > :date')
@@ -186,7 +186,7 @@ Now the action code can use this new method to retrieve the active jobs:
 ```php
 public function listAction(EntityManagerInterface $em) : Response
 {
-    $jobs = $em->getRepository(Job::class)->getActiveJobs();
+    $jobs = $em->getRepository(Job::class)->findActiveJobs();
 
     return $this->render('job/list.html.twig', [
         'jobs' => $jobs,
@@ -198,9 +198,164 @@ This refactoring has several benefits over the previous code:
 
 - The logic to get the active jobs is now in the Repository, where it belongs
 - The code in the controller is thinner and much more readable
-- The `getActiveJobs()` method is re-usable (for instance in another action)
+- The `findActiveJobs()` method is re-usable (for instance in another action)
+
+## Categories on the Homepage
+
+According to the second day’s requirements we need to have jobs sorted by categories. Until now, we have not taken the job category into account.
+From the requirements, the homepage must display jobs by category. First, we need to get all categories with at least one active job.
+
+Create a repository class for the Category entity like we did for Job:
+
+```php
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\Table(name="categories")
+ */
+class Category
+```
+
+Create the repository class (`src/Repository/CategoryRepository.php`):
+
+```php
+namespace App\Repository;
+
+use Doctrine\ORM\EntityRepository;
+
+class CategoryRepository extends EntityRepository
+{
+
+}
+```
+
+Add a `findWithActiveJobs()` method:
+
+```php
+use App\Entity\Category;
+use Doctrine\ORM\EntityRepository;
+
+class CategoryRepository extends EntityRepository
+{
+    /**
+     * @return Category[]
+     */
+    public function findWithActiveJobs()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->innerJoin('c.jobs', 'j')
+            ->where('j.expiresAt > :date')
+            ->setParameter('date', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
+}
+```
+
+This methods will give us only the categories with active jobs, but if you will call `getJobs` method on each category you will receive all jobs, including expired.
+Let's create `getActiveJobs` method in `Category` entity, which will return only not expired jobs:
+
+```php
+/**
+ * @return Job[]|ArrayCollection
+ */
+public function getActiveJobs()
+{
+    return $this->jobs->filter(function(Job $job) {
+        return $job->getExpiresAt() > new \DateTime();
+    });
+}
+```
+
+Change the index action accordingly:
+
+```php
+public function listAction(EntityManagerInterface $em) : Response
+{
+    $categories = $em->getRepository(Category::class)->findWithActiveJobs();
+
+    return $this->render('job/list.html.twig', [
+        'categories' => $categories,
+    ]);
+}
+```
+
+In the template, we need to iterate through all categories and display the active jobs (`templates/job/list.html.twig`):
+
+```twig
+{% block body %}
+    {% for category in categories %}
+        <table class="table text-center">
+            <caption class="h4">{{ category.name }}</caption>
+
+            <thead>
+            <tr>
+                <th class="active text-center">City</th>
+                <th class="active text-center">Position</th>
+                <th class="active text-center">Company</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for job in category.activeJobs %}
+                <tr>
+                    <td>{{ job.location }}</td>
+                    <td>
+                        <a href="{{ path('job.show', {id: job.id}) }}">
+                            {{ job.position }}
+                        </a>
+                    </td>
+                    <td>{{ job.company }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
+```
+
+## Limit the results
+
+There is still one requirement to implement for the homepage job list: we have to limit the job list to 10 items.
+That’s simple enough to add `slice` filter in template `templates/job/list.html.twig`:
+
+```diff
+- {% for job in category.activeJobs %}
++ {% for job in category.activeJobs|slice(0, 10) %}
+```
+
+Doctrine is smart enough and will load from DB only 10 jobs and not all. So, we don't abuse DB in this case.
+
+## Custom Configuration
+
+In the `templates/job/list.html.twig` template we have hardcoded the number of max jobs shown for a category.
+It would have been better to make the 10 limit configurable.
+In Symfony you can define custom parameters for your application in the `config/services.yaml` file, under the `parameters` key:
+
+```yaml
+parameters:
+    locale: 'en'
+    max_jobs_on_homepage: 10
+```
+
+But this value will not be accessible in template until it will not be defined in `twig` configuration as global variable.
+Let's open `config/packages/twig.yaml` and add it:
+
+```yaml
+twig:
+    # ...
+    globals:
+        max_jobs_on_homepage: '%max_jobs_on_homepage%'
+```
+
+This can now be accessed from a template:
+```diff
+- {% for job in category.activeJobs|slice(0, 10) %}
++ {% for job in category.activeJobs|slice(0, max_jobs_on_homepage) %}
+```
 
 ## Additional information
+- [How to Inject Variables into all Templates (i.e. global Variables)][1]
 
 ## Next Steps
 
@@ -209,3 +364,5 @@ Continue this tutorial here: [Jobeet Day 7: Playing with the Category Page](/day
 Previous post is available here: [Jobeet Day 5: The Routing](/days/day-5.md)
 
 Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
+
+[1]: http://symfony.com/doc/4.0/templating/global_variables.html
