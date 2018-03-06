@@ -33,6 +33,15 @@ Symfony operations: 1 recipe (3c3199f3aa23ea62ee911b3d6fe61a93)
 
 Read about [Flex][4] system to know more about recipes.
 
+Activate `sluggable` extension in `config/packages/stof_doctrine_extensions.yaml`:
+```yaml
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            sluggable: true
+```
+
 Slug will be stored in DB and we need field for it. Add `slug` field in `Category` entity:
 ```php
 // ...
