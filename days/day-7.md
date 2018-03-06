@@ -144,6 +144,74 @@ class CategoryController extends AbstractController
 
 ## The Category Page
 
+Add the following code to the `CategoryController.php` file:
+
+```php
+// ...
+use App\Entity\Category;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+
+class CategoryController extends AbstractController
+{
+    /**
+     * Finds and displays a category entity.
+     *
+     * @Route("/category/{slug}", name="category.show")
+     * @Method("GET")
+     *
+     * @param Category $category
+     *
+     * @return Response
+     */
+    public function showAction(Category $category) : Response
+    {
+        return $this->render('category/show.html.twig', array(
+            'category' => $category,
+        ));
+    }
+}
+```
+
+The last step is to create the `templates/category/show.html.twig` template:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Jobs in the {{ category.name }} category
+{% endblock %}
+
+{% block body %}
+    <table class="table text-center">
+        <caption class="h4">{{ category.name }}</caption>
+
+        <thead>
+        <tr>
+            <th class="active text-center">City</th>
+            <th class="active text-center">Position</th>
+            <th class="active text-center">Company</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for job in category.activeJobs %}
+            <tr>
+                <td>{{ job.location }}</td>
+                <td>
+                    <a href="{{ path('job.show', {id: job.id}) }}">
+                        {{ job.position }}
+                    </a>
+                </td>
+                <td>{{ job.company }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+```
+
 ## Including Other Twig Templates
 
 ## The Category Link
