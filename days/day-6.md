@@ -324,8 +324,6 @@ That’s simple enough to add `slice` filter in template `templates/job/list.htm
 + {% for job in category.activeJobs|slice(0, 10) %}
 ```
 
-Doctrine is smart enough and will load from DB only 10 jobs and not all. So, we don't abuse DB in this case.
-
 ## Custom Configuration
 
 In the `templates/job/list.html.twig` template we have hardcoded the number of max jobs shown for a category.
