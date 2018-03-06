@@ -127,6 +127,29 @@ array(4) {
 
 The main advantage of this bundle for us is that slug is generated automatically. We don't call 'setSlug' anywhere.
 
+## The Job Category Controller
+
+It’s now time to create the category controller. Create a new `CategoryController.php` file in your Controller directory:
+
+```php
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class CategoryController extends AbstractController
+{
+
+}
+```
+
+## The Category Page
+
+## Including Other Twig Templates
+
+## The Category Link
+
+## List Pagination
+
 ## Additional information
 
 ## Next Steps
