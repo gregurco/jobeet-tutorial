@@ -283,6 +283,17 @@ and `templates/job/list.html.twig`
 
 ## The Category Link
 
+Now, edit the `templates/job/list.html.twig` template of the job controller to add the link to the category page:
+
+```diff
+- <h4>{{ category.name }}</h4>
++ <h4>
++     <a href="{{ path('category.show', {slug: category.slug}) }}">{{ category.name }}</a>
++ </h4>
+```
+
+Now you can go from categories page to specific category page.
+
 ## List Pagination
 
 ## Additional information
