@@ -296,7 +296,179 @@ Now you can go from categories page to specific category page.
 
 ## List Pagination
 
+To implement pagination we will use [KnpPaginatorBundle][5].
+
+First, let’s install the bundle:
+
+```bash
+composer require knplabs/knp-paginator-bundle
+```
+
+Bundle is installed and ready to use.
+
+As you can see in documentation of the bundle, paginator consumes doctrine query, not the result.
+We need to create the new method in job repository `src/Repository/JobRepository.php`:
+```php
+// ...
+use App\Entity\Category;
+use Doctrine\ORM\AbstractQuery;
+
+class JobRepository extends EntityRepository
+{
+    // ...
+
+    /**
+     * @param Category $category
+     *
+     * @return AbstractQuery
+     */
+    public function getPaginatedActiveJobsByCategoryQuery(Category $category) : AbstractQuery
+    {
+        return $this->createQueryBuilder('j')
+            ->where('j.category = :category')
+            ->andWhere('j.expiresAt > :date')
+            ->setParameter('category', $category)
+            ->setParameter('date', new \DateTime())
+            ->getQuery();
+    }
+}
+```
+
+This method create query which will get all active jobs by category. But where is pagination?
+Let's do it in controller `src/Controller/CategoryController.php`:
+
+```php
+// ...
+use App\Entity\Job;
+use Knp\Component\Pager\PaginatorInterface;
+
+class CategoryController extends AbstractController
+{
+    /**
+     * Finds and displays a category entity.
+     *
+     * @Route("/category/{slug}", name="category.show")
+     * @Method("GET")
+     *
+     * @param Category $category
+     * @param PaginatorInterface $paginator
+     *
+     * @return Response
+     */
+    public function showAction(Category $category, PaginatorInterface $paginator) : Response
+    {
+        $activeJobs = $paginator->paginate(
+            $this->getDoctrine()->getRepository(Job::class)->getPaginatedActiveJobsByCategoryQuery($category),
+            1, // page
+            10 // elements per page
+        );
+
+        return $this->render('category/show.html.twig', array(
+            'category' => $category,
+            'activeJobs' => $activeJobs,
+        ));
+    }
+}
+```
+
+We added `PaginatorInterface` in parameters of the method and autowire component will inject paginator service automatically.
+Also we call paginator and pass query from repository, page (for now let's get only first) and how many element we want per page.
+The result we send to template. Let's use it there `templates/category/show.html.twig`:
+
+```diff
+- {{ include('job/table.html.twig', {category: category, activeJobs: category.activeJobs}) }}
++ {{ include('job/table.html.twig', {category: category, activeJobs: activeJobs}) }}
+```
+
+If now you open the  browser, you will see only 10 jobs on the page, but what about pagination?
+How to access second page? And what if we want to have 20 element on the page?
+
+First let's define new parameter in `config/services.yaml`:
+```yaml
+parameters:
+    # ...
+    max_jobs_on_category: 20
+```
+
+and now some changes in `src/Controller/CategoryController.php`:
+
+```php
+namespace App\Controller;
+
+use App\Entity\Category;
+use App\Entity\Job;
+use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+
+class CategoryController extends Controller
+{
+    /**
+     * Finds and displays a category entity.
+     *
+     * @Route("/category/{slug}/{page}", name="category.show", defaults={"page": 1})
+     * @Method("GET")
+     *
+     * @param Category $category
+     * @param PaginatorInterface $paginator
+     * @param int $page
+     *
+     * @return Response
+     */
+    public function showAction(
+        Category $category,
+        int $page,
+        PaginatorInterface $paginator
+    ) : Response
+    {
+        $activeJobs = $paginator->paginate(
+            $this->getDoctrine()->getRepository(Job::class)->getPaginatedActiveJobsByCategoryQuery($category),
+            $page,
+            $this->getParameter('max_jobs_on_category')
+        );
+
+        return $this->render('category/show.html.twig', array(
+            'category' => $category,
+            'activeJobs' => $activeJobs,
+        ));
+    }
+}
+```
+
+We added `page` in the URL path and defined default value, in case when page is not defined in the URL *(ex: `/category/design`)*.
+Variable `$path` is added in arguments of the method. It will be injected automatically by name in path.
+Also we need parameter `max_jobs_on_category` and `getParameter` methods to access it.
+That's why this controller extends now `Symfony\Bundle\FrameworkBundle\Controller\Controller` but not `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
+
+Now let's render page selector in template `templates/category/show.html.twig`:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Jobs in the {{ category.name }} category
+{% endblock %}
+
+{% block body %}
+    <h4>{{ category.name }}</h4>
+
+    {{ include('job/table.html.twig', {category: category, activeJobs: activeJobs}) }}
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(activeJobs) }}
+    </div>
+{% endblock %}
+```
+
+Now it should look like that:
+
+![Paginated list of jobs](/files/images/screenshot_8.png)
+
 ## Additional information
+- [KnpPaginatorBundle][5]
+- [Doctrine Pagination][6]
 
 ## Next Steps
 
@@ -310,3 +482,5 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [2]: https://github.com/Atlantic18/DoctrineExtensions
 [3]: https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/sluggable.md#setup-and-autoloading
 [4]: https://symfony.com/doc/4.0/setup/flex.html
+[5]: https://github.com/KnpLabs/KnpPaginatorBundle
+[6]: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/pagination.html
