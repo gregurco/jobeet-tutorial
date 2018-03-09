@@ -477,6 +477,10 @@ Now it should look like that:
 
 ![Paginated list of jobs](/files/images/screenshot_8.png)
 
+That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day7][7]
+
+See you tomorrow!
+
 ## Additional information
 - [KnpPaginatorBundle][5]
 - [Doctrine Pagination][6]
@@ -495,3 +499,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [4]: https://symfony.com/doc/4.0/setup/flex.html
 [5]: https://github.com/KnpLabs/KnpPaginatorBundle
 [6]: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/pagination.html
+[7]: https://github.com/gregurco/jobeet/tree/day7
