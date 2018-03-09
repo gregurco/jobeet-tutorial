@@ -214,6 +214,71 @@ The last step is to create the `templates/category/show.html.twig` template:
 
 ## Including Other Twig Templates
 
+Notice that we have copied and pasted the `<table>` tag that create a list of jobs from the job `list.html.twig` template. That’s bad.
+When you need to reuse some portion of a template, you need to create a new twig template with that code and include it where you need.
+
+Create the `templates/job/table.html.twig` file:
+
+```twig
+<table class="table text-center">
+    <caption class="h4">{{ category.name }}</caption>
+
+    <thead>
+    <tr>
+        <th class="active text-center">City</th>
+        <th class="active text-center">Position</th>
+        <th class="active text-center">Company</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for job in activeJobs %}
+        <tr>
+            <td>{{ job.location }}</td>
+            <td>
+                <a href="{{ path('job.show', {id: job.id}) }}">
+                    {{ job.position }}
+                </a>
+            </td>
+            <td>{{ job.company }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+```
+
+Notice that we changed one thing: we use to iterate `activeJobs` instead of `category.activeJobs`. It will help us in next step.
+
+You can include a template by using the `{{ include() }}` function.
+Replace the <table> HTML code from `templates/category/show.html.twig` with the include function:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Jobs in the {{ category.name }} category
+{% endblock %}
+
+{% block body %}
+    {{ include('job/table.html.twig', {category: category, activeJobs: category.activeJobs}) }}
+{% endblock %}
+```
+
+and `templates/job/list.html.twig`
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for category in categories %}
+        {{ include('job/table.html.twig', {
+            category: category,
+            activeJobs: category.activeJobs|slice(0, max_jobs_on_homepage)
+        }) }}
+    {% endfor %}
+{% endblock %}
+```
+
 ## The Category Link
 
 ## List Pagination
