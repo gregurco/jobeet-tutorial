@@ -184,9 +184,9 @@ The last step is to create the `templates/category/show.html.twig` template:
 {% endblock %}
 
 {% block body %}
-    <table class="table text-center">
-        <caption class="h4">{{ category.name }}</caption>
+    <h4>{{ category.name }}</h4>
 
+    <table class="table text-center">
         <thead>
         <tr>
             <th class="active text-center">City</th>
@@ -221,8 +221,6 @@ Create the `templates/job/table.html.twig` file:
 
 ```twig
 <table class="table text-center">
-    <caption class="h4">{{ category.name }}</caption>
-
     <thead>
     <tr>
         <th class="active text-center">City</th>
@@ -260,6 +258,8 @@ Replace the <table> HTML code from `templates/category/show.html.twig` with the 
 {% endblock %}
 
 {% block body %}
+    <h4>{{ category.name }}</h4>
+
     {{ include('job/table.html.twig', {category: category, activeJobs: category.activeJobs}) }}
 {% endblock %}
 ```
@@ -270,6 +270,8 @@ and `templates/job/list.html.twig`
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <h4>{{ category.name }}</h4>
+
     {% for category in categories %}
         {{ include('job/table.html.twig', {
             category: category,
