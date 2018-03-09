@@ -462,6 +462,17 @@ Now let's render page selector in template `templates/category/show.html.twig`:
 {% endblock %}
 ```
 
+Pagination will work but will look not in style of Bootstrap 3. Let's configure it.
+Create file `knp_paginator.yml` in `config/packages` and past there next code to change the style of paginator:
+
+```yaml
+knp_paginator:
+    template:
+        pagination: "@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig"
+```
+
+Notice: don't forget to clear cache after that.
+
 Now it should look like that:
 
 ![Paginated list of jobs](/files/images/screenshot_8.png)
