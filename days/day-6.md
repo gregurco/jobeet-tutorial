@@ -285,9 +285,9 @@ In the template, we need to iterate through all categories and display the activ
 ```twig
 {% block body %}
     {% for category in categories %}
+        <h4>{{ category.name }}</h4>
+    
         <table class="table text-center">
-            <caption class="h4">{{ category.name }}</caption>
-
             <thead>
             <tr>
                 <th class="active text-center">City</th>
