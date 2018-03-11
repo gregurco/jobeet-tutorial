@@ -20,7 +20,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 7: Playing with the Category Page](/days/day-7.md)
 
-~~Jobeet Day 8: The Forms~~
+[Jobeet Day 8: The Forms](/days/day-8.md)
 
 ~~Jobeet Day 9: The Unit Tests~~
 
