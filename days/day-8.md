@@ -6,6 +6,40 @@ rules for each field, process the values to store them in a database, display er
 
 ## Create the Job Form
 
+To deal with creation of jobs we will need forms, that in Symfony are realized by [Form Component][3].
+The Form component allows you to easily create, process and reuse forms.
+Each form is a separate class. So, let's create a folder `src/Form` where all forms will be placed and our first form in file `JobType.php`:
+
+```php
+namespace App\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class JobType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+
+    }
+}
+```
+
+As you can notice, our class extends `AbstractType` class and usually you will have to work with `buildForm` and `configureOptions` methods.
+That's why we defined them from the beginning.
+
 ## Handling File Uploads
 
 ## The Form Template
@@ -22,7 +56,9 @@ rules for each field, process the values to store them in a database, display er
 
 
 ## Next Steps
+- [Form Component][3]
 - [How to Upload Files][1]
+- [How to Customize Form Rendering][2]
 
 Continue this tutorial here: [Jobeet Day 9: -](/days/day-9.md)
 
@@ -30,4 +66,6 @@ Previous post is available here: [Jobeet Day 7: Playing with the Category Page](
 
 Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
-[1]: https://symfony.com/doc/current/controller/upload_file.html
+[1]: https://symfony.com/doc/4.0/controller/upload_file.html
+[2]: https://symfony.com/doc/4.0/form/form_customization.html
+[3]: https://symfony.com/doc/current/components/form.html
