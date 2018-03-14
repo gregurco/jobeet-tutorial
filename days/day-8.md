@@ -114,6 +114,20 @@ It's better to render it as selector with YES and NO options. We will implement 
 
 We changed type and also defined next options: `choices` - items, that will be used as `<options>` and `label`.
 
+Also `category` is `TextType`, but we have categories in DB and it would be good to render selector with these options.
+It looks like it should be `ChoiceType`, but choice from entities is specific case and we have separate type for it: [EntityType][10].
+It extends `ChoiceType` but with some additional options related to DB.
+
+```diff
+- ->add('category', TextType::class)
++ ->add('category', EntityType::class, [
++     'class' => Category::class,
++     'choice_label' => 'name',
++ ])
+```
+
+We changed only one line of code, but in template instead of simple input we will have select with all categories in options.
+
 ## The Form Template
 
 ## Form processing
@@ -153,3 +167,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [7]: https://symfony.com/doc/4.0/reference/forms/types/email.html
 [8]: https://symfony.com/doc/4.0/reference/forms/types/datetime.html
 [9]: https://symfony.com/doc/4.0/reference/forms/types/choice.html
+[10]: https://symfony.com/doc/4.0/reference/forms/types/entity.html
