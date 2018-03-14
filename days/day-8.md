@@ -93,13 +93,13 @@ class JobType extends AbstractType
 ```
 
 We call method `add` on form builder and add all fields. First argument is field name. It should be the same as in entity.
-The second argument is field type. In our case we used `TextType`, `EmailType` and `DateTimeType`. And 3rd parameter is options (we did not use it yet)
+The second argument is field type. In our case we used [TextType][6], [EmailType][7] and [DateTimeType][8]. And 3rd parameter is options (we did not use it yet)
 Field type affects rendering of field and also provides different options for configuration.
 
 Example: `TextType` will be rendered as `<input type="text" ...>`
 
 Let's try other types. For example, we defined `public` field as `TextType`, but in entity it is boolean.
-It's better to render it as selector with YES and NO options. We will implement `ChoiceType`:
+It's better to render it as selector with YES and NO options. We will implement [ChoiceType][9]:
 
 ```diff
 - ->add('public', TextType::class)
@@ -149,3 +149,7 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [3]: https://symfony.com/doc/4.0/components/form.html
 [4]: https://symfony.com/doc/4.0/forms.html
 [5]: https://symfony.com/doc/4.0/reference/forms/types.html
+[6]: https://symfony.com/doc/4.0/reference/forms/types/text.html
+[7]: https://symfony.com/doc/4.0/reference/forms/types/email.html
+[8]: https://symfony.com/doc/4.0/reference/forms/types/datetime.html
+[9]: https://symfony.com/doc/4.0/reference/forms/types/choice.html
