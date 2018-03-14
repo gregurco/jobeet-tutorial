@@ -55,7 +55,64 @@ public function configureOptions(OptionsResolver $resolver)
 
 *Note: don't forget to import `Job` class*
 
+Now we should define form fields in `buildForm` method:
 
+```php
+// ....
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+
+class JobType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('type', TextType::class)
+            ->add('company', TextType::class)
+            ->add('logo', TextType::class)
+            ->add('url', UrlType::class)
+            ->add('position', TextType::class)
+            ->add('location', TextType::class)
+            ->add('description', TextType::class)
+            ->add('howToApply', TextType::class)
+            ->add('public', TextType::class)
+            ->add('activated', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('expiresAt', DateTimeType::class)
+            ->add('category', TextType::class)
+            ->add('token', TextType::class);
+    }
+    
+    // ...   
+}
+```
+
+We call method `add` on form builder and add all fields. First argument is field name. It should be the same as in entity.
+The second argument is field type. In our case we used `TextType`, `EmailType` and `DateTimeType`. And 3rd parameter is options (we did not use it yet)
+Field type affects rendering of field and also provides different options for configuration.
+
+Example: `TextType` will be rendered as `<input type="text" ...>`
+
+Let's try other types. For example, we defined `public` field as `TextType`, but in entity it is boolean.
+It's better to render it as selector with YES and NO options. We will implement `ChoiceType`:
+
+```diff
+- ->add('public', TextType::class)
++ ->add('public', ChoiceType::class, [
++     'choices'  => [
++         'Yes' => true,
++         'No' => false,
++     ],
++     'label' => 'Public?',
++ ])
+```
+
+We changed type and also defined next options: `choices` - items, that will be used as `<options>` and `label`.
 
 ## The Form Template
 
@@ -79,6 +136,7 @@ public function configureOptions(OptionsResolver $resolver)
 - [Form Component][3]
 - [How to Upload Files][1]
 - [How to Customize Form Rendering][2]
+- [Form Types Reference][5]
 
 Continue this tutorial here: [Jobeet Day 9: -](/days/day-9.md)
 
@@ -90,3 +148,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [2]: https://symfony.com/doc/4.0/form/form_customization.html
 [3]: https://symfony.com/doc/4.0/components/form.html
 [4]: https://symfony.com/doc/4.0/forms.html
+[5]: https://symfony.com/doc/4.0/reference/forms/types.html
