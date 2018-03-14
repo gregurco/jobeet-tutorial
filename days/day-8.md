@@ -8,7 +8,8 @@ rules for each field, process the values to store them in a database, display er
 
 To deal with creation of jobs we will need forms, that in Symfony are realized by [Form Component][3].
 The Form component allows you to easily create, process and reuse forms.
-Each form is a separate class. So, let's create a folder `src/Form` where all forms will be placed and our first form in file `JobType.php`:
+We will crate a class that generally is `Form Builder` class. There we will define fields, that form should have, validation rules and many other things.
+So, let's create a folder `src/Form` where all forms will be placed and to create our first form in file `JobType.php`:
 
 ```php
 namespace App\Form;
@@ -40,13 +41,31 @@ class JobType extends AbstractType
 As you can notice, our class extends `AbstractType` class and usually you will have to work with `buildForm` and `configureOptions` methods.
 That's why we defined them from the beginning.
 
-## Handling File Uploads
+Every form needs to know the name of the class that holds the underlying data.
+Let's specify the `data_class` option by changing `configureOptions` method:
+
+```php
+public function configureOptions(OptionsResolver $resolver)
+{
+    $resolver->setDefaults([
+        'data_class' => Job::class
+    ]);
+}
+```
+
+*Note: don't forget to import `Job` class*
+
+
 
 ## The Form Template
 
-## Additional information
+## Form processing
 
-## The Form Action
+## Validation
+
+## Handling File Uploads
+
+## Additional information
 
 ## Protecting the Job Form with a Token
 
@@ -56,6 +75,7 @@ That's why we defined them from the beginning.
 
 
 ## Next Steps
+- [Forms][4]
 - [Form Component][3]
 - [How to Upload Files][1]
 - [How to Customize Form Rendering][2]
@@ -68,4 +88,5 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
 [1]: https://symfony.com/doc/4.0/controller/upload_file.html
 [2]: https://symfony.com/doc/4.0/form/form_customization.html
-[3]: https://symfony.com/doc/current/components/form.html
+[3]: https://symfony.com/doc/4.0/components/form.html
+[4]: https://symfony.com/doc/4.0/forms.html
