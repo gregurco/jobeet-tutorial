@@ -113,6 +113,7 @@ It's better to render it as selector with YES and NO options. We will implement 
 ```
 
 We changed type and also defined next options: `choices` - items, that will be used as `<options>` and `label`.
+Do the same thing with `activated` field too.
 
 Also `category` is `TextType`, but we have categories in DB and it would be good to render selector with these options.
 It looks like it should be `ChoiceType`, but choice from entities is specific case and we have separate type for it: [EntityType][10].
@@ -126,7 +127,132 @@ It extends `ChoiceType` but with some additional options related to DB.
 + ])
 ```
 
+We specified `choice_label` to select a field from entity that will be shown as option in selector.
 We changed only one line of code, but in template instead of simple input we will have select with all categories in options.
+
+Now let's change `type` field. For now it's text field, but in the second day’s description we have next requirement:
+> Type (full-time, part-time, or freelance)
+
+We need defined list of options and let's do it in `Job` entity:
+
+```php
+class Job
+{
+    const FULL_TIME_TYPE = 'full-time';
+    const PART_TIME_TYPE = 'part-time';
+    const FREELANCE_TYPE = 'freelance';
+
+    const TYPES = [
+        self::FULL_TIME_TYPE,
+        self::PART_TIME_TYPE,
+        self::FREELANCE_TYPE,
+    ];
+
+    // ...
+}
+```
+
+Currently we can change the form type of `type` field to `ChoiceType`:
+
+```diff
+- ->add('type', TextType::class)
++ ->add('type', ChoiceType::class, [
++     'choices' => array_combine(Job::TYPES, Job::TYPES),
++     'expanded' => true,
++ ])
+```
+
+Why we used `array_combine` but not directly `Job::TYPES`? We want to show options with same label and value.
+For example, option with label `freelance` should have value `freelance` (`<option value="freelance">freelance</option>`) and `array_combine` helps us to do that.
+Also `expanded` is true to show you how different `ChoiceType` can be rendered. We will see it later.
+
+Let's add some labels and options. The final result should be:
+```php
+namespace App\Form;
+
+use App\Entity\Category;
+use App\Entity\Job;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
+
+class JobType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('type', ChoiceType::class, [
+                'choices' => array_combine(Job::TYPES, Job::TYPES),
+                'expanded' => true,
+            ])
+            ->add('company', TextType::class, [
+                'constraints' => [
+                    new Length(['max' => 255]),
+                ]
+            ])
+            ->add('logo', FileType::class, [
+                'required' => false,
+                'constraints' => [
+                    new File(['mimeTypes' => ['image/jpeg', 'image/png']]),
+                ]
+            ])
+            ->add('url', UrlType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Length(['max' => 255]),
+                ]
+            ])
+            ->add('position', TextType::class)
+            ->add('location', TextType::class)
+            ->add('description', TextType::class)
+            ->add('howToApply', TextType::class, [
+                'label' => 'How to apply?',
+            ])
+            ->add('public', ChoiceType::class, [
+                'choices'  => [
+                    'Yes' => true,
+                    'No' => false,
+                ],
+                'label' => 'Public?',
+            ])
+            ->add('activated', ChoiceType::class, [
+                'choices'  => [
+                    'Yes' => true,
+                    'No' => false,
+                ],
+            ])
+            ->add('email', EmailType::class)
+            ->add('expiresAt', DateTimeType::class)
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+            ])
+            ->add('token', TextType::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Job::class
+        ]);
+    }
+}
+```
 
 ## The Form Template
 
