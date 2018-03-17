@@ -177,13 +177,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Length;
 
 class JobType extends AbstractType
 {
@@ -308,6 +305,19 @@ That's it! Form will be rendered due to:
 - `form_widget` - renders all the fields, labels and any validation error messages.
 - `form_end` - renders `</form>` tag.
 
+Open the browser and access `/job/create` path to see how form is rendered.
+The form with all fields are rendered, but the styling is not the same as in [bootstrap][11].
+The good new is that [Twig Bridge][12] component, that is responsible for integration of Twig in Symfony, comes with some [themes][13] out of the box.
+We use bootstrap 3 and will choose `bootstrap_3_horizontal_layout.html.twig` theme file. Let's setup it in `config/packages/twig.yaml`:
+```twig
+twig:
+    # ...
+    form_themes:
+        - 'bootstrap_3_horizontal_layout.html.twig'
+```
+
+Refresh the page. Now form should look in bootstrap 3 style.
+
 ## Form processing
 
 ## Validation
@@ -346,3 +356,6 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [8]: https://symfony.com/doc/4.0/reference/forms/types/datetime.html
 [9]: https://symfony.com/doc/4.0/reference/forms/types/choice.html
 [10]: https://symfony.com/doc/4.0/reference/forms/types/entity.html
+[11]: https://getbootstrap.com/docs/3.3/css/#forms
+[12]: https://github.com/symfony/twig-bridge/tree/v4.0.6
+[13]: https://github.com/symfony/twig-bridge/tree/v4.0.6/Resources/views/Form
