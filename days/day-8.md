@@ -197,23 +197,9 @@ class JobType extends AbstractType
                 'choices' => array_combine(Job::TYPES, Job::TYPES),
                 'expanded' => true,
             ])
-            ->add('company', TextType::class, [
-                'constraints' => [
-                    new Length(['max' => 255]),
-                ]
-            ])
-            ->add('logo', FileType::class, [
-                'required' => false,
-                'constraints' => [
-                    new File(['mimeTypes' => ['image/jpeg', 'image/png']]),
-                ]
-            ])
-            ->add('url', UrlType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Length(['max' => 255]),
-                ]
-            ])
+            ->add('company', TextType::class)
+            ->add('logo', TextType::class)
+            ->add('url', UrlType::class)
             ->add('position', TextType::class)
             ->add('location', TextType::class)
             ->add('description', TextType::class)
@@ -254,7 +240,73 @@ class JobType extends AbstractType
 }
 ```
 
+## Create Job Action
+
+We just created `JobType` form class. The next step is to create and render actual form.
+In Symfony, this is done by building a form object and then rendering it in a template.
+For now, we will create new action inside the `JobController` controller:
+
+```php
+// ...
+use App\Form\JobType;
+
+class JobController extends AbstractController
+{
+    // ...
+    
+    /**
+     * Creates a new job entity.
+     *
+     * @Route("/job/create", name="job.create")
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function createAction(Request $request) : Response
+    {
+        $job = new Job();
+        $form = $this->createForm(JobType::class, $job);
+    
+        return $this->render('job/create.html.twig', [
+            'job' => $job,
+            'form' => $form->createView(),
+        ]);
+    }
+}
+```
+
+We created new Job object and passed it to `createForm` method along with `JobType` class.
+This method will create a form class based on entity object and rules described in `JobType` class.
+In form we will need a special form "view" object, that's why we passed to template not the form, but the result of `createView` method.
+
 ## The Form Template
+
+In previous step we passed the data to `job/create.html.twig` template, but we don't have it yet.
+Let's create it and use a set of form helper functions:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Job creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Create</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+```
+That's it! Form will be rendered due to:
+- `form_start` - renders `<form>` tag with all needed attributed (method, encryption, etc).
+- `form_widget` - renders all the fields, labels and any validation error messages.
+- `form_end` - renders `</form>` tag.
 
 ## Form processing
 
