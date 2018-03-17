@@ -360,6 +360,14 @@ class JobController extends AbstractController
     }
 ```
 
+- we added `POST` method to annotation, because form will be submitted with this method.
+- request object is added to method arguments because in request will be data of submitted form
+- entity manager is added to method arguments because we will use it to store new job
+- `handleRequest` method maps request data to form
+- `isSubmitted` method checks if form was submitted or method is called with get method and we need only to show the form
+- `isValid` method tracks if all requirements are met (we will add them in next step)
+- `redirectToRoute` is used to redirect to list of jobs and to prevent repeated submit of form (CTRL + R)
+
 ## Validation
 
 ## Handling File Uploads
