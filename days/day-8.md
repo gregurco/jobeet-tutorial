@@ -257,11 +257,9 @@ class JobController extends AbstractController
      * @Route("/job/create", name="job.create")
      * @Method({"GET"})
      *
-     * @param Request $request
-     *
      * @return Response
      */
-    public function createAction(Request $request) : Response
+    public function createAction() : Response
     {
         $job = new Job();
         $form = $this->createForm(JobType::class, $job);
@@ -318,7 +316,49 @@ twig:
 
 Refresh the page. Now form should look in bootstrap 3 style.
 
+Also you can notice that we wrote html for submit button and did't use [SubmitType][14].
+It's good practice because form become more reusable. Read more [here][15].
+
 ## Form processing
+
+Form is built and rendered. Processing is next.
+If you submit the form, nothing will happen. Let's fix it:
+
+```php
+class JobController extends AbstractController
+{
+    // ...
+    
+    /**
+     * Creates a new job entity.
+     *
+     * @Route("/job/create", name="job.create")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     *
+     * @return RedirectResponse|Response
+     */
+    public function createAction(Request $request, EntityManagerInterface $em) : Response
+    {
+        $job = new Job();
+        $form = $this->createForm(JobType::class, $job);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($job);
+            $em->flush();
+
+            return $this->redirectToRoute('job.list');
+        }
+
+        return $this->render('job/create.html.twig', [
+            'job' => $job,
+            'form' => $form->createView(),
+        ]);
+    }
+```
 
 ## Validation
 
@@ -359,3 +399,5 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [11]: https://getbootstrap.com/docs/3.3/css/#forms
 [12]: https://github.com/symfony/twig-bridge/tree/v4.0.6
 [13]: https://github.com/symfony/twig-bridge/tree/v4.0.6/Resources/views/Form
+[14]: https://symfony.com/doc/4.0/reference/forms/types/submit.html
+[15]: https://symfony.com/doc/4.0/best_practices/forms.html#form-button-configuration
