@@ -406,6 +406,20 @@ Try to submit more than 255 characters and you will see error:
 
 ![Validation error: max length](/files/images/screenshot_9.png)
 
+We have more specific field: `expiresAt`. It's datetime field, that should be required and the value should be datetime in feature:
+
+```php
+->add('expiresAt', DateTimeType::class, [
+    'constraints' => [
+        new NotBlank(),
+        new DateTime(),
+        new GreaterThanOrEqual('now')
+    ]
+])
+```
+
+Constraint `GreaterThanOrEqual` works well with numbers and date/datetime too.
+
 Symfony has a big list of constraints out of the box. You can find all them [here][16].
 
 ## Handling File Uploads
