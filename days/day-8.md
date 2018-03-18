@@ -421,6 +421,137 @@ We have more specific field: `expiresAt`. It's datetime field, that should be re
 Constraint `GreaterThanOrEqual` works well with numbers and date/datetime too.
 
 Symfony has a big list of constraints out of the box. You can find all them [here][16].
+Review all fields and add relevant constraints and in final you should see something similar:
+
+```php
+namespace App\Form;
+
+use App\Entity\Category;
+use App\Entity\Job;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+class JobType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('type', ChoiceType::class, [
+                'choices' => array_combine(Job::TYPES, Job::TYPES),
+                'expanded' => true,
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('company', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['max' => 255]),
+                ]
+            ])
+            ->add('logo', TextType::class)
+            ->add('url', UrlType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Length(['max' => 255]),
+                ]
+            ])
+            ->add('position', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['max' => 255]),
+                ]
+            ])
+            ->add('location', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['max' => 255]),
+                ]
+            ])
+            ->add('description', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('howToApply', TextType::class, [
+                'label' => 'How to apply?',
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('public', ChoiceType::class, [
+                'choices'  => [
+                    'Yes' => true,
+                    'No' => false,
+                ],
+                'label' => 'Public?',
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('activated', ChoiceType::class, [
+                'choices'  => [
+                    'Yes' => true,
+                    'No' => false,
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Email()
+                ]
+            ])
+            ->add('expiresAt', DateTimeType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new DateTime(),
+                    new GreaterThanOrEqual('now')
+                ]
+            ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('token', TextType::class, [
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['max' => 255]),
+                ]
+            ]);
+    }
+
+    // ...
+}
+```
+
+You can observe that we used `'required' => false` and `new NotBlank()` constraint. What is the difference?
+By default, all fields have `required` set to true and this option affects only the rendering of the field: it adds `required` to html field tag:
+```html
+<input type="text" name="company" required>
+```
+
+But this "requirement" can be easy bypassed by developer tools provided by every browser.
 
 ## Handling File Uploads
 
