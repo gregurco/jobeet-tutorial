@@ -370,7 +370,7 @@ class JobController extends AbstractController
 
 ## Validation
 
-For now form is build, rendered and processed, but we don't validate any information.
+For now form is built, rendered and processed, but we don't validate any information.
 Form accepts anything. We should add some validation rules.
 
 > Validation rules are called `constraints` in symfony forms.
@@ -389,6 +389,8 @@ Our first field in form is `type` field. According to entity this field should b
 +    ]
  ])
 ```
+
+and import `Symfony\Component\Validator\Constraints\NotBlank` class.
 
 ## Handling File Uploads
 
