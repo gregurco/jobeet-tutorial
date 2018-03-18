@@ -637,7 +637,7 @@ Even if this implementation works, let’s do this in a better way, moving logic
 
 To create a service, first create a new `FileUploader` class in `src/Service` folder:
 
-```yaml
+```php
 namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
