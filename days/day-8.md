@@ -718,6 +718,114 @@ class JobController extends AbstractController
 }
 ```
 
+Now create a [Doctrine listener][17] to automatically upload the file when persisting the entity (`src/EventListener/JobUploadListener.php`):
+
+```php
+namespace App\EventListener;
+
+use App\Entity\Job;
+use App\Service\FileUploader;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+
+class JobUploadListener
+{
+    /** @var FileUploader */
+    private $uploader;
+
+    /**
+     * @param FileUploader $uploader
+     */
+    public function __construct(FileUploader $uploader)
+    {
+        $this->uploader = $uploader;
+    }
+
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        $this->uploadFile($entity);
+    }
+
+    /**
+     * @param PreUpdateEventArgs $args
+     */
+    public function preUpdate(PreUpdateEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        $this->uploadFile($entity);
+    }
+
+    /**
+     * @param $entity
+     */
+    private function uploadFile($entity)
+    {
+        // upload only works for Job entities
+        if (!$entity instanceof Job) {
+            return;
+        }
+
+        $logoFile = $entity->getLogo();
+
+        // only upload new files
+        if ($logoFile instanceof UploadedFile) {
+            $fileName = $this->uploader->upload($logoFile);
+
+            $entity->setLogo($fileName);
+        }
+    }
+}
+```
+
+Next, register this class as a Doctrine listener in `config/services.yaml`:
+
+```yaml
+# ...
+
+services:
+    # ...
+
+    App\EventListener\JobUploadListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+```
+
+This listener is now automatically executed when persisting a new Job entity.
+This way, you can remove everything related to uploading from the controller.
+
+Note that this will not work, until methods `setLogo` and `getLogo` from `Job` entity are forced to work with string.
+Remove this constraint and it will work:
+
+```php
+/**
+ * @return string|null|UploadedFile
+ */
+public function getLogo()
+{
+    return $this->logo;
+}
+
+/**
+ * @param string|null|UploadedFile $logo
+ *
+ * @return self
+ */
+public function setLogo($logo) : self
+{
+    $this->logo = $logo;
+
+    return $this;
+}
+```
+
 ## Protecting the Job Form with a Token
 
 ## The Preview Page
@@ -755,3 +863,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [14]: https://symfony.com/doc/4.0/reference/forms/types/submit.html
 [15]: https://symfony.com/doc/4.0/best_practices/forms.html#form-button-configuration
 [16]: https://symfony.com/doc/4.0/reference/constraints.html
+[17]: https://symfony.com/doc/4.0/doctrine/event_listeners_subscribers.html
