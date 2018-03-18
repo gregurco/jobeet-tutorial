@@ -551,7 +551,12 @@ By default, all fields have `required` set to true and this option affects only 
 <input type="text" name="company" required>
 ```
 
-But this "requirement" can be easy bypassed by developer tools provided by every browser.
+But this "requirement" can be easy bypassed by developer tools provided by every browser.  
+`NotBlank` constraint checks on the level of form processing and can't be bypassed.
+If you want to test fully the power of constraints or simply want to disable browser validation add next parameter to `form_start` function in template:
+```twig
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+```
 
 ## Handling File Uploads
 
