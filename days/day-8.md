@@ -370,6 +370,26 @@ class JobController extends AbstractController
 
 ## Validation
 
+For now form is build, rendered and processed, but we don't validate any information.
+Form accepts anything. We should add some validation rules.
+
+> Validation rules are called `constraints` in symfony forms.
+
+There are two places where constraints can be added: in annotations of entity or in form class.
+We will choose the second option, to keep the logic of form validation in form class and not to enlarge entity class.
+
+Our first field in form is `type` field. According to entity this field should be required:
+
+```php
+ ->add('type', ChoiceType::class, [
+     'choices' => array_combine(Job::TYPES, Job::TYPES),
+     'expanded' => true,
++    'constraints' => [
++        new NotBlank(),
++    ]
+ ])
+```
+
 ## Handling File Uploads
 
 ## Additional information
