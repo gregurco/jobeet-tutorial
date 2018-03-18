@@ -390,7 +390,23 @@ Our first field in form is `type` field. According to entity this field should b
  ])
 ```
 
-and import `Symfony\Component\Validator\Constraints\NotBlank` class.
+and import `Symfony\Component\Validator\Constraints\NotBlank` class.  
+Next field is `company` and it's required text field with a maximum length of 255 characters:
+
+```diff
+ ->add('company', TextType::class, [
++    'constraints' => [
++        new NotBlank(),
++        new Length(['max' => 255]),
++    ]
+ ])
+```
+
+Try to submit more than 255 characters and you will see error:
+
+![Validation error: max length](/files/images/screenshot_9.png)
+
+Symfony has a big list of constraints out of the box. You can find all them [here][16].
 
 ## Handling File Uploads
 
@@ -431,3 +447,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [13]: https://github.com/symfony/twig-bridge/tree/v4.0.6/Resources/views/Form
 [14]: https://symfony.com/doc/4.0/reference/forms/types/submit.html
 [15]: https://symfony.com/doc/4.0/best_practices/forms.html#form-button-configuration
+[16]: https://symfony.com/doc/4.0/reference/constraints.html
