@@ -593,6 +593,7 @@ And to add the processing logic in `JobController`:
 
 ```php
 // ...
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class JobController extends Controller
@@ -628,6 +629,8 @@ class JobController extends Controller
     }
 }
 ```
+
+Notice that now `JobController` extends `Controller` and not `AbstractController` because we need `getParameter` method.
 
 ## Protecting the Job Form with a Token
 
