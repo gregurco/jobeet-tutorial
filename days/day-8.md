@@ -578,7 +578,56 @@ Also we need to add an `Image` constraint:
 ])
 ```
 
-## Additional information
+When the form is submitted, the logo field will be an instance of `UploadedFile`.
+It can be used to move the file to a permanent location. After this we will set the job logo property to the uploaded file name.
+
+For this to work we need to add a new parameter, `jobs_directory`, in `config/services.yaml` file:
+
+```yaml
+parameters:
+    # ...
+    jobs_directory: '%kernel.project_dir%/public/uploads/jobs'
+```
+
+And to add the processing logic in `JobController`:
+
+```php
+// ...
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+class JobController extends Controller
+{
+    // ...
+    public function createAction(Request $request, EntityManagerInterface $em) : Response
+    {
+        // ...
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile|null $logoFile */
+            $logoFile = $form->get('logo')->getData();
+
+            if ($logoFile instanceof UploadedFile) {
+                $fileName = md5(uniqid()) . '.' . $logoFile->guessExtension();
+
+                // moves the file to the directory where brochures are stored
+                $logoFile->move(
+                    $this->getParameter('jobs_directory'),
+                    $fileName
+                );
+
+                $job->setLogo($fileName);
+            }
+
+            $em->persist($job);
+            $em->flush();
+
+            return $this->redirectToRoute('job.list');
+        }
+
+        // ...
+    }
+}
+```
 
 ## Protecting the Job Form with a Token
 
@@ -586,13 +635,14 @@ Also we need to add an `Image` constraint:
 
 ## Job Activation and Publication
 
-
-## Next Steps
+## Additional information
 - [Forms][4]
 - [Form Component][3]
 - [How to Upload Files][1]
 - [How to Customize Form Rendering][2]
 - [Form Types Reference][5]
+
+## Next Steps
 
 Continue this tutorial here: [Jobeet Day 9: -](/days/day-9.md)
 
