@@ -380,7 +380,7 @@ We will choose the second option, to keep the logic of form validation in form c
 
 Our first field in form is `type` field. According to entity this field should be required:
 
-```php
+```diff
  ->add('type', ChoiceType::class, [
      'choices' => array_combine(Job::TYPES, Job::TYPES),
      'expanded' => true,
