@@ -632,6 +632,92 @@ class JobController extends Controller
 
 Notice that now `JobController` extends `Controller` and not `AbstractController` because we need `getParameter` method.
 
+
+Even if this implementation works, let’s do this in a better way, moving logic to service and using Doctrine lifecycle callbacks.
+
+To create a service, first create a new `FileUploader` class in `src/Service` folder:
+
+```yaml
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+class FileUploader
+{
+    /** @var string */
+    private $targetDirectory;
+
+    /**
+     * @param string $targetDirectory
+     */
+    public function __construct(string $targetDirectory)
+    {
+        $this->targetDirectory = $targetDirectory;
+    }
+
+    /**
+     * @param UploadedFile $file
+     *
+     * @return string
+     */
+    public function upload(UploadedFile $file) : string
+    {
+        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+
+        $file->move($this->targetDirectory, $fileName);
+
+        return $fileName;
+    }
+}
+```
+
+Then, define a service for this class in `config/services.yaml`:
+
+```yaml
+# ...
+
+services:
+    # ...
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%jobs_directory%'
+```
+
+Now you're ready to use this service in the controller:
+
+```php
+// ...
+use App\Service\FileUploader;
+
+class JobController extends AbstractController
+{
+    // ...
+    public function createAction(Request $request, EntityManagerInterface $em, FileUploader $fileUploader) : Response
+    {
+        // ...
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile|null $logoFile */
+            $logoFile = $form->get('logo')->getData();
+
+            if ($logoFile instanceof UploadedFile) {
+                $fileName = $fileUploader->upload($logoFile);
+
+                $job->setLogo($fileName);
+            }
+
+            $em->persist($job);
+            $em->flush();
+
+            return $this->redirectToRoute('job.list');
+        }
+
+        // ...
+    }
+}
+```
+
 ## Protecting the Job Form with a Token
 
 ## The Preview Page
