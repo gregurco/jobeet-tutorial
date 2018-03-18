@@ -560,6 +560,24 @@ If you want to test fully the power of constraints or simply want to disable bro
 
 ## Handling File Uploads
 
+To handle the actual file upload in the form, we will need to change the logo field type to `FileType` in the form:
+
+```php
+->add('logo', FileType::class, [
+    'required' => false,
+])
+```
+
+Also we need to add an `Image` constraint:
+```php
+->add('logo', FileType::class, [
+    'required' => false,
+    'constraints' => [
+        new Image(),
+    ]
+])
+```
+
 ## Additional information
 
 ## Protecting the Job Form with a Token
