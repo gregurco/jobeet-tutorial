@@ -657,6 +657,14 @@ class FileUploader
     {
         $this->targetDirectory = $targetDirectory;
     }
+    
+    /**
+     * @return string
+     */
+    public function getTargetDirectory(): string
+    {
+        return $this->targetDirectory;
+    }
 
     /**
      * @param UploadedFile $file
