@@ -61,6 +61,7 @@ Now we should define form fields in `buildForm` method:
 // ....
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class JobType extends AbstractType
@@ -77,7 +78,7 @@ class JobType extends AbstractType
             ->add('url', UrlType::class)
             ->add('position', TextType::class)
             ->add('location', TextType::class)
-            ->add('description', TextType::class)
+            ->add('description', TextareaType::class)
             ->add('howToApply', TextType::class)
             ->add('public', TextType::class)
             ->add('activated', TextType::class)
@@ -175,6 +176,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -196,7 +198,7 @@ class JobType extends AbstractType
             ->add('url', UrlType::class)
             ->add('position', TextType::class)
             ->add('location', TextType::class)
-            ->add('description', TextType::class)
+            ->add('description', TextareaType::class)
             ->add('howToApply', TextType::class, [
                 'label' => 'How to apply?',
             ])
@@ -415,6 +417,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -463,7 +466,7 @@ class JobType extends AbstractType
                     new Length(['max' => 255]),
                 ]
             ])
-            ->add('description', TextType::class, [
+            ->add('description', TextareaType::class, [
                 'constraints' => [
                     new NotBlank(),
                 ]
