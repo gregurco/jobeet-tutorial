@@ -442,6 +442,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class JobType extends AbstractType
 {
@@ -501,7 +502,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'Public?',
                 'constraints' => [
-                    new NotBlank(),
+                    new NotNull(),
                 ]
             ])
             ->add('activated', ChoiceType::class, [
@@ -510,7 +511,7 @@ class JobType extends AbstractType
                     'No' => false,
                 ],
                 'constraints' => [
-                    new NotBlank(),
+                    new NotNull(),
                 ]
             ])
             ->add('email', EmailType::class, [
@@ -557,6 +558,8 @@ If you want to test fully the power of constraints or simply want to disable bro
 ```twig
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 ```
+
+Also note that there are `NotNull` and `NotBlank` validations. With choices where are Yes/No answers is better to use `NotNull`, because `NotBlank` and false option will give validation error.
 
 ## Handling File Uploads
 
@@ -873,6 +876,8 @@ services:
 ```
 
 Now you can remove the token field from the form by deleting the `add(‘token’)` line.
+
+## Edit Job Action
 
 If you remember the user stories from day 2, a job can be edited only if the user knows the associated token.
 
