@@ -1146,6 +1146,115 @@ return $this->redirectToRoute(
 
 ## Delete Job Action
 
+User, who created a job offer should be able to delete it. Create a method that will build a form with delete functionality:
+
+```php
+// ...
+use Symfony\Component\Form\FormInterface;
+
+class JobController extends AbstractController
+{
+    // ...
+
+    /**
+     * Creates a form to delete a job entity.
+     *
+     * @param Job $job
+     *
+     * @return FormInterface
+     */
+    private function createDeleteForm(Job $job) : FormInterface
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('job.delete', ['token' => $job->getToken()]))
+            ->setMethod('DELETE')
+            ->getForm();
+    }
+}
+```
+
+> Notice that we built a form without creating separate class for it
+
+Call this method in `previewAction` and pass it to template:
+
+```diff
+  public function previewAction(Job $job) : Response
+  {
++     $deleteForm = $this->createDeleteForm($job);
+
+      return $this->render('job/show.html.twig', [
+          'job' => $job,
+          'hasControlAccess' => true,
++         'deleteForm' => $deleteForm->createView(),
+      ]);
+  }
+```
+
+Transmit this variable from `show.html.twig` to `control_panel.html.twig`:
+
+```diff
+- {% include 'job/control_panel.html.twig' with {'job': job} %}
++ {% include 'job/control_panel.html.twig' with {'job': job, 'deleteForm': deleteForm} %}
+```
+
+and render a form in control panel:
+
+```twig
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand">Control Panel:</span>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            {{ form_start(deleteForm, {'attr': {'class': 'navbar-form navbar-left'}}) }}
+                {{ form_widget(deleteForm) }}
+
+                <button type="submit" class="btn btn-default" onclick="return confirm('Are you sure?')">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    Delete
+                </button>
+            {{ form_end(deleteForm) }}
+            
+            {# ... #}
+```
+
+This form will call `job.delete`, but we don't have it yet. Create this action:
+
+```php
+// ...
+
+class JobController extends AbstractController
+{
+    // ...
+
+    /**
+     * Delete a job entity.
+     *
+     * @Route("job/{token}/delete", name="job.delete", requirements={"token" = "\w+"})
+     * @Method("DELETE")
+     *
+     * @param Request $request
+     * @param Job $job
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function deleteAction(Request $request, Job $job, EntityManagerInterface $em) : Response
+    {
+        $form = $this->createDeleteForm($job);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $em->remove($job);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('job.list');
+    }
+}
+```
+
 ## Job Activation and Publication
 
 ## Additional information
