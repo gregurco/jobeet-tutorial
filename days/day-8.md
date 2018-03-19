@@ -1395,6 +1395,127 @@ We can now change the link of the "Publish" link (we will use a form here, like 
 
 You can now test the new publish feature in your browser.
 
+But we still have something to fix. The non-activated jobs must not be accessible, which means that they must not show up on the Jobeet homepage, and must not be accessible by their URL.
+We need to edit the `JobRepository` methods to add this requirement:
+
+```php
+// ...
+
+class JobRepository extends EntityRepository
+{
+    /**
+     * @param int|null $categoryId
+     *
+     * @return Job[]
+     */
+    public function findActiveJobs(int $categoryId = null)
+    {
+        $qb = $this->createQueryBuilder('j')
+            ->where('j.expiresAt > :date')
+            ->andWhere('j.activated = :activated')
+            ->setParameter('date', new \DateTime())
+            ->setParameter('activated', true)
+            ->orderBy('j.expiresAt', 'DESC');
+
+        if ($categoryId) {
+            $qb->andWhere('j.category = :categoryId')
+                ->setParameter('categoryId', $categoryId);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws NonUniqueResultException
+     *
+     * @return Job|null
+     */
+    public function findActiveJob(int $id) : ?Job
+    {
+        return $this->createQueryBuilder('j')
+            ->where('j.id = :id')
+            ->andWhere('j.expiresAt > :date')
+            ->andWhere('j.activated = :activated')
+            ->setParameter('id', $id)
+            ->setParameter('date', new \DateTime())
+            ->setParameter('activated', true)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return AbstractQuery
+     */
+    public function getPaginatedActiveJobsByCategoryQuery(Category $category) : AbstractQuery
+    {
+        return $this->createQueryBuilder('j')
+            ->where('j.category = :category')
+            ->andWhere('j.expiresAt > :date')
+            ->andWhere('j.activated = :activated')
+            ->setParameter('category', $category)
+            ->setParameter('date', new \DateTime())
+            ->setParameter('activated', true)
+            ->getQuery();
+    }
+}
+```
+
+The same for `CategoryRepository`:
+
+```php
+// ...
+
+class CategoryRepository extends EntityRepository
+{
+    /**
+     * @return Category[]
+     */
+    public function findWithActiveJobs()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->innerJoin('c.jobs', 'j')
+            ->where('j.expiresAt > :date')
+            ->andWhere('j.activated = :activated')
+            ->setParameter('date', new \DateTime())
+            ->setParameter('activated', true)
+            ->getQuery()
+            ->getResult();
+    }
+}
+```
+
+And `Category` entity:
+
+```php
+// ...
+
+class Category
+{
+    // ...
+
+    public function getActiveJobs()
+    {
+        return $this->jobs->filter(function(Job $job) {
+            return $job->getExpiresAt() > new \DateTime() && $job->isActivated();
+        });
+    }
+    
+    // ...
+}
+```
+
+That’s all. You can test it now in your browser. All non-activated jobs have disappeared from the homepage; even if you know their URLs, they are not accessible anymore.
+They are, however, accessible if one knows the job’s token URL. In that case, the job preview will show up with the admin bar.
+
+That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day8][7]
+
+See you tomorrow!
+
 ## Additional information
 - [Forms][4]
 - [Form Component][3]
