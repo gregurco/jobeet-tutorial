@@ -247,7 +247,7 @@ Create the `templates/job/table.html.twig` file:
 
 Notice that we changed one thing: we use to iterate `activeJobs` instead of `category.activeJobs`. It will help us in next step.
 
-You can include a template by using the `{{ include() }}` function.
+You can include a template by using the `{% include %}` statement.
 Replace the <table> HTML code from `templates/category/show.html.twig` with the include function:
 
 ```twig
@@ -260,7 +260,7 @@ Replace the <table> HTML code from `templates/category/show.html.twig` with the 
 {% block body %}
     <h4>{{ category.name }}</h4>
 
-    {{ include('job/table.html.twig', {category: category, activeJobs: category.activeJobs}) }}
+    {% include 'job/table.html.twig' with {'category': category, 'activeJobs': category.activeJobs} only %}
 {% endblock %}
 ```
 
@@ -273,13 +273,17 @@ and `templates/job/list.html.twig`
     <h4>{{ category.name }}</h4>
 
     {% for category in categories %}
-        {{ include('job/table.html.twig', {
-            category: category,
-            activeJobs: category.activeJobs|slice(0, max_jobs_on_homepage)
-        }) }}
+        {% include 'job/table.html.twig' with {
+            'category': category,
+            'activeJobs': category.activeJobs|slice(0, max_jobs_on_homepage)
+        } only %}
     {% endfor %}
 {% endblock %}
 ```
+
+We included table template with key words `with` and `only`. That means that we pass to table template **only** category and activeJobs variables.
+
+> Read also about about [include function][8]
 
 ## The Category Link
 
@@ -376,8 +380,8 @@ Also we call paginator and pass query from repository, page (for now let's get o
 The result we send to template. Let's use it there `templates/category/show.html.twig`:
 
 ```diff
-- {{ include('job/table.html.twig', {category: category, activeJobs: category.activeJobs}) }}
-+ {{ include('job/table.html.twig', {category: category, activeJobs: activeJobs}) }}
+- {% include 'job/table.html.twig' with {'category': category, 'activeJobs': category.activeJobs} only }}
++ {% include 'job/table.html.twig' with {'category': category, 'activeJobs': activeJobs} only }}
 ```
 
 If now you open the  browser, you will see only 10 jobs on the page, but what about pagination?
@@ -453,7 +457,7 @@ Now let's render page selector in template `templates/category/show.html.twig`:
 {% block body %}
     <h4>{{ category.name }}</h4>
 
-    {{ include('job/table.html.twig', {category: category, activeJobs: activeJobs}) }}
+    {% include 'job/table.html.twig' with {'category': category, 'activeJobs': activeJobs} only %}
 
     <div class="navigation text-center">
         {{ knp_pagination_render(activeJobs) }}
@@ -499,3 +503,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [5]: https://github.com/KnpLabs/KnpPaginatorBundle
 [6]: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/pagination.html
 [7]: https://github.com/gregurco/jobeet/tree/day7
+[8]: https://twig.symfony.com/doc/2.x/functions/include.html

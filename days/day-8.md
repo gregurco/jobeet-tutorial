@@ -986,6 +986,17 @@ use Symfony\Component\HttpFoundation\File\File;
 class JobUploadListener
 {
     // ...
+    
+    /**
+     * @param PreUpdateEventArgs $args
+     */
+    public function preUpdate(PreUpdateEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        $this->uploadFile($entity);
+        $this->fileToString($entity);
+    }
 
     /**
      * @param LifecycleEventArgs $args
@@ -994,12 +1005,36 @@ class JobUploadListener
     {
         $entity = $args->getEntity();
 
+        $this->stringToFile($entity);
+    }
+    
+    /**
+     * @param $entity
+     */
+    private function stringToFile($entity)
+    {
         if (!$entity instanceof Job) {
             return;
         }
 
         if ($fileName = $entity->getLogo()) {
             $entity->setLogo(new File($this->uploader->getTargetDirectory() . '/' . $fileName));
+        }
+    }
+    
+    /**
+     * @param $entity
+     */
+    private function fileToString($entity)
+    {
+        if (!$entity instanceof Job) {
+            return;
+        }
+
+        $logoFile = $entity->getLogo();
+        
+        if ($logoFile instanceof File) {
+            $entity->setLogo($logoFile->getFilename());
         }
     }
 }
@@ -1255,7 +1290,110 @@ class JobController extends AbstractController
 }
 ```
 
-## Job Activation and Publication
+## Publish Job Action
+
+In `The Preview Page` section was defined a link to publish the job. The link needs to be changed to point to a new publish action:
+
+```php
+// ...
+
+class JobController extends AbstractController
+{
+    // ...
+    
+    /**
+     * Publish a job entity.
+     *
+     * @Route("job/{token}/publish", name="job.publish", requirements={"token" = "\w+"})
+     * @Method("POST")
+     *
+     * @param Request $request
+     * @param Job $job
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function publishAction(Request $request, Job $job, EntityManagerInterface $em) : Response
+    {
+        $form = $this->createPublishForm($job);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted()) {
+            $job->setActivated(true);
+    
+            $em->flush();
+    
+            $this->addFlash('notice', 'Your job was published');
+        }
+    
+        return $this->redirectToRoute('job.preview', [
+            'token' => $job->getToken(),
+        ]);
+    }
+    
+ 
+    /**
+     * Creates a form to publish a job entity.
+     *
+     * @param Job $job
+     *
+     * @return FormInterface
+     */
+    private function createPublishForm(Job $job) : FormInterface
+    {
+        return $this->createFormBuilder(['token' => $job->getToken()])
+            ->setMethod('POST')
+            ->getForm();
+    }
+}
+```
+
+We also need to change the `preview` action to send the publish form to the template:
+
+```diff
+  public function previewAction(Job $job) : Response
+  {
+      $deleteForm = $this->createDeleteForm($job);
++     $publishForm = $this->createPublishForm($job);
+
+      return $this->render('job/show.html.twig', [
+          'job' => $job,
+          'hasControlAccess' => true,
+          'deleteForm' => $deleteForm->createView(),
++         'publishForm' => $publishForm->createView(),
+      ]);
+  }
+```
+
+And also transmit this variable from `show.html.twig` to `control_panel.html.twig`:
+
+```diff
+- {% include 'job/control_panel.html.twig' with {'job': job, 'deleteForm': deleteForm} %}
++ {% include 'job/control_panel.html.twig' with {
++     'job': job,
++     'deleteForm': deleteForm,
++     'publishForm': publishForm
++ } only %}
+```
+
+We can now change the link of the "Publish" link (we will use a form here, like when deleting a job, so we will have a POST request):
+
+```diff
+- <a class="btn btn-default navbar-btn" href="#">
+-     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+-     Publish
+- </a>
++ {{ form_start(publishForm, {'attr': {'class': 'navbar-form navbar-left'}}) }}
++     {{ form_widget(publishForm) }}
++ 
++     <button type="submit" class="btn btn-default">
++         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
++         Publish
++     </button>
++ {{ form_end(deleteForm) }}
+```
+
+You can now test the new publish feature in your browser.
 
 ## Additional information
 - [Forms][4]
