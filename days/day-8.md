@@ -59,7 +59,6 @@ Now we should define form fields in `buildForm` method:
 
 ```php
 // ....
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -83,7 +82,6 @@ class JobType extends AbstractType
             ->add('public', TextType::class)
             ->add('activated', TextType::class)
             ->add('email', EmailType::class)
-            ->add('expiresAt', DateTimeType::class)
             ->add('category', TextType::class)
             ->add('token', TextType::class);
     }
@@ -175,7 +173,6 @@ use App\Entity\Job;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -217,7 +214,6 @@ class JobType extends AbstractType
                 ],
             ])
             ->add('email', EmailType::class)
-            ->add('expiresAt', DateTimeType::class)
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
@@ -406,20 +402,6 @@ Try to submit more than 255 characters and you will see error:
 
 ![Validation error: max length](/files/images/screenshot_9.png)
 
-We have more specific field: `expiresAt`. It's datetime field, that should be required and the value should be datetime in feature:
-
-```php
-->add('expiresAt', DateTimeType::class, [
-    'constraints' => [
-        new NotBlank(),
-        new DateTime(),
-        new GreaterThanOrEqual('now')
-    ]
-])
-```
-
-Constraint `GreaterThanOrEqual` works well with numbers and date/datetime too.
-
 Symfony has a big list of constraints out of the box. You can find all them [here][16].
 Review all fields and add relevant constraints and in final you should see something similar:
 
@@ -431,15 +413,12 @@ use App\Entity\Job;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -518,13 +497,6 @@ class JobType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                     new Email()
-                ]
-            ])
-            ->add('expiresAt', DateTimeType::class, [
-                'constraints' => [
-                    new NotBlank(),
-                    new DateTime(),
-                    new GreaterThanOrEqual('now')
                 ]
             ])
             ->add('category', EntityType::class, [
@@ -835,6 +807,34 @@ public function setLogo($logo) : self
 
     return $this;
 }
+```
+
+We uploaded a file and should show it. Add parameter variable in `config/services.yaml` that will be used to find a path to image:
+
+```yaml
+parameters:
+    # ...
+    jobs_web_directory: '/uploads/jobs'
+```
+
+and image block in `templates/job/show.html.twig`:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Job</h1>
+
+    <div class="media" style="margin-top: 60px;">
+        {% if job.logo %}
+            <div class="media-left">
+                <a href="{{ job.url }}" target="_blank">
+                    <img class="media-object" style="width:100px; height:100px;" src="{{ asset(jobs_web_directory ~ '/' ~ job.logo.filename) }}">
+                </a>
+            </div>
+        {% endif %}
+        
+        {# ... #}
 ```
 
 ## Protecting the Job Form with a Token
