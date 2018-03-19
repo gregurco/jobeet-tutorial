@@ -1512,7 +1512,7 @@ class Category
 That’s all. You can test it now in your browser. All non-activated jobs have disappeared from the homepage; even if you know their URLs, they are not accessible anymore.
 They are, however, accessible if one knows the job’s token URL. In that case, the job preview will show up with the admin bar.
 
-That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day8][7]
+That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day8][19]
 
 See you tomorrow!
 
@@ -1550,3 +1550,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [16]: https://symfony.com/doc/4.0/reference/constraints.html
 [17]: https://symfony.com/doc/4.0/doctrine/event_listeners_subscribers.html
 [18]: https://symfony.com/doc/4.0/components/security/secure_tools.html
+[19]: https://github.com/gregurco/jobeet/tree/day8
