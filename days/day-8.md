@@ -1038,6 +1038,55 @@ class JobController extends AbstractController
 }
 ```
 
+If the user comes in with the tokenized URL, we will add an admin bar at the top.
+To notify template about this condition we will pass additional variable from action:
+
+```diff
+  return $this->render('job/show.html.twig', [
+      'job' => $job,
++     'hasControlAccess' => true,
+  ]);
+```
+
+At the beginning of the `show.html.twig` template, include a template to host the admin bar and remove the edit link at the bottom:
+
+```diff
+  {% extends 'base.html.twig' %}
+  
+  {% block body %}
++     {% if hasControlAccess is defined and hasControlAccess %}
++         {% include 'job/control_panel.html.twig' with {'job': job} %}
++     {% endif %}
+
+      <h1>Job</h1>
+      
+      {# ... #}
+      
+-     <a class="btn btn-primary" href="{{ path('job.edit', { 'token': job.token }) }}">
+-         <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
+-         Edit
+-     </a>
+      
+      {# ... #}
+```
+
+Then, create the `control_panel.html.twig` template:
+
+```twig
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand">Control Panel:</span>
+
+            <a class="btn btn-primary navbar-btn" href="{{ path('job.edit', { 'token': job.token }) }}">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
+                Edit
+            </a>
+        </div>
+    </div>
+</nav>
+```
+
 ## Job Activation and Publication
 
 ## Additional information
