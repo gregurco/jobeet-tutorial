@@ -1119,6 +1119,7 @@ The admin bar displays the different actions depending on the job status:
 
 ![Control panel: case 1](/files/images/screenshot_10.png)
 
+
 ![Control panel: case 2](/files/images/screenshot_11.png)
 
 We now need redirect from `create` and `edit` actions of the `JobController` to the new preview page:
@@ -1129,6 +1130,8 @@ return $this->redirectToRoute(
     ['token' => $job->getToken()]
 );
 ```
+
+## Delete Job Action
 
 ## Job Activation and Publication
 
