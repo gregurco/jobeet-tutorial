@@ -608,7 +608,7 @@ class JobController extends Controller
             $logoFile = $form->get('logo')->getData();
 
             if ($logoFile instanceof UploadedFile) {
-                $fileName = md5(uniqid()) . '.' . $logoFile->guessExtension();
+                $fileName = \bin2hex(\random_bytes(10)) . '.' . $file->guessExtension();
 
                 // moves the file to the directory where brochures are stored
                 $logoFile->move(
@@ -828,6 +828,54 @@ public function setLogo($logo) : self
 
 ## Protecting the Job Form with a Token
 
+Everything must work fine by now. As of now, the user must enter the token for the job.
+But the job token must be generated automatically when a new job is created, as we don’t want to rely on the user to provide a unique token. 
+
+Create a new listener `JobTokenListener.php` in `src/EventListener` folder to add the logic that generates the token before a new job is saved:
+
+```php
+namespace App\EventListener;
+
+use App\Entity\Job;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+
+class JobTokenListener
+{
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if (!$entity instanceof Job) {
+            return;
+        }
+
+        if (!$entity->getToken()) {
+            $entity->setToken(\bin2hex(\random_bytes(10)));
+        }
+    }
+}
+```
+
+define it in `config/services.yaml`:
+
+```yaml
+#...
+
+services:
+    # ...
+
+    App\EventListener\JobTokenListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+```
+
+Now you can remove the token field from the form by deleting the `add(‘token’)` line.
+
+If you remember the user stories from day 2, a job can be edited only if the user knows the associated token.
+
 ## The Preview Page
 
 ## Job Activation and Publication
@@ -838,6 +886,7 @@ public function setLogo($logo) : self
 - [How to Upload Files][1]
 - [How to Customize Form Rendering][2]
 - [Form Types Reference][5]
+- [Securely Generating Random Values][18]
 
 ## Next Steps
 
@@ -864,3 +913,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [15]: https://symfony.com/doc/4.0/best_practices/forms.html#form-button-configuration
 [16]: https://symfony.com/doc/4.0/reference/constraints.html
 [17]: https://symfony.com/doc/4.0/doctrine/event_listeners_subscribers.html
+[18]: https://symfony.com/doc/4.0/components/security/secure_tools.html
