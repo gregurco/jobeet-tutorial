@@ -888,6 +888,120 @@ Now you can remove the token field from the form by deleting the `add(â€˜tokenâ€
 ## Edit Job Action
 
 If you remember the user stories from day 2, a job can be edited only if the user knows the associated token.
+Take it in consideration and create new action in `JobController`:
+
+```php
+// ...
+
+class JobController extends Controller
+{
+    // ...
+
+    /**
+     * @Route("/job/{token}/edit", name="job.edit")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param Job $job
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, Job $job, EntityManagerInterface $em) : Response
+    {
+        $form = $this->createForm(JobType::class, $job);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('job.list');
+        }
+
+        return $this->render('job/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+}
+```
+
+This action is very similar to create action but there are:
+- another path and name of the route
+- job object is pre-populated to the method
+- we build form based on this job object, but not new one
+- another template
+- we do not call `persist`, because job object was already persisted
+
+Next step is to create template that we called in action:
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Job edit</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Edit</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+```
+
+Now add a link to this page in `templates/job/show.html.twig` template:
+```diff
+- <a href="#">Edit</a>
++ <a href="{{ path('job.edit', {token: job.token}) }}">Edit</a>
+```
+
+If you will try to access this page now, probably you will get an error, because `logo` field is string, but form works with `File` object.
+We can fix it by listening `post loading` event and replacing string by expected object:
+
+```php
+// ...
+use Symfony\Component\HttpFoundation\File\File;
+
+class JobUploadListener
+{
+    // ...
+
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function postLoad(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if (!$entity instanceof Job) {
+            return;
+        }
+
+        if ($fileName = $entity->getLogo()) {
+            $entity->setLogo(new File($this->uploader->getTargetDirectory() . '/' . $fileName));
+        }
+    }
+}
+```
+
+add define this method in `config/services.yaml`:
+```diff
+# ...
+
+services:
+    # ...
+
+    App\EventListener\JobUploadListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
++           - { name: doctrine.event_listener, event: postLoad }
+```
+
+Now it should work!
 
 ## The Preview Page
 
