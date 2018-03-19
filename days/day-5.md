@@ -13,8 +13,11 @@ Let's do that! Let's open and do changes in file `templates/job/list.html.twig`:
 in `templates/job/show.html.twig`:
 
 ```diff
-- <a href="#">Back to the list</a>
-+ <a href="{{ path('job.list') }}">Back to the list</a>
+- <a class="btn btn-default" href="#">
++ <a class="btn btn-default" href="{{ path('job.list') }}">
+      <span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="padding-right: 5px;"></span>
+      Back to list
+  </a>
 ```
 
 and also in `templates/base.html.twig`:

@@ -956,8 +956,11 @@ Next step is to create template that we called in action:
 
 Now add a link to this page in `templates/job/show.html.twig` template:
 ```diff
-- <a href="#">Edit</a>
-+ <a href="{{ path('job.edit', {token: job.token}) }}">Edit</a>
+- <a class="btn btn-primary" href="#">
++ <a class="btn btn-primary" href="{{ path('job.edit', {token: job.token}) }}">
+      <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
+      Edit
+  </a>
 ```
 
 If you will try to access this page now, probably you will get an error, because `logo` field is string, but form works with `File` object.

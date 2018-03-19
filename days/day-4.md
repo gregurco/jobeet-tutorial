@@ -194,88 +194,50 @@ Now let's create `show.html.twig` file in `templates/job` folder:
 {% block body %}
     <h1>Job</h1>
 
-    <table>
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ job.id }}</td>
-        </tr>
-        <tr>
-            <th>Type</th>
-            <td>{{ job.type }}</td>
-        </tr>
-        <tr>
-            <th>Company</th>
-            <td>{{ job.company }}</td>
-        </tr>
-        <tr>
-            <th>Logo</th>
-            <td>{{ job.logo }}</td>
-        </tr>
-        <tr>
-            <th>Url</th>
-            <td>{{ job.url }}</td>
-        </tr>
-        <tr>
-            <th>Position</th>
-            <td>{{ job.position }}</td>
-        </tr>
-        <tr>
-            <th>Location</th>
-            <td>{{ job.location }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ job.description }}</td>
-        </tr>
-        <tr>
-            <th>How to apply</th>
-            <td>{{ job.howToApply }}</td>
-        </tr>
-        <tr>
-            <th>Token</th>
-            <td>{{ job.token }}</td>
-        </tr>
-        <tr>
-            <th>Is public</th>
-            <td>{% if job.isPublic %}Yes{% else %}No{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Is activated</th>
-            <td>{% if job.isActivated %}Yes{% else %}No{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>{{ job.email }}</td>
-        </tr>
-        <tr>
-            <th>Expires at</th>
-            <td>{% if job.expiresAt %}{{ job.expiresAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Created at</th>
-            <td>{% if job.createdAt %}{{ job.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        </tr>
-        <tr>
-            <th>Updated at</th>
-            <td>{% if job.updatedAt %}{{ job.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="media" style="margin-top: 60px;">
+        <div class="media-body">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h3 class="media-heading"><strong>{{ job.company }}</strong> <i>({{ job.location }})</i></h3>
+                </div>
 
-    <ul>
-        <li>
-            <a href="#">Back to the list</a>
-        </li>
+                <div class="col-sm-2">
+                    <i class="pull-right">posted on {{ job.createdat|date('m/d/Y') }}</i>
+                </div>
+            </div>
 
-        <li>
-            <a href="#">Edit</a>
-        </li>
-    </ul>
+            <p>
+                <strong>{{ job.position }}</strong>
+                <small> - <i>{{ job.type }}</i></small>
+            </p>
+
+            <p>{{ job.description|nl2br }}</p>
+
+            <p style="margin-top: 40px;">
+                <strong>How to apply?</strong>
+            </p>
+
+            <p>{{ job.howtoapply }}</p>
+
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    <a class="btn btn-default" href="#">
+                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="padding-right: 5px;"></span>
+                        Back to list
+                    </a>
+
+                    <a class="btn btn-primary" href="#">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
+                        Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 ```
 
-Twig comes with a long list of [filters][7] and [functions][8] that are available by default. In previous template we used [date][9]. This function is used to format a date.
+Twig comes with a long list of [filters][7] and [functions][8] that are available by default. In this template we used [date][9]. This function is used to format a date.
 
 You can find the code from day 4 here: [https://github.com/gregurco/jobeet/tree/day4][10].
 
