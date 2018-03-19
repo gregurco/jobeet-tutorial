@@ -1393,6 +1393,25 @@ We can now change the link of the "Publish" link (we will use a form here, like 
 + {{ form_end(deleteForm) }}
 ```
 
+Also you can notice that we called `addFlash` method in controller. It's a storage for special messages.
+We added message and not let's display it in `show.html.twig`:
+
+```twig
+# ...
+
+{% for message in app.flashes('notice') %}
+    <div class="alert alert-success" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<h1>Job</h1>
+
+# ...
+```
+
+Message is deleted from storage right after displaying. That's why after refresh it will not be shown.
+
 You can now test the new publish feature in your browser.
 
 But we still have something to fix. The non-activated jobs must not be accessible, which means that they must not show up on the Jobeet homepage, and must not be accessible by their URL.
@@ -1523,6 +1542,7 @@ See you tomorrow!
 - [How to Customize Form Rendering][2]
 - [Form Types Reference][5]
 - [Securely Generating Random Values][18]
+- [Flash Messages][20]
 
 ## Next Steps
 
@@ -1551,3 +1571,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [17]: https://symfony.com/doc/4.0/doctrine/event_listeners_subscribers.html
 [18]: https://symfony.com/doc/4.0/components/security/secure_tools.html
 [19]: https://github.com/gregurco/jobeet/tree/day8
+[20]: https://symfony.com/doc/4.0/controller.html#flash-messages
