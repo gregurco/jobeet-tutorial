@@ -898,7 +898,9 @@ class JobController extends Controller
     // ...
 
     /**
-     * @Route("/job/{token}/edit", name="job.edit")
+     * Edit existing job entity
+     *
+     * @Route("/job/{token}/edit", name="job.edit", requirements={"token" = "\w+"})
      * @Method({"GET", "POST"})
      *
      * @param Request $request
@@ -1004,6 +1006,34 @@ services:
 Now it should work!
 
 ## The Preview Page
+
+The preview page is the same as the job page display. The only difference is that the job preview page will be accessed using the job token instead of the job id:
+
+```php
+// ...
+
+class JobController extends AbstractController
+{
+    // ...
+
+    /**
+     * Finds and displays the preview page for a job entity.
+     *
+     * @Route("job/{token}", name="job.preview", requirements={"token" = "\w+"})
+     * @Method("GET")
+     *
+     * @param Job $job
+     *
+     * @return Response
+     */
+    public function previewAction(Job $job) : Response
+    {
+        return $this->render('job/show.html.twig', [
+            'job' => $job,
+        ]);
+    }
+}
+```
 
 ## Job Activation and Publication
 
