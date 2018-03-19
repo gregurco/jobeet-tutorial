@@ -958,7 +958,7 @@ Now add a link to this page in `templates/job/show.html.twig` template:
 ```diff
 - <a class="btn btn-primary" href="#">
 + <a class="btn btn-primary" href="{{ path('job.edit', {token: job.token}) }}">
-      <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
+      <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
       Edit
   </a>
 ```
@@ -1063,7 +1063,7 @@ At the beginning of the `show.html.twig` template, include a template to host th
       {# ... #}
       
 -     <a class="btn btn-primary" href="{{ path('job.edit', { 'token': job.token }) }}">
--         <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
+-         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 -         Edit
 -     </a>
       
@@ -1077,14 +1077,57 @@ Then, create the `control_panel.html.twig` template:
     <div class="container-fluid">
         <div class="navbar-header">
             <span class="navbar-brand">Control Panel:</span>
+        </div>
 
-            <a class="btn btn-primary navbar-btn" href="{{ path('job.edit', { 'token': job.token }) }}">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
-                Edit
-            </a>
+        <div class="collapse navbar-collapse">
+            {% if job.activated %}
+                {% if job.expiresAt < date() %}
+                    <p class="navbar-text ">Expired</p>
+                {% else %}
+                    <p class="navbar-text ">Expires in <strong>{{ job.expiresAt.diff(date())|date('%a') }}</strong> days</p>
+                {% endif %}
+
+                {% if job.expiresAt.diff(date())|date('%a') < 5 %}
+                    <a class="btn btn-default navbar-btn" href="#">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        Extend (for another 30 days)
+                    </a>
+                {% endif %}
+            {% else %}
+                <a class="btn btn-default navbar-btn" href="{{ path('job.edit', { 'token': job.token }) }}">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    Edit
+                </a>
+
+                <a class="btn btn-default navbar-btn" href="#">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    Publish
+                </a>
+            {% endif %}
+
+            <p class="navbar-text navbar-right">
+                [Bookmark this <a href="{{ url('job.preview', {token: job.token}) }}">URL</a> to manage this job in the future]
+            </p>
         </div>
     </div>
 </nav>
+```
+
+There is a lot of code, but most of the code is simple to understand.
+
+The admin bar displays the different actions depending on the job status:
+
+![Control panel: case 1](/files/images/screenshot_10.png)
+
+![Control panel: case 2](/files/images/screenshot_11.png)
+
+We now need redirect from `create` and `edit` actions of the `JobController` to the new preview page:
+
+```php
+return $this->redirectToRoute(
+    'job.preview',
+    ['token' => $job->getToken()]
+);
 ```
 
 ## Job Activation and Publication

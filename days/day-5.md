@@ -15,7 +15,7 @@ in `templates/job/show.html.twig`:
 ```diff
 - <a class="btn btn-default" href="#">
 + <a class="btn btn-default" href="{{ path('job.list') }}">
-      <span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="padding-right: 5px;"></span>
+      <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
       Back to list
   </a>
 ```

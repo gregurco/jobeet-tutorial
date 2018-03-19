@@ -222,12 +222,12 @@ Now let's create `show.html.twig` file in `templates/job` folder:
             <div class="row">
                 <div class="col-sm-12 text-right">
                     <a class="btn btn-default" href="#">
-                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true" style="padding-right: 5px;"></span>
+                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
                         Back to list
                     </a>
 
                     <a class="btn btn-primary" href="#">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="padding-right: 5px;"></span>
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                         Edit
                     </a>
                 </div>
