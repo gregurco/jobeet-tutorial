@@ -817,6 +817,16 @@ parameters:
     jobs_web_directory: '/uploads/jobs'
 ```
 
+mark it as global twig variable in `config/packages/twig.yaml`:
+
+```yaml
+twig:
+    # ...
+    globals:
+        # ...
+        jobs_web_directory: '%jobs_web_directory%'
+```
+
 and image block in `templates/job/show.html.twig`:
 
 ```twig
