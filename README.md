@@ -22,21 +22,20 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 8: The Forms](/days/day-8.md)
 
-~~Jobeet Day 9: The Unit Tests~~
+[Jobeet Day 9: Console Commands](/days/day-9.md)
 
-~~Jobeet Day 10: The Functional Tests~~
+~~Jobeet Day 10: Translations~~
 
-~~Jobeet Day 11: Testing Your Forms~~
+~~Jobeet Day 11: API~~
 
-~~Jobeet Day 12: The Admin Bundle~~
+~~Jobeet Day 12: The Unit Tests~~
 
-~~Jobeet Day 13: Security~~
+~~Jobeet Day 13: The Functional Tests~~
 
-~~Jobeet Day 14: Feeds~~
+~~Jobeet Day 14: The Admin Bundle~~
 
-~~Jobeet Day 15: Web Services~~
+~~Jobeet Day 15: Security~~
 
-~~Jobeet Day 16: Search~~
 
 [1]: http://symfony.com/
 [2]: http://symfony.com/roadmap?version=4.0#checker

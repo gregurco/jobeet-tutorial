@@ -1546,7 +1546,7 @@ See you tomorrow!
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 9: -](/days/day-9.md)
+Continue this tutorial here: [Jobeet Day 9: Console Commands](/days/day-9.md)
 
 Previous post is available here: [Jobeet Day 7: Playing with the Category Page](/days/day-7.md)
 
