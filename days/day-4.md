@@ -217,7 +217,7 @@ Now let's create `show.html.twig` file in `templates/job` folder:
                 <strong>How to apply?</strong>
             </p>
 
-            <p>{{ job.howtoapply }}</p>
+            <p>{{ job.howToApply }}</p>
 
             <div class="row">
                 <div class="col-sm-12 text-right">
