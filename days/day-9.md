@@ -70,6 +70,55 @@ services:
 In lower versions console commands were registered by adding `twig.extension` tag.
 Read more about it [here][4].
 
+## Executing the Command
+
+After configuring and registering the command, you can execute it in the terminal:
+
+```yaml
+php bin/console app:create-category
+```
+
+As you might expect, this command will do nothing as you didn't write any logic yet.
+Add your own logic inside the `execute()` method, which has access to the input stream (e.g. options and arguments) and the output stream (to write messages to the console):
+
+```php
+// ...
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        // outputs multiple lines to the console (adding "\n" at the end of each line)
+        $output->writeln([
+            'Category Creator',
+            '============',
+            '',
+        ]);
+
+        // outputs a message followed by a "\n"
+        $output->writeln('Whoa!');
+
+        // outputs a message without adding a "\n" at the end of the line
+        $output->write('You are about to ');
+        $output->write('create a category.');
+    }
+    
+// ...
+```
+
+Now, try executing the command:
+
+```
+$ bin/console app:create-category
+Category Creator
+============
+
+Whoa!
+You are about to create a category.
+```
+
 ## Additional information
 - [The Console Component][1]
 - [Console Input (Arguments & Options)][2]
