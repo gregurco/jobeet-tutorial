@@ -119,6 +119,54 @@ Whoa!
 You are about to create a category.
 ```
 
+## Console Input
+
+Use input options or arguments to pass information to the command:
+
+```php
+// ...
+use Symfony\Component\Console\Input\InputArgument;
+
+class CreateCategoryCommand extends Command
+{
+    protected function configure()
+    {
+        $this
+            // ...
+
+            // configure an argument
+            ->addArgument('name', InputArgument::REQUIRED, 'The name of the category.');
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        // outputs multiple lines to the console (adding "\n" at the end of each line)
+        $output->writeln([
+            'Category Creator',
+            '============',
+            '',
+        ]);
+
+        // retrieve the argument value using getArgument()
+        $output->writeln('Name: '.$input->getArgument('name'));
+    }
+}
+```
+
+Now, you can pass the name to the command:
+
+```
+$ bin/console app:create-category Tester
+Category Creator
+============
+
+Name: Tester
+```
+
 ## Additional information
 - [The Console Component][1]
 - [Console Input (Arguments & Options)][2]
