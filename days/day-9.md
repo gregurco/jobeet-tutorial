@@ -152,7 +152,7 @@ class CreateCategoryCommand extends Command
         ]);
 
         // retrieve the argument value using getArgument()
-        $output->writeln('Name: '.$input->getArgument('name'));
+        $output->writeln('Name: ' . $input->getArgument('name'));
     }
 }
 ```
@@ -165,6 +165,88 @@ Category Creator
 ============
 
 Name: Tester
+```
+
+## Getting Services from the Service Container
+
+First of all we need a service, that will create categories. Create `CategoryService` in already existing folder `Service`:
+
+```php
+namespace App\Service;
+
+use App\Entity\Category;
+use Doctrine\ORM\EntityManagerInterface;
+
+class CategoryService
+{
+    /** @var EntityManagerInterface */
+    private $em;
+
+    /**
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Category
+     */
+    public function create(string $name) : Category
+    {
+        $category = new Category();
+        $category->setName($name);
+
+        $this->em->persist($category);
+        $this->em->flush();
+
+        return $category;
+    }
+}
+```
+
+This service has one method `create` that receives category name and create new category in DB.
+
+Now to create a new category, the command has to access this services.
+Since your command is already registered as a service, you can use normal dependency injection:
+
+```php
+// ...
+use App\Service\CategoryService;
+
+class CreateCategoryCommand extends Command
+{
+    /** @var CategoryService */
+    private $categoryService;
+
+    /**
+     * @param CategoryService $categoryService
+     */
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+
+        parent::__construct();
+    }
+
+    // ...
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        // ...
+
+        $this->categoryService->create($input->getArgument('name'));
+        
+        $output->writeln('Category successfully created!');
+    }
+}
 ```
 
 ## Additional information
