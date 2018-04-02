@@ -249,6 +249,47 @@ class CreateCategoryCommand extends Command
 }
 ```
 
+## Interacting with user
+
+Sometimes user can forget to fill the name and we want somehow to interact with user and additionally to ask them the name of new category.
+It is possible due to `interact()` method. Let's create it:
+
+```php
+// ...
+use Symfony\Component\Console\Question\Question;
+
+class CreateCategoryCommand extends Command
+{
+    // ...
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        if (!$input->getArgument('name')) {
+            $question = new Question('Please choose a name: ');
+            $question->setValidator(function ($name) {
+                if (empty($name)) {
+                    throw new \Exception('Name can not be empty');
+                }
+                
+                return $name;
+            });
+
+            $answer = $this->getHelper('question')->ask($input, $output, $question);
+            $input->setArgument('name', $answer);
+        }
+    }
+    
+    // ...
+}
+```
+
+Now the user will have second chance to enter the name of new category.
+This command became more user-friendly.
+
 ## Command Lifecycle
 
 Commands have three lifecycle methods that are invoked when running the command:
