@@ -152,7 +152,7 @@ class CreateCategoryCommand extends Command
         ]);
 
         // retrieve the argument value using getArgument()
-        $output->writeln('Name: ' . $input->getArgument('name'));
+        $output->writeln(sprintf('Name: %s', $input->getArgument('name')));
     }
 }
 ```
@@ -303,6 +303,10 @@ Commands have three lifecycle methods that are invoked when running the command:
 - **execute()** *(required)*  
  This method is executed after `interact()` and `initialize()`. It contains the logic you want the command to execute.
 
+## Color the console output
+
+...
+
 That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day9][5]
 
 See you tomorrow!
@@ -310,6 +314,7 @@ See you tomorrow!
 ## Additional information
 - [The Console Component][1]
 - [Console Input (Arguments & Options)][2]
+- [How to Color and Style the Console Output][6]
 
 ## Next Steps
 
@@ -324,3 +329,4 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [3]: https://symfony.com/doc/4.0/service_container.html#services-autoconfigure
 [4]: https://symfony.com/doc/4.0/service_container/tags.html
 [5]: https://github.com/gregurco/jobeet/tree/day9
+[6]: https://symfony.com/doc/4.0/console/coloring.html
