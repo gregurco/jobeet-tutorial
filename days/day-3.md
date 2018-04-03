@@ -18,6 +18,9 @@ Now that Doctrine knows about your database, you can have it create the database
 bin/console doctrine:database:create --if-not-exists
 ```
 
+> Note: don't forget first to enter in php container if you are not in: `docker-compose exec php-fpm bash`  
+> and to execute command from container
+
 ## Creating Entity Classes
 
 For each type of object we need, we will create an entity class (just a simple PHP class with some properties).

@@ -305,7 +305,31 @@ Commands have three lifecycle methods that are invoked when running the command:
 
 ## Color the console output
 
-...
+In created console command we have different types of messages: simple message, question and success message.
+But all them are displayed in the same way. Symfony Console component provides possibility to use colors.
+First let's color in green the message that category is crated:
+```diff
+- $output->writeln('Category successfully created!');
++ $output->writeln('<fg=green>Category successfully created!</>');
+```
+
+Available colors are: black, red, green, yellow, blue, magenta, cyan and white.  
+Also it's possible to setup background color by using `bg=red` and options like bold text: `options=bold`.
+For example red bold text on a yellow background will be setup in next way:
+```
+<fg=red;bg=yellow;options=bold>foo</>
+```
+
+Symfony has some predefined tags: `<info>`, `<comment>`, `<question>` and `<error>`.
+Wrap our question in proper style:
+```diff
+- $question = new Question('Please choose a name: ');
++ $question = new Question('<question>Please choose a name: </question>');
+```
+
+Finally we should view next output:
+
+![Console output with colors](/files/images/screenshot_12.png)
 
 That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day9][5]
 

@@ -184,6 +184,9 @@ A great way to see every route in your application is via the `debug:router` con
 bin/console debug:router
 ```
 
+> Note: don't forget first to enter in php container if you are not in: `docker-compose exec php-fpm bash`  
+> and to execute command from container
+
 The command will print a helpful list of all the configured routes in your application.
 You can also get very specific information on a single route by including the route name after the command:
 ```bash
