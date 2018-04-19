@@ -452,6 +452,6 @@ Previous post is available here: [Jobeet Day 5: The Routing](/days/day-5.md)
 
 Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
-[1]: http://symfony.com/doc/4.0/templating/global_variables.html
-[2]: http://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
+[1]: https://symfony.com/doc/4.0/templating/global_variables.html
+[2]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
 [3]: https://github.com/gregurco/jobeet/tree/day6

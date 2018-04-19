@@ -501,6 +501,6 @@ Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 [3]: https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/sluggable.md#setup-and-autoloading
 [4]: https://symfony.com/doc/4.0/setup/flex.html
 [5]: https://github.com/KnpLabs/KnpPaginatorBundle
-[6]: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/pagination.html
+[6]: https://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/pagination.html
 [7]: https://github.com/gregurco/jobeet/tree/day7
 [8]: https://twig.symfony.com/doc/2.x/functions/include.html

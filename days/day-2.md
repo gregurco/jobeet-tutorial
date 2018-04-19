@@ -89,4 +89,4 @@ Previous post is available here: [Jobeet Day 1: Starting up the Project](/days/d
 
 Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
 
-[1]: http://symfony.com/legacy/doc/jobeet/1_4/en/02?orm=Propel
+[1]: https://symfony.com/legacy/doc/jobeet/1_4/en/02?orm=Propel
