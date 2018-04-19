@@ -10,10 +10,12 @@ This day is about the project specifications. They are the same as in the origin
 We will have four type of users: **admin** (owns and administers the website), **user** (visits the website looking for a job), **poster** (visits the website to post jobs) and **affiliate** (re-publishes jobs on his website).
 
 
-In the original tutorial we had to make two applications, the **frontend**, where the users interact with the website, and the **backend**, where admins manage the website. Using Symfony 4 we would not do that anymore. We will have only one application and, in it, a separate secured section for admins.
+In the original tutorial we had to make two applications, the **frontend**, where the users interact with the website, and the **backend**, where admins manage the website.
+Using Symfony 4 we would not do that anymore. We will have only one application and, in it, a separate secured section for admins.
 
 ## Story F1: On the homepage, the user sees the latest active jobs
-On the Jobeet homepage a user sees a list of 10 recent active jobs grouped by category. Only the location, the position, and the company are displayed for each job. For each category there are links that allow to list all the jobs. The user can also search for jobs or post a new job.
+On the Jobeet homepage a user sees a list of 10 recent active jobs grouped by category. Only the location, the position, and the company are displayed for each job.
+For each category there are links that allow to list all the jobs. The user can also search for jobs or post a new job.
 
 ![Homepage mockup](/files/images/screenshot_2.png)
 
@@ -50,12 +52,14 @@ The process has only two steps: first, the user fills in the form with all the n
 
 There is no need to create an account to post a job. A job can be modified afterwards thanks to a specific URL (protected by a token given to the user when the job is created).
 
-Each job post is online for 30 days (this is configurable by the admin). A user can come back to re-activate or extend the validity of the job for an extra 30 days but only when the job expires in less than 5 days.
+Each job post is online for 30 days (this is configurable by the admin).
+A user can come back to re-activate or extend the validity of the job for an extra 30 days but only when the job expires in less than 5 days.
 
 ![Post job mockup](/files/images/screenshot_5.png)
 
 ## Story F6: A user applies to become an affiliate
-A user needs to apply to become an affiliate and be authorized to use the Jobeet API. He can also choose to get jobs from a sub-set of the available categories. To apply, the user must give the following information:
+A user needs to apply to become an affiliate and be authorized to use the Jobeet API. He can also choose to get jobs from a sub-set of the available categories.
+To apply, the user must give the following information:
 
 - Name
 - Email
@@ -64,7 +68,8 @@ A user needs to apply to become an affiliate and be authorized to use the Jobeet
 The affiliate account must be activated by the admin. Once activated, the affiliate receives a token to use with the API via email.
 
 ## Story F7: An affiliate retrieves the current active job list
-An affiliate will retrieve the current job list by calling the API with his affiliate token. The list can be returned in the XML, JSON or YAML format. The affiliate can limit the number of jobs to be returned, and refine his query by specifying a category.
+An affiliate will retrieve the current job list by calling the API with his affiliate token. The list can be returned in the XML, JSON or YAML format.
+The affiliate can limit the number of jobs to be returned, and refine his query by specifying a category.
 
 ## Story B1: An admin configures the website
 An admin can edit the categories available on the website.
@@ -73,7 +78,8 @@ An admin can edit the categories available on the website.
 An admin can edit and remove any posted job.
 
 ## Story B3: An admin manages the affiliates
-The admin can create or edit affiliates. He is responsible for activating an affiliate and can also disable one. When the admin activates a new affiliate, the system creates a unique token to be used by the affiliate.
+The admin can create or edit affiliates. He is responsible for activating an affiliate and can also disable one.
+When the admin activates a new affiliate, the system creates a unique token to be used by the affiliate.
 
 ## Next Steps
 

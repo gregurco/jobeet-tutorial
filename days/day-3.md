@@ -80,7 +80,8 @@ class Affiliate
 
 ## Adding Mapping Information
 
-To tell Doctrine about our objects, we will create “metadata” that will describe how our objects will be stored in the database. We will use annotations for this project but you can also use YAML or XML files to achieve the same result.
+To tell Doctrine about our objects, we will create “metadata” that will describe how our objects will be stored in the database.
+We will use annotations for this project but you can also use YAML or XML files to achieve the same result.
 
 src/Entity/Category.php:
 ```php
@@ -982,7 +983,8 @@ class Affiliate
 
 ## Lifecycle Callbacks
 
-Sometimes, you need to perform an action right before or after an entity is inserted, updated, or deleted. These types of actions are known as “lifecycle” callbacks, as they’re callback methods that you need to execute during different stages of the lifecycle of an entity (e.g. the entity is inserted, updated, deleted, etc).
+Sometimes, you need to perform an action right before or after an entity is inserted, updated, or deleted.
+These types of actions are known as “lifecycle” callbacks, as they’re callback methods that you need to execute during different stages of the lifecycle of an entity (e.g. the entity is inserted, updated, deleted, etc).
 
 We already added the created_at and updated_at properties in our Job and Affiliate classes, and it will be great if Doctrine will update them automatically when needed.
 
