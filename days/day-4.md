@@ -2,9 +2,7 @@
 
 Today, we are going to create the basic job controller. It will has the code we need for Jobeet:
 - A page to list all jobs
-- A page to create a new job
-- A page to update an existing job
-- A page to delete a job
+- A page to view job details
 
 ## The MVC Architecture
 For web development, the most common solution for organizing your code nowadays is the [MVC design pattern][1]. In short, the MVC design pattern defines a way to organize your code according to its nature. This pattern separates the code into **three layers**:
@@ -36,7 +34,8 @@ For now it has no actions, but not for long.
 ## The Layout
 If you have a closer look at the mockups, you will notice that much of each page looks the same. You already know that code duplication is bad, whether we are talking about HTML or PHP code, so we need to find a way to prevent these common view elements from resulting in code duplication.
 
-One way to solve the problem is to define a header and a footer and include them in each template. A better way is to use another design pattern to solve this problem: the [decorator design pattern][2]. The decorator design pattern resolves the problem the other way around: the template is decorated after the content is rendered by a global template, called a **layout**.
+One way to solve the problem is to define a header and a footer and include them in each template. A better way is to use another design pattern to solve this problem: the [decorator design pattern][2].
+The decorator design pattern resolves the problem the other way around: the template is decorated after the content is rendered by a global template, called a **layout**.
 
 If you take a look in the `templates` folder, you will find there a `base.html.twig` template. That is the default layout that decorates our job pages right now. Open it and replace it’s content with the following:
 
@@ -117,7 +116,8 @@ class JobController extends AbstractController
 }
 ```
 
-Let’s have a closer look at the code: the listAction() method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs. It returns a Doctrine `ArrayCollection` of Job objects that are passed to the template (the View).
+Let’s have a closer look at the code: the listAction() method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs.
+It returns a Doctrine `ArrayCollection` of Job objects that are passed to the template (the View).
 
 Probably you observed line starting with `@Route` in comment block above method. This line is not simple comment. This line is related to [Routing component][6].
 It tells to symfony which URL path is related to which action in controller. We will learn more about that in next lesson.
