@@ -5,7 +5,7 @@
 From the second day’s requirements: “On the homepage, the user sees the latest active jobs”.
 But as of now, all jobs are displayed, whether they are active or not:
 ```php
-public function listAction() : Response
+public function list() : Response
 {
     $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
 
@@ -21,7 +21,7 @@ We are not specifying any condition which means that all the records are retriev
 
 Let’s change it to only select active jobs:
 ```php
-public function listAction(EntityManagerInterface $em) : Response
+public function list(EntityManagerInterface $em) : Response
 {
     $query = $em->createQuery(
         'SELECT j FROM App:Job j WHERE j.createdAt > :date'
@@ -72,7 +72,7 @@ public function prePersist()
 Now, let’s change the action to use the `expiresAt` column instead of the `createdAt` one to select the active jobs:
 
 ```php
-public function listAction(EntityManagerInterface $em) : Response
+public function list(EntityManagerInterface $em) : Response
 {
     $query = $em->createQuery(
         'SELECT j FROM App:Job j WHERE j.expiresAt > :date'
@@ -184,7 +184,7 @@ class JobRepository extends EntityRepository
 Now the action code can use this new method to retrieve the active jobs:
 
 ```php
-public function listAction(EntityManagerInterface $em) : Response
+public function list(EntityManagerInterface $em) : Response
 {
     $jobs = $em->getRepository(Job::class)->findActiveJobs();
 
@@ -270,7 +270,7 @@ public function getActiveJobs()
 Change the index action accordingly:
 
 ```php
-public function listAction(EntityManagerInterface $em) : Response
+public function list(EntityManagerInterface $em) : Response
 {
     $categories = $em->getRepository(Category::class)->findWithActiveJobs();
 
@@ -407,7 +407,7 @@ public function findActiveJob(int $id) : ?Job
 }
 ```
 
-Now to change the `showAction` from the `JobController` to use the new repository method, we need to specify it to the Doctrine Entity by adding a new annotation (and also add use `Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity` to the beginning of the file):
+Now to change the `show` from the `JobController` to use the new repository method, we need to specify it to the Doctrine Entity by adding a new annotation (and also add use `Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity` to the beginning of the file):
 
 ```php
 // ...
@@ -429,7 +429,7 @@ class JobController extends AbstractController
      *
      * @return Response
      */
-    public function showAction(Job $job) : Response
+    public function show(Job $job) : Response
     // ...
 }
 ```

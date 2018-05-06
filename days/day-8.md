@@ -257,7 +257,7 @@ class JobController extends AbstractController
      *
      * @return Response
      */
-    public function createAction() : Response
+    public function create() : Response
     {
         $job = new Job();
         $form = $this->createForm(JobType::class, $job);
@@ -338,7 +338,7 @@ class JobController extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function createAction(Request $request, EntityManagerInterface $em) : Response
+    public function create(Request $request, EntityManagerInterface $em) : Response
     {
         $job = new Job();
         $form = $this->createForm(JobType::class, $job);
@@ -577,7 +577,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class JobController extends Controller
 {
     // ...
-    public function createAction(Request $request, EntityManagerInterface $em) : Response
+    public function create(Request $request, EntityManagerInterface $em) : Response
     {
         // ...
 
@@ -679,7 +679,7 @@ use App\Service\FileUploader;
 class JobController extends AbstractController
 {
     // ...
-    public function createAction(Request $request, EntityManagerInterface $em, FileUploader $fileUploader) : Response
+    public function create(Request $request, EntityManagerInterface $em, FileUploader $fileUploader) : Response
     {
         // ...
 
@@ -922,7 +922,7 @@ class JobController extends Controller
      *
      * @return Response
      */
-    public function editAction(Request $request, Job $job, EntityManagerInterface $em) : Response
+    public function edit(Request $request, Job $job, EntityManagerInterface $em) : Response
     {
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
@@ -1077,7 +1077,7 @@ class JobController extends AbstractController
      *
      * @return Response
      */
-    public function previewAction(Job $job) : Response
+    public function preview(Job $job) : Response
     {
         return $this->render('job/show.html.twig', [
             'job' => $job,
@@ -1210,10 +1210,10 @@ class JobController extends AbstractController
 
 > Notice that we built a form without creating separate class for it
 
-Call this method in `previewAction` and pass it to template:
+Call this method in `preview` and pass it to template:
 
 ```diff
-  public function previewAction(Job $job) : Response
+  public function preview(Job $job) : Response
   {
 +     $deleteForm = $this->createDeleteForm($job);
 
@@ -1275,7 +1275,7 @@ class JobController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Job $job, EntityManagerInterface $em) : Response
+    public function delete(Request $request, Job $job, EntityManagerInterface $em) : Response
     {
         $form = $this->createDeleteForm($job);
         $form->handleRequest($request);
@@ -1313,7 +1313,7 @@ class JobController extends AbstractController
      *
      * @return Response
      */
-    public function publishAction(Request $request, Job $job, EntityManagerInterface $em) : Response
+    public function publish(Request $request, Job $job, EntityManagerInterface $em) : Response
     {
         $form = $this->createPublishForm($job);
         $form->handleRequest($request);
@@ -1351,7 +1351,7 @@ class JobController extends AbstractController
 We also need to change the `preview` action to send the publish form to the template:
 
 ```diff
-  public function previewAction(Job $job) : Response
+  public function preview(Job $job) : Response
   {
       $deleteForm = $this->createDeleteForm($job);
 +     $publishForm = $this->createPublishForm($job);

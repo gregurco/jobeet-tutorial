@@ -165,7 +165,7 @@ class CategoryController extends AbstractController
      *
      * @return Response
      */
-    public function showAction(Category $category) : Response
+    public function show(Category $category) : Response
     {
         return $this->render('category/show.html.twig', array(
             'category' => $category,
@@ -359,7 +359,7 @@ class CategoryController extends AbstractController
      *
      * @return Response
      */
-    public function showAction(Category $category, PaginatorInterface $paginator) : Response
+    public function show(Category $category, PaginatorInterface $paginator) : Response
     {
         $activeJobs = $paginator->paginate(
             $this->getDoctrine()->getRepository(Job::class)->getPaginatedActiveJobsByCategoryQuery($category),
@@ -421,7 +421,7 @@ class CategoryController extends Controller
      *
      * @return Response
      */
-    public function showAction(
+    public function show(
         Category $category,
         int $page,
         PaginatorInterface $paginator
