@@ -58,7 +58,7 @@ class JobController extends AbstractController
      *
      * @Route("/", name="job.list")
      */
-    public function listAction() : Response
+    public function list() : Response
     ...
 
     /**
@@ -66,7 +66,7 @@ class JobController extends AbstractController
      *
      * @Route("/{id}", name="job.show")
      */
-    public function showAction(Job $job) : Response
+    public function show(Job $job) : Response
     ...
 }
 ```
@@ -114,7 +114,7 @@ class JobController extends AbstractController
      *
      * @Route("/", name="job.list")
      */
-    public function listAction() : Response
+    public function list() : Response
     ...
 
     /**
@@ -122,7 +122,7 @@ class JobController extends AbstractController
      *
      * @Route("job/{id}", name="job.show")
      */
-     public function showAction(Job $job) : Response
+     public function show(Job $job) : Response
     ...
 }
 ```
@@ -143,7 +143,7 @@ class JobController extends AbstractController
      *
      * @Route("job/{id}", name="job.show", requirements={"id" = "\d+"})
      */
-    public function showAction(Job $job) : Response
+    public function show(Job $job) : Response
     ...
 }
 ```
@@ -162,7 +162,7 @@ class JobController extends AbstractController
      * @Route("/", name="job.list")
      * @Method("GET")
      */
-    public function listAction() : Response
+    public function list() : Response
     ...
 
     /**
@@ -171,7 +171,7 @@ class JobController extends AbstractController
      * @Route("job/{id}", name="job.show", requirements={"id" = "\d+"})
      * @Method("GET")
      */
-    public function showAction(Job $job) : Response
+    public function show(Job $job) : Response
     ...
 }
 ```

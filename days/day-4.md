@@ -90,7 +90,7 @@ We already connected it from [CDN][4] in layout from previous step:
 
 ## The Job Homepage Action
 
-Each action is represented by a method of a class. For the jobs list, the class is `JobController` and the method will be `listAction()`. Let's create this action:
+Each action is represented by a method of a class. For the jobs list, the class is `JobController` and the method will be `list()`. Let's create this action:
 
 ```php
 use App\Entity\Job;
@@ -105,7 +105,7 @@ class JobController extends AbstractController
      *
      * @return Response
      */
-    public function listAction() : Response
+    public function list() : Response
     {
         $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
 
@@ -116,7 +116,7 @@ class JobController extends AbstractController
 }
 ```
 
-Let’s have a closer look at the code: the listAction() method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs.
+Let’s have a closer look at the code: the `list()` method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs.
 It returns a Doctrine `ArrayCollection` of Job objects that are passed to the template (the View).
 
 Probably you observed line starting with `@Route` in comment block above method. This line is not simple comment. This line is related to [Routing component][6].
@@ -124,7 +124,7 @@ It tells to symfony which URL path is related to which action in controller. We 
 
 ## The Job Homepage Template
 
-In `listAction` we passed jobs to `job/list.html.twig` but we don't have this file yet. Let's create it in `templates/job` folder:
+In `list` we passed jobs to `job/list.html.twig` but we don't have this file yet. Let's create it in `templates/job` folder:
 
 ```twig
 {% extends 'base.html.twig' %}
@@ -175,7 +175,7 @@ class JobController extends AbstractController
      *
      * @return Response
      */
-    public function showAction(Job $job) : Response
+    public function show(Job $job) : Response
     {
         return $this->render('job/show.html.twig', [
             'job' => $job,
