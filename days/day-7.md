@@ -411,7 +411,13 @@ class CategoryController extends Controller
     /**
      * Finds and displays a category entity.
      *
-     * @Route("/category/{slug}/{page}", name="category.show", defaults={"page": 1})
+     * @Route(
+     *     "/category/{slug}/{page}",
+     *     name="category.show",
+     *     defaults={"page": 1},
+     *     requirements={"page" = "\d+"}
+     * )
+     *
      * @Method("GET")
      *
      * @param Category $category
