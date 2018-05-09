@@ -167,9 +167,9 @@ class CategoryController extends AbstractController
      */
     public function show(Category $category) : Response
     {
-        return $this->render('category/show.html.twig', array(
+        return $this->render('category/show.html.twig', [
             'category' => $category,
-        ));
+        ]);
     }
 }
 ```
@@ -366,10 +366,10 @@ class CategoryController extends AbstractController
             10 // elements per page
         );
 
-        return $this->render('category/show.html.twig', array(
+        return $this->render('category/show.html.twig', [
             'category' => $category,
             'activeJobs' => $activeJobs,
-        ));
+        ]);
     }
 }
 ```
@@ -431,10 +431,10 @@ class CategoryController extends Controller
             $this->getParameter('max_jobs_on_category')
         );
 
-        return $this->render('category/show.html.twig', array(
+        return $this->render('category/show.html.twig', [
             'category' => $category,
             'activeJobs' => $activeJobs,
-        ));
+        ]);
     }
 }
 ```
