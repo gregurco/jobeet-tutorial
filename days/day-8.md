@@ -48,7 +48,7 @@ Let's specify the `data_class` option by changing `configureOptions` method:
 public function configureOptions(OptionsResolver $resolver)
 {
     $resolver->setDefaults([
-        'data_class' => Job::class
+        'data_class' => Job::class,
     ]);
 }
 ```
@@ -229,7 +229,7 @@ class JobType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Job::class
+            'data_class' => Job::class,
         ]);
     }
 }
@@ -263,7 +263,6 @@ class JobController extends AbstractController
         $form = $this->createForm(JobType::class, $job);
     
         return $this->render('job/create.html.twig', [
-            'job' => $job,
             'form' => $form->createView(),
         ]);
     }
@@ -352,7 +351,6 @@ class JobController extends AbstractController
         }
 
         return $this->render('job/create.html.twig', [
-            'job' => $job,
             'form' => $form->createView(),
         ]);
     }
@@ -1280,7 +1278,7 @@ class JobController extends AbstractController
         $form = $this->createDeleteForm($job);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->remove($job);
             $em->flush();
         }
@@ -1318,7 +1316,7 @@ class JobController extends AbstractController
         $form = $this->createPublishForm($job);
         $form->handleRequest($request);
     
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $job->setActivated(true);
     
             $em->flush();
