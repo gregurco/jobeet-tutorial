@@ -86,7 +86,7 @@ Pay attention to `@Gedmo\Slug` annotation.
 
 Generate migration that will add `slug` field in `category` table:
 ```bash
-bin/console doctrine:schema:diff
+bin/console doctrine:migrations:diff
 ```
 
 If we run migration now, we will see error, because we have several categories in DB without slug, that is required.
