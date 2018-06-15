@@ -379,8 +379,8 @@ Also we call paginator and pass query from repository, page (for now let's get o
 The result we send to template. Let's use it there `templates/category/show.html.twig`:
 
 ```diff
-- {% include 'job/table.html.twig' with {'jobs': category.activeJobs} only }}
-+ {% include 'job/table.html.twig' with {'jobs': activeJobs} only }}
+- {% include 'job/table.html.twig' with {'jobs': category.activeJobs} only %}
++ {% include 'job/table.html.twig' with {'jobs': activeJobs} only %}
 ```
 
 If now you open the  browser, you will see only 10 jobs on the page, but what about pagination?
