@@ -346,11 +346,11 @@ Continue this tutorial here: [Jobeet Day 10: Translations](/days/day-10.md)
 
 Previous post is available here: [Jobeet Day 8: The Forms](/days/day-8.md)
 
-Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
 
-[1]: https://symfony.com/doc/4.0/components/console.html
-[2]: https://symfony.com/doc/4.0/console/input.html
-[3]: https://symfony.com/doc/4.0/service_container.html#services-autoconfigure
-[4]: https://symfony.com/doc/4.0/service_container/tags.html
+[1]: https://symfony.com/doc/4.1/components/console.html
+[2]: https://symfony.com/doc/4.1/console/input.html
+[3]: https://symfony.com/doc/4.1/service_container.html#services-autoconfigure
+[4]: https://symfony.com/doc/4.1/service_container/tags.html
 [5]: https://github.com/gregurco/jobeet/tree/day9
-[6]: https://symfony.com/doc/4.0/console/coloring.html
+[6]: https://symfony.com/doc/4.1/console/coloring.html

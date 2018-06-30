@@ -1229,11 +1229,11 @@ Continue this tutorial here: [Jobeet Day 4: The Controller and the View](/days/d
 
 Previous post is available here: [Jobeet Day 2: The Project](/days/day-2.md)
 
-Main page is available here: [Symfony 4.0 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
 
-[1]: https://symfony.com/doc/4.0/doctrine.html
-[2]: https://symfony.com/doc/4.0/doctrine/associations.html
-[3]: https://symfony.com/doc/4.0/doctrine/lifecycle_callbacks.html
+[1]: https://symfony.com/doc/4.1/doctrine.html
+[2]: https://symfony.com/doc/4.1/doctrine/associations.html
+[3]: https://symfony.com/doc/4.1/doctrine/lifecycle_callbacks.html
 [4]: https://symfony.com/doc/master/bundles/DoctrineMigrationsBundle/index.html
 [5]: https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 [6]: https://github.com/fzaninotto/Faker
