@@ -342,7 +342,7 @@ See you tomorrow!
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 10: Translations](/days/day-10.md)
+Continue this tutorial here: [Jobeet Day 10: The Admin Generator](/days/day-10.md)
 
 Previous post is available here: [Jobeet Day 8: The Forms](/days/day-8.md)
 

@@ -26,17 +26,23 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 9: Console Commands](/days/day-9.md)
 
-~~Jobeet Day 10: Translations~~
+~~Jobeet Day 10: The Admin Generator~~
 
-~~Jobeet Day 11: API~~
+~~Jobeet Day 11: The User~~
 
-~~Jobeet Day 12: The Unit Tests~~
+~~Jobeet Day 12: The Mailer~~
 
-~~Jobeet Day 13: The Functional Tests~~
+~~Jobeet Day 13: Translations~~
 
-~~Jobeet Day 14: The Admin Bundle~~
+~~Jobeet Day 14: API~~
 
-~~Jobeet Day 15: Security~~
+~~Jobeet Day 15: The Unit Tests~~
+
+~~Jobeet Day 16: The Functional Tests~~
+
+~~Jobeet Day 17: The Cache~~
+
+~~Jobeet Day 18: The Deployment~~
 
 
 [1]: https://symfony.com
