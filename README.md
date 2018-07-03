@@ -26,7 +26,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 9: Console Commands](/days/day-9.md)
 
-~~Jobeet Day 10: The Admin Generator~~
+[[WIP] Jobeet Day 10: The Admin](/days/day-10.md)
 
 ~~Jobeet Day 11: The User~~
 
