@@ -256,7 +256,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-Now create template and render the form:
+Now create template 'admin/category/create.html.twig' and render the form:
 
 ```twig
 {% extends 'admin/base.html.twig' %}
@@ -288,7 +288,8 @@ Link the "Create new" button from list page with create page in `templates/admin
 + <a href="{{ path('admin.category.create') }}" class="btn btn-success">Create new</a>
 ```
 
-Page is accessible and form is displayed, but not handled. Do some small modification in `create` action:
+Page is accessible and form is displayed, but not handled.  
+Add handling of form in `create` action:
 
 ```php
 // ...
