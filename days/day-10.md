@@ -94,6 +94,8 @@ Now it's pretty similar with one we have, but it gives us possibility to change 
 
 ## Category CRUD
 
+### List action
+
 We have controller and layout, now let's start creating CRUD from list action:
 
 ```php
@@ -173,6 +175,155 @@ Now create a template `admin/category/list.html.twig` where all the categories w
     <a href="#" class="btn btn-success">Create new</a>
 {% endblock %}
 ```
+
+### Create action
+
+For create action first of all we have to create form. Forms that are strictly related to admin will be placed in separate folder too.  
+Create `CategoryType` class in `/src/Form/Admin` folder:
+
+```php
+namespace App\Form\Admin;
+
+use App\Entity\Category;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+class CategoryType extends AbstractType
+{
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name', TextType::class, [
+            'constraints' => [
+                new NotBlank(),
+                new Length(['max' => 100]),
+            ]
+        ]);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Category::class,
+        ]);
+    }
+}
+```
+
+It's very simple form with only one field and some basic validation rules.
+Just notice that `slug` is generated automatically and we don't have to provide it.
+
+The next step is to create action in controller and to build form:
+
+```php
+// ...
+use App\Form\Admin\CategoryType;
+use Symfony\Component\HttpFoundation\Request;
+
+class CategoryController extends AbstractController
+{
+    // ...
+
+    /**
+     * Create category.
+     *
+     * @Route("/admin/category/create", name="admin.category.create", methods="GET|POST")
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function create(Request $request, EntityManagerInterface $em) : Response
+    {
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+
+        return $this->render('admin/category/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+}
+```
+
+Now create template and render the form:
+
+```twig
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <h1>Create new category</h1>
+    
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+    
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Save</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+    
+    <a href="{{ path('admin.category.list') }}" class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+        back to list
+    </a>
+{% endblock %}
+```
+
+Link the "Create new" button from list page with create page in `templates/admin/category/list.html.twig`:
+
+```diff
+- <a href="#" class="btn btn-success">Create new</a>
++ <a href="{{ path('admin.category.create') }}" class="btn btn-success">Create new</a>
+```
+
+Page is accessible and form is displayed, but not handled. Do some small modification in `create` action:
+
+```php
+// ...
+
+class CategoryController extends AbstractController
+{
+    // ...
+    public function create(Request $request, EntityManagerInterface $em) : Response
+    {
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('admin.category.list');
+        }
+
+        return $this->render('admin/category/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+}
+```
+
+That's it. Now admin can create as much categories as wants.
+
+### Edit action
+
+...
+
+### Delete action
+
+...
 
 ## Additional information
 - [The Symfony MakerBundle][1]
