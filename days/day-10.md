@@ -320,14 +320,215 @@ That's it. Now admin can create as much categories as wants.
 
 ### Edit action
 
-...
+In edit action we can use the same form, so let's move on to creating a method in controller:
+
+```php
+// ...
+
+class CategoryController extends AbstractController
+{
+    // ...
+
+    /**
+     * Edit category.
+     *
+     * @Route("/admin/category/{id}/edit", name="admin.category.edit", methods="GET|POST", requirements={"id" = "\d+"})
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Category $category
+     *
+     * @return Response
+     */
+    public function edit(Request $request, EntityManagerInterface $em, Category $category) : Response
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('admin.category.list');
+        }
+
+        return $this->render('admin/category/edit.html.twig', [
+            'category' => $category,
+            'form' => $form->createView(),
+        ]);
+    }
+}
+```
+
+and template `templates/admin/category/edit.html.twig`:
+
+```twig
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <h1>Edit category "{{ category.name }}"</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+    
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Save</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    <a href="{{ path('admin.category.list') }}" class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+        back to list
+    </a>
+{% endblock %}
+```
+
+change link to the edit page in `list.html.twig`:
+
+```diff
+- <a href="#" class="btn btn-default">Edit</a>
++ <a href="{{ path('admin.category.edit', {id: category.id}) }}" class="btn btn-default">Edit</a>
+```
+
+The editing of categories works now and slug is automatically changed but the rendering of form is same in create and edit template.
+Move it to separate template `templates/admin/category/_form.html.twig`:
+
+```twig
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </div>
+{{ form_end(form) }}
+```
+
+and include in both places:
+
+```twig
+{% include 'admin/category/_form.html.twig' with {'form': form} only %}
+```
 
 ### Delete action
 
-...
+Sometimes it's no need to create separate form type class, but we have to perform POST|PUT|DELETE action.  
+In this case we can write the form directly in template, but not to lose [CSRF][2] protection we can use [csrf_token][3] function.
+Let's add the form in `templates/admin/category/list.html.twig` template:
+
+```twig
+{# ... #}
+
+{% for category in categories %}
+    <tr>
+        <td>{{ category.name }}</td>
+        <td>{{ category.slug }}</td>
+        <td>{{ category.jobs.count }}</td>
+        <td>{{ category.affiliates.count }}</td>
+        <td>
+            <ul class="list-inline">
+                <li>
+                    <a href="{{ path('admin.category.edit', {id: category.id}) }}" class="btn btn-default">Edit</a>
+                </li>
+
+                <li>
+                    <form method="post" action="{{ path('admin.category.delete', {id: category.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </li>
+            </ul>
+        </td>
+    </tr>
+{% endfor %}
+        
+{# ... #}
+```
+
+create the action in controller:
+
+```php
+// ...
+
+class CategoryController extends AbstractController
+{
+    // ...
+
+    /**
+     * Delete category.
+     *
+     * @Route("/admin/category/{id}/delete", name="admin.category.delete", methods="DELETE", requirements={"id" = "\d+"})
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Category $category
+     *
+     * @return Response
+     */
+    public function delete(Request $request, EntityManagerInterface $em, Category $category) : Response
+    {
+
+    }
+}
+```
+
+validate CSRF token and delete the category:
+
+```php
+// ...
+
+class CategoryController extends AbstractController
+{
+    // ...
+
+    /**
+     * Delete category.
+     *
+     * @Route("/admin/category/{id}/delete", name="admin.category.delete", methods="DELETE", requirements={"id" = "\d+"})
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Category $category
+     *
+     * @return Response
+     */
+    public function delete(Request $request, EntityManagerInterface $em, Category $category) : Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
+            $em->remove($category);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin.category.list');
+    }
+}
+```
+
+The shortcut method was added in [Symfony 2.6][4] and helps us to validate the token manually.  
+
+It should work good, but the error will be thrown in case category has related jobs.
+It's because doctrine doesn't know what to do with relation: to remove jobs or to set NULL in `category_id` and default behavior is simply to restrict.
+If we want to allow cascade delete then we have to modify `src/Entity/Category.php`:
+
+```diff
+ /**
+  * @var Job[]|ArrayCollection
+  *
+- * @ORM\OneToMany(targetEntity="Job", mappedBy="category")
++ * @ORM\OneToMany(targetEntity="Job", mappedBy="category", cascade={"remove"})
+  */
+ private $jobs;
+```
+
+Note: no migration needed here.
 
 ## Additional information
 - [The Symfony MakerBundle][1]
+- [CSRF][5]
+- [Working with Associations: Transitive persistence / Cascade Operations][6]
 
 ## Next Steps
 
@@ -338,3 +539,8 @@ Previous post is available here: [Jobeet Day 9: Console Commands](/days/day-9.md
 Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
 
 [1]: https://symfony.com/doc/1.0/bundles/SymfonyMakerBundle/index.html
+[2]: https://en.wikipedia.org/wiki/Cross-site_request_forgery
+[3]: https://symfony.com/doc/4.1/reference/twig_reference.html#csrf-token
+[4]: https://symfony.com/blog/new-in-symfony-2-6-new-shortcut-methods-for-controllers
+[5]: https://symfony.com/doc/4.1/security/csrf.html
+[6]: https://doctrine-project.org/projects/doctrine-orm/en/2.6/reference/working-with-associations.html#transitive-persistence-cascade-operations
