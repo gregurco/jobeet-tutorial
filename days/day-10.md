@@ -652,7 +652,7 @@ Now create template `templates/admin/job/list.html.twig`:
         {{ knp_pagination_render(jobs) }}
     </div>
 
-    <a href="{{ path('admin.job.create') }}" class="btn btn-success">Create new</a>
+    <a href="#" class="btn btn-success">Create new</a>
 {% endblock %}
 ```
 
@@ -669,7 +669,88 @@ The list of jobs is shown!
 
 ### Create action
 
-...
+Create action for job is pretty similar with create action for categories, but with one small exception: we already have form type class and we gonna use it:
+
+```php
+// ...
+use App\Form\JobType;
+use Symfony\Component\HttpFoundation\Request;
+
+class JobController extends AbstractController
+{
+    // ...
+
+    /**
+     * Create job.
+     *
+     * @Route("/admin/job/create", name="admin.job.create", methods="GET|POST")
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function create(Request $request, EntityManagerInterface $em) : Response
+    {
+        $job = new Job();
+        $form = $this->createForm(JobType::class, $job);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($job);
+            $em->flush();
+
+            return $this->redirectToRoute('admin.job.list');
+        }
+
+        return $this->render('admin/job/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+}
+```
+
+Link the button from list page with this new action:
+
+```diff
+# templates/admin/job/list.html.twig
+
+- <a href="#" class="btn btn-success">Create new</a>
++ <a href="{{ path('admin.job.create') }}" class="btn btn-success">Create new</a>
+```
+
+Create template `templates/admin/job/create.html.twig` and let's move the form to separate file from the beginning, because we know, that the same rendering will be in the edit action:
+
+```twig
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <h1>Create new job</h1>
+
+    {% include 'admin/job/_form.html.twig' %}
+
+    <a href="{{ path('admin.job.list') }}" class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+        back to list
+    </a>
+{% endblock %}
+```
+
+Form rendering in `templates/admin/job/_form.html.twig`:
+
+```twig
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Save</button>
+        </div>
+    </div>
+{{ form_end(form) }}
+```
+
+Now admin is able to create jobs directly from admin panel!
 
 ### Edit action
 
