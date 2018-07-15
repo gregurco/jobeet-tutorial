@@ -1,10 +1,9 @@
 # Symfony 4.1 Jobeet Tutorial
 
-**Jobeet** is a great tutorial wrote by the [Symfony][1] team to help you learn how to use the framework by building a fully functional job board website.
-It was wrote for Symfony 1.x version and I want to adapt it for **Symfony 4.1**.
+**Jobeet** is a great tutorial on how to build a fully functional job board website. It was written by the [Symfony][1] team for Symfony 1.x version and I want to adapt it for **Symfony 4.1**.
 
-In the following weeks I will begin to post the parts of making the Jobeet website using Symfony 4.1, so it will help beginners to learn and understand how the framework works.
-I will try to follow the original Jobeet tutorial, but I will also make some changes to include new technologies and to reflect my personal developing style.
+In the following weeks I will begin to post the parts of making the Jobeet website using Symfony 4.1, so it will help beginners to learn and understand how the framework works.  
+I will try to follow the original [Jobeet][2] tutorial, but I will also make some changes to include new technologies and to reflect my personal developing style.
 
 Please be free to make any observations and improvements you consider important by commenting on the posts that will follow.
 
@@ -46,3 +45,4 @@ Please be free to make any observations and improvements you consider important 
 
 
 [1]: https://symfony.com
+[2]: https://symfony.com/legacy/doc/jobeet?orm=Propel
