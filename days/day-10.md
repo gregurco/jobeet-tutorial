@@ -140,12 +140,12 @@ Now create a template `admin/category/list.html.twig` where all the categories w
 {% block body %}
     <table class="table">
         <thead>
-        <tr>
-            <th class="active">Name</th>
-            <th class="active">Position</th>
-            <th class="active">Jobs</th>
-            <th class="active">Affiliates</th>
-            <th class="active">Actions</th>
+        <tr class="active">
+            <th>Name</th>
+            <th>Position</th>
+            <th>Jobs</th>
+            <th>Affiliates</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -507,11 +507,11 @@ class CategoryController extends AbstractController
 }
 ```
 
-The shortcut method was added in [Symfony 2.6][4] and helps us to validate the token manually.  
+The shortcut method `isCsrfTokenValid` was added in [Symfony 2.6][4] and helps us to validate the token manually.  
 
 It should work good, but the error will be thrown in case category has related jobs.
-It's because doctrine doesn't know what to do with relation: to remove jobs or to set NULL in `category_id` and default behavior is simply to restrict.
-If we want to allow cascade delete then we have to modify `src/Entity/Category.php`:
+It's because doctrine doesn't know what to do with relation: to remove jobs or to set NULL in `category_id` and default behavior is simply to restrict.  
+If we want to allow cascade delete, then we have to modify `src/Entity/Category.php`:
 
 ```diff
  /**
@@ -524,6 +524,160 @@ If we want to allow cascade delete then we have to modify `src/Entity/Category.p
 ```
 
 Note: no migration needed here.
+
+## Job CRUD
+
+Admin should have the same CRUD for jobs and we will do it in the same way as previous CRUD, but with one small difference: we plan to have posted many jobs and we should think about pagination.  
+Let's introduce one more variable in `config/services.yaml`, but for this time this variable will be more generic and we will be able to use it anywhere:
+
+```twig
+parameters:
+    # ...
+    max_per_page: 10
+```
+
+### List action
+
+Create `JobController` in the same folder as `CategoryController`:
+
+```php
+namespace App\Controller\Admin;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class JobController extends AbstractController
+{
+
+}
+```
+
+and add list action:
+
+```php
+namespace App\Controller\Admin;
+
+use App\Entity\Job;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+
+class JobController extends AbstractController
+{
+    /**
+     * Lists all jobs entities.
+     *
+     * @Route("/admin/jobs/{page}",
+     *     name="admin.job.list",
+     *     methods="GET",
+     *     defaults={"page": 1},
+     *     requirements={"page" = "\d+"}
+     * )
+     *
+     * @param EntityManagerInterface $em
+     * @param PaginatorInterface $paginator
+     * @param int $page
+     *
+     * @return Response
+     */
+    public function list(EntityManagerInterface $em, PaginatorInterface $paginator, int $page) : Response
+    {
+        $jobs = $paginator->paginate(
+            $em->getRepository(Job::class)->findAll(),
+            $page,
+            $this->getParameter('max_per_page')
+        );
+
+        return $this->render('admin/job/list.html.twig', [
+            'jobs' => $jobs,
+        ]);
+    }
+}
+```
+
+Note: we used `max_per_page` variable for pagination limit.
+
+Now create template `templates/admin/job/list.html.twig`:
+
+```twig
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr class="active">
+            <th>Company</th>
+            <th>Position</th>
+            <th>Location</th>
+            <th>Email</th>
+            <th>URL</th>
+            <th>Activated</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for job in jobs %}
+            <tr>
+                <td>{{ job.company }}</td>
+                <td>{{ job.position }}</td>
+                <td>{{ job.location }}</td>
+                <td>{{ job.email }}</td>
+                <td>{{ job.url }}</td>
+                <td>
+                    {% if job.activated %}
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    {% endif %}
+                </td>
+                <td class="text-nowrap">
+                    <ul class="list-inline">
+                        <li>
+                            <a href="#" class="btn btn-default">Edit</a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="btn btn-danger">Delete</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(jobs) }}
+    </div>
+
+    <a href="{{ path('admin.job.create') }}" class="btn btn-success">Create new</a>
+{% endblock %}
+```
+
+Fix the link in left menu, to be able to access this page:
+
+```diff
+# templates/admin/base.html.twig
+
+- <a href="#">Jobs</a>
++ <a href="{{ path('admin.job.list') }}">Jobs</a>
+```
+
+The list of jobs is shown!
+
+### Create action
+
+...
+
+### Edit action
+
+...
+
+### Delete action
+
+...
 
 ## Additional information
 - [The Symfony MakerBundle][1]
