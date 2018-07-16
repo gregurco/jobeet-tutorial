@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jobeet Day 6: More with the Entity &#8212; Jobeet 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../README.html">
+          Jobeet</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../README.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Jobeet Day 6: More with the Entity</a><ul>
+<li><a class="reference internal" href="#the-doctrine-query-object">The Doctrine Query Object</a></li>
+<li><a class="reference internal" href="#debugging-doctrine-generated-sql">Debugging Doctrine generated SQL</a></li>
+<li><a class="reference internal" href="#more-lifecycle-callbacks">More lifecycle callbacks</a></li>
+<li><a class="reference internal" href="#more-with-fixtures">More with Fixtures</a></li>
+<li><a class="reference internal" href="#refactoring">Refactoring</a></li>
+<li><a class="reference internal" href="#categories-on-the-homepage">Categories on the Homepage</a></li>
+<li><a class="reference internal" href="#limit-the-results">Limit the results</a></li>
+<li><a class="reference internal" href="#custom-configuration">Custom Configuration</a></li>
+<li><a class="reference internal" href="#dynamic-fixtures">Dynamic Fixtures</a></li>
+<li><a class="reference internal" href="#secure-the-job-page">Secure the Job Page</a></li>
+<li><a class="reference internal" href="#additional-information">Additional information</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/days/day-6.md.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="jobeet-day-6-more-with-the-entity">
+<span id="jobeet-day-6-more-with-the-entity"></span><h1>Jobeet Day 6: More with the Entity<a class="headerlink" href="#jobeet-day-6-more-with-the-entity" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-doctrine-query-object">
+<span id="the-doctrine-query-object"></span><h2>The Doctrine Query Object<a class="headerlink" href="#the-doctrine-query-object" title="Permalink to this headline">¶</a></h2>
+<p>From the second day’s requirements: “On the homepage, the user sees the latest active jobs”.
+But as of now, all jobs are displayed, whether they are active or not:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function list() : Response</span>
+<span class="x">{</span>
+<span class="x">    $jobs = $this-&gt;getDoctrine()-&gt;getRepository(Job::class)-&gt;findAll();</span>
+
+<span class="x">    return $this-&gt;render(&#39;job/list.html.twig&#39;, [</span>
+<span class="x">        &#39;jobs&#39; =&gt; $jobs,</span>
+<span class="x">    ]);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>An active job is one that was posted less than 30 days ago.
+The <code class="docutils literal notranslate"><span class="pre">$jobs</span> <span class="pre">=</span> <span class="pre">$this-&gt;getDoctrine()-&gt;getRepository(Job::class)-&gt;findAll();</span></code> method will make a request to the database to get all the jobs.
+We are not specifying any condition which means that all the records are retrieved from the database.</p>
+<p>Let’s change it to only select active jobs:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function list(EntityManagerInterface $em) : Response</span>
+<span class="x">{</span>
+<span class="x">    $query = $em-&gt;createQuery(</span>
+<span class="x">        &#39;SELECT j FROM App:Job j WHERE j.createdAt &gt; :date&#39;</span>
+<span class="x">    )-&gt;setParameter(&#39;date&#39;, new \DateTime(&#39;-30 days&#39;));</span>
+
+<span class="x">    return $this-&gt;render(&#39;job/list.html.twig&#39;, [</span>
+<span class="x">        &#39;jobs&#39; =&gt; $jobs,</span>
+<span class="x">    ]);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debugging-doctrine-generated-sql">
+<span id="debugging-doctrine-generated-sql"></span><h2>Debugging Doctrine generated SQL<a class="headerlink" href="#debugging-doctrine-generated-sql" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, it is of great help to see the SQL generated by Doctrine; for instance, to debug a query that does not work as expected.
+In the dev environment, thanks to the symfony web debug toolbar, all the information you need is available within the comfort of your browser</p>
+<p><img alt="Doctrine queries" src="../_images/screenshot_7.png" /></p>
+</div>
+<div class="section" id="more-lifecycle-callbacks">
+<span id="more-lifecycle-callbacks"></span><h2>More lifecycle callbacks<a class="headerlink" href="#more-lifecycle-callbacks" title="Permalink to this headline">¶</a></h2>
+<p>Even if the above code works, it is far from perfect as it does not take into account some requirements from day 2:
+<em>“A user can come back to re-activate or extend the validity of the job for an extra 30 days…”.</em></p>
+<p>But as the above code only relies on the createdAt value, and because this column stores the creation date, we cannot satisfy the above requirement.</p>
+<p>If you remember the database schema we have described during day 3, we also have defined an <code class="docutils literal notranslate"><span class="pre">expiresAt</span></code> column.
+Currently, if this value is not set in fixture file, it remains always empty.
+But when a job is created, it can be automatically set to 30 days after the current date.</p>
+<p>When you need to do something automatically before a Doctrine object is serialized to the database, you can add a new action to the lifecycle callbacks, like we did earlier for the createdAt column.
+Open <code class="docutils literal notranslate"><span class="pre">src/Entity/Job.php</span></code> and modify <code class="docutils literal notranslate"><span class="pre">prePersist</span></code> method:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @ORM\PrePersist()</span>
+<span class="x"> */</span>
+<span class="x">public function prePersist()</span>
+<span class="x">{</span>
+<span class="x">    $this-&gt;createdAt = new \DateTime();</span>
+<span class="x">    $this-&gt;updatedAt = new \DateTime();</span>
+
+<span class="x">    if (!$this-&gt;expiresAt) {</span>
+<span class="x">        $this-&gt;expiresAt = (clone $this-&gt;createdAt)-&gt;modify(&#39;+30 days&#39;);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Now, let’s change the action to use the <code class="docutils literal notranslate"><span class="pre">expiresAt</span></code> column instead of the <code class="docutils literal notranslate"><span class="pre">createdAt</span></code> one to select the active jobs:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function list(EntityManagerInterface $em) : Response</span>
+<span class="x">{</span>
+<span class="x">    $query = $em-&gt;createQuery(</span>
+<span class="x">        &#39;SELECT j FROM App:Job j WHERE j.expiresAt &gt; :date&#39;</span>
+<span class="x">    )-&gt;setParameter(&#39;date&#39;, new \DateTime());</span>
+<span class="x">    $jobs = $query-&gt;getResult();</span>
+
+<span class="x">    return $this-&gt;render(&#39;job/list.html.twig&#39;, [</span>
+<span class="x">        &#39;jobs&#39; =&gt; $jobs,</span>
+<span class="x">    ]);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="more-with-fixtures">
+<span id="more-with-fixtures"></span><h2>More with Fixtures<a class="headerlink" href="#more-with-fixtures" title="Permalink to this headline">¶</a></h2>
+<p>Refreshing the Jobeet homepage in your browser won’t change anything as the jobs in the database have been posted just a few days ago.
+Let’s change the fixtures to add a job that is already expired (<code class="docutils literal notranslate"><span class="pre">src/DataFixtures/JobFixtures.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">$jobExpired = new Job();</span>
+<span class="x">$jobExpired-&gt;setCategory($manager-&gt;merge($this-&gt;getReference(&#39;category-programming&#39;)));</span>
+<span class="x">$jobExpired-&gt;setType(&#39;full-time&#39;);</span>
+<span class="x">$jobExpired-&gt;setCompany(&#39;Sensio Labs&#39;);</span>
+<span class="x">$jobExpired-&gt;setLogo(&#39;sensio-labs.gif&#39;);</span>
+<span class="x">$jobExpired-&gt;setUrl(&#39;http://www.sensiolabs.com/&#39;);</span>
+<span class="x">$jobExpired-&gt;setPosition(&#39;Web Developer Expired&#39;);</span>
+<span class="x">$jobExpired-&gt;setLocation(&#39;Paris, France&#39;);</span>
+<span class="x">$jobExpired-&gt;setDescription(&#39;Lorem ipsum dolor sit amet, consectetur adipisicing elit.&#39;);</span>
+<span class="x">$jobExpired-&gt;setHowToApply(&#39;Send your resume to lorem.ipsum [at] dolor.sit&#39;);</span>
+<span class="x">$jobExpired-&gt;setPublic(true);</span>
+<span class="x">$jobExpired-&gt;setActivated(true);</span>
+<span class="x">$jobExpired-&gt;setToken(&#39;job_expired&#39;);</span>
+<span class="x">$jobExpired-&gt;setEmail(&#39;job@example.com&#39;);</span>
+<span class="x">$jobExpired-&gt;setExpiresAt(new \DateTime(&#39;-10 days&#39;));</span>
+
+<span class="x">// ...</span>
+
+<span class="x">$manager-&gt;persist($jobExpired);</span>
+</pre></div>
+</div>
+<p>Reload the fixtures and refresh your browser to ensure that the old job does not show up:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:fixtures:load
+</pre></div>
+</div>
+</div>
+<div class="section" id="refactoring">
+<span id="refactoring"></span><h2>Refactoring<a class="headerlink" href="#refactoring" title="Permalink to this headline">¶</a></h2>
+<p>Although the code we have written works fine, it’s not quite right yet. Can you spot the problem?</p>
+<p>The Doctrine query code does not belong to the action (the Controller layer), it belongs to the Model layer.
+In the MVC model, the Model defines all the business logic, and the Controller only calls the Model to retrieve data from it.
+As the code returns a collection of jobs, let’s move the code to the repository, that is part of model layer.
+For that we will need to create a custom <code class="docutils literal notranslate"><span class="pre">repository</span></code> class for Job entity and to add the query to that class.</p>
+<p>Open <code class="docutils literal notranslate"><span class="pre">src/Entity/Job.php</span></code> and modify <code class="docutils literal notranslate"><span class="pre">&#64;ORM\Entity</span></code> annotation to specify the repository class for this entity:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @ORM\Entity(repositoryClass=&quot;App\Repository\JobRepository&quot;)</span>
+<span class="x"> * @ORM\Table(name=&quot;jobs&quot;)</span>
+<span class="x"> * @ORM\HasLifecycleCallbacks()</span>
+<span class="x"> */</span>
+<span class="x">class Job</span>
+</pre></div>
+</div>
+<p>Now let’s create file <code class="docutils literal notranslate"><span class="pre">JobRepository.php</span></code> in <code class="docutils literal notranslate"><span class="pre">src/Repository</span></code> folder:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Repository;</span>
+
+<span class="x">use Doctrine\ORM\EntityRepository;</span>
+
+<span class="x">class JobRepository extends EntityRepository</span>
+<span class="x">{</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Next, add a new method, <code class="docutils literal notranslate"><span class="pre">findActiveJobs()</span></code>, to the newly created repository class.
+This method will query for all of the active Job entities sorted by the expiresAt column (and filtered by category if it receives the $categoryId parameter).</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use App\Entity\Job;</span>
+
+<span class="x">class JobRepository extends EntityRepository</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @param int|null $categoryId</span>
+<span class="x">     *</span>
+<span class="x">     * @return Job[]</span>
+<span class="x">     */</span>
+<span class="x">    public function findActiveJobs(int $categoryId = null)</span>
+<span class="x">    {</span>
+<span class="x">        $qb = $this-&gt;createQueryBuilder(&#39;j&#39;)</span>
+<span class="x">            -&gt;where(&#39;j.expiresAt &gt; :date&#39;)</span>
+<span class="x">            -&gt;setParameter(&#39;date&#39;, new \DateTime())</span>
+<span class="x">            -&gt;orderBy(&#39;j.expiresAt&#39;, &#39;DESC&#39;);</span>
+
+<span class="x">        if ($categoryId) {</span>
+<span class="x">            $qb-&gt;andWhere(&#39;j.category = :categoryId&#39;)</span>
+<span class="x">                -&gt;setParameter(&#39;categoryId&#39;, $categoryId);</span>
+<span class="x">        }</span>
+
+<span class="x">        return $qb-&gt;getQuery()-&gt;getResult();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Now the action code can use this new method to retrieve the active jobs:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function list(EntityManagerInterface $em) : Response</span>
+<span class="x">{</span>
+<span class="x">    $jobs = $em-&gt;getRepository(Job::class)-&gt;findActiveJobs();</span>
+
+<span class="x">    return $this-&gt;render(&#39;job/list.html.twig&#39;, [</span>
+<span class="x">        &#39;jobs&#39; =&gt; $jobs,</span>
+<span class="x">    ]);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>This refactoring has several benefits over the previous code:</p>
+<ul class="simple">
+<li>The logic to get the active jobs is now in the Repository, where it belongs</li>
+<li>The code in the controller is thinner and much more readable</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">findActiveJobs()</span></code> method is re-usable (for instance in another action)</li>
+</ul>
+</div>
+<div class="section" id="categories-on-the-homepage">
+<span id="categories-on-the-homepage"></span><h2>Categories on the Homepage<a class="headerlink" href="#categories-on-the-homepage" title="Permalink to this headline">¶</a></h2>
+<p>According to the second day’s requirements we need to have jobs sorted by categories. Until now, we have not taken the job category into account.
+From the requirements, the homepage must display jobs by category. First, we need to get all categories with at least one active job.</p>
+<p>Create a repository class for the Category entity like we did for Job:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @ORM\Entity(repositoryClass=&quot;App\Repository\CategoryRepository&quot;)</span>
+<span class="x"> * @ORM\Table(name=&quot;categories&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Category</span>
+</pre></div>
+</div>
+<p>Create the repository class (<code class="docutils literal notranslate"><span class="pre">src/Repository/CategoryRepository.php</span></code>):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Repository;</span>
+
+<span class="x">use Doctrine\ORM\EntityRepository;</span>
+
+<span class="x">class CategoryRepository extends EntityRepository</span>
+<span class="x">{</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Add a <code class="docutils literal notranslate"><span class="pre">findWithActiveJobs()</span></code> method:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">use App\Entity\Category;</span>
+<span class="x">use Doctrine\ORM\EntityRepository;</span>
+
+<span class="x">class CategoryRepository extends EntityRepository</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @return Category[]</span>
+<span class="x">     */</span>
+<span class="x">    public function findWithActiveJobs()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;createQueryBuilder(&#39;c&#39;)</span>
+<span class="x">            -&gt;select(&#39;c&#39;)</span>
+<span class="x">            -&gt;innerJoin(&#39;c.jobs&#39;, &#39;j&#39;)</span>
+<span class="x">            -&gt;where(&#39;j.expiresAt &gt; :date&#39;)</span>
+<span class="x">            -&gt;setParameter(&#39;date&#39;, new \DateTime())</span>
+<span class="x">            -&gt;getQuery()</span>
+<span class="x">            -&gt;getResult();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>This methods will give us only the categories with active jobs, but if you will call <code class="docutils literal notranslate"><span class="pre">getJobs</span></code> method on each category you will receive all jobs, including expired.
+Let’s create <code class="docutils literal notranslate"><span class="pre">getActiveJobs</span></code> method in <code class="docutils literal notranslate"><span class="pre">Category</span></code> entity, which will return only not expired jobs:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @return Job[]|ArrayCollection</span>
+<span class="x"> */</span>
+<span class="x">public function getActiveJobs()</span>
+<span class="x">{</span>
+<span class="x">    return $this-&gt;jobs-&gt;filter(function(Job $job) {</span>
+<span class="x">        return $job-&gt;getExpiresAt() &gt; new \DateTime();</span>
+<span class="x">    });</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Change the index action accordingly:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function list(EntityManagerInterface $em) : Response</span>
+<span class="x">{</span>
+<span class="x">    $categories = $em-&gt;getRepository(Category::class)-&gt;findWithActiveJobs();</span>
+
+<span class="x">    return $this-&gt;render(&#39;job/list.html.twig&#39;, [</span>
+<span class="x">        &#39;categories&#39; =&gt; $categories,</span>
+<span class="x">    ]);</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>In the template, we need to iterate through all categories and display the active jobs (<code class="docutils literal notranslate"><span class="pre">templates/job/list.html.twig</span></code>):</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">category</span> <span class="k">in</span> <span class="nv">categories</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;h4&gt;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&lt;/h4&gt;</span>
+<span class="x">    </span>
+<span class="x">        &lt;table class=&quot;table text-center&quot;&gt;</span>
+<span class="x">            &lt;thead&gt;</span>
+<span class="x">            &lt;tr&gt;</span>
+<span class="x">                &lt;th class=&quot;active text-center&quot;&gt;City&lt;/th&gt;</span>
+<span class="x">                &lt;th class=&quot;active text-center&quot;&gt;Position&lt;/th&gt;</span>
+<span class="x">                &lt;th class=&quot;active text-center&quot;&gt;Company&lt;/th&gt;</span>
+<span class="x">            &lt;/tr&gt;</span>
+<span class="x">            &lt;/thead&gt;</span>
+
+<span class="x">            &lt;tbody&gt;</span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">job</span> <span class="k">in</span> <span class="nv">category.activeJobs</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">                &lt;tr&gt;</span>
+<span class="x">                    &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.location</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                    &lt;td&gt;</span>
+<span class="x">                        &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;job.show&#39;</span><span class="o">,</span> <span class="o">{</span><span class="nv">id</span><span class="o">:</span> <span class="nv">job.id</span><span class="o">})</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span>
+<span class="x">                            </span><span class="cp">{{</span> <span class="nv">job.position</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">                        &lt;/a&gt;</span>
+<span class="x">                    &lt;/td&gt;</span>
+<span class="x">                    &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.company</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;/tr&gt;</span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            &lt;/tbody&gt;</span>
+<span class="x">        &lt;/table&gt;</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="limit-the-results">
+<span id="limit-the-results"></span><h2>Limit the results<a class="headerlink" href="#limit-the-results" title="Permalink to this headline">¶</a></h2>
+<p>There is still one requirement to implement for the homepage job list: we have to limit the job list to 10 items.
+That’s simple enough to add <code class="docutils literal notranslate"><span class="pre">slice</span></code> filter in template <code class="docutils literal notranslate"><span class="pre">templates/job/list.html.twig</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- {% for job in category.activeJobs %}</span>
+<span class="gi">+ {% for job in category.activeJobs|slice(0, 10) %}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="custom-configuration">
+<span id="custom-configuration"></span><h2>Custom Configuration<a class="headerlink" href="#custom-configuration" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">templates/job/list.html.twig</span></code> template we have hardcoded the number of max jobs shown for a category.
+It would have been better to make the 10 limit configurable.
+In Symfony you can define custom parameters for your application in the <code class="docutils literal notranslate"><span class="pre">config/services.yaml</span></code> file, under the <code class="docutils literal notranslate"><span class="pre">parameters</span></code> key:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">parameters</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">locale</span><span class="p p-Indicator">:</span> <span class="s">&#39;en&#39;</span>
+    <span class="l l-Scalar l-Scalar-Plain">max_jobs_on_homepage</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+<p>But this value will not be accessible in template until it will not be defined in <code class="docutils literal notranslate"><span class="pre">twig</span></code> configuration as global variable.
+Let’s open <code class="docutils literal notranslate"><span class="pre">config/packages/twig.yaml</span></code> and add it:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">twig</span><span class="p p-Indicator">:</span>
+    <span class="c1"># ...</span>
+    <span class="l l-Scalar l-Scalar-Plain">globals</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">max_jobs_on_homepage</span><span class="p p-Indicator">:</span> <span class="s">&#39;%max_jobs_on_homepage%&#39;</span>
+</pre></div>
+</div>
+<p>This can now be accessed from a template:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- {% for job in category.activeJobs|slice(0, 10) %}</span>
+<span class="gi">+ {% for job in category.activeJobs|slice(0, max_jobs_on_homepage) %}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dynamic-fixtures">
+<span id="dynamic-fixtures"></span><h2>Dynamic Fixtures<a class="headerlink" href="#dynamic-fixtures" title="Permalink to this headline">¶</a></h2>
+<p>For now, you won’t see any difference because we have a very small amount of jobs in our database.
+We need to add a bunch of jobs to the fixture. So, you can copy and paste an existing job ten or twenty times by hand… but there’s a better way.
+Duplication is bad, even in fixture files. Let’s create more jobs in <code class="docutils literal notranslate"><span class="pre">src/DataFixtures/JobFixtures.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function load(ObjectManager $manager) : void</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    for ($i = 100; $i &lt;= 130; $i++) {</span>
+<span class="x">        $job = new Job();</span>
+<span class="x">        $job-&gt;setCategory($manager-&gt;merge($this-&gt;getReference(&#39;category-programming&#39;)));</span>
+<span class="x">        $job-&gt;setType(&#39;full-time&#39;);</span>
+<span class="x">        $job-&gt;setCompany(&#39;Company &#39; . $i);</span>
+<span class="x">        $job-&gt;setPosition(&#39;Web Developer&#39;);</span>
+<span class="x">        $job-&gt;setLocation(&#39;Paris, France&#39;);</span>
+<span class="x">        $job-&gt;setDescription(&#39;Lorem ipsum dolor sit amet, consectetur adipisicing elit.&#39;);</span>
+<span class="x">        $job-&gt;setHowToApply(&#39;Send your resume to lorem.ipsum [at] dolor.sit&#39;);</span>
+<span class="x">        $job-&gt;setPublic(true);</span>
+<span class="x">        $job-&gt;setActivated(true);</span>
+<span class="x">        $job-&gt;setToken(&#39;job_&#39; . $i);</span>
+<span class="x">        $job-&gt;setEmail(&#39;job@example.com&#39;);</span>
+
+<span class="x">        $manager-&gt;persist($job);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>You can now reload the fixtures with the <code class="docutils literal notranslate"><span class="pre">doctrine:fixtures:load</span></code> task and see if only 10 jobs are displayed on the homepage for the Programming category.</p>
+</div>
+<div class="section" id="secure-the-job-page">
+<span id="secure-the-job-page"></span><h2>Secure the Job Page<a class="headerlink" href="#secure-the-job-page" title="Permalink to this headline">¶</a></h2>
+<p>When a job expires, even if you know the URL, it must not be possible to access it anymore. Find expired job in DB and try the URL.
+Instead of displaying the job, we need to forward the user to a 404 page. For this we will create a new method in the <code class="docutils literal notranslate"><span class="pre">JobRepository</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @param int $id</span>
+<span class="x"> *</span>
+<span class="x"> * @return Job|null</span>
+<span class="x"> */</span>
+<span class="x">public function findActiveJob(int $id) : ?Job</span>
+<span class="x">{</span>
+<span class="x">    return $this-&gt;createQueryBuilder(&#39;j&#39;)</span>
+<span class="x">        -&gt;where(&#39;j.id = :id&#39;)</span>
+<span class="x">        -&gt;andWhere(&#39;j.expiresAt &gt; :date&#39;)</span>
+<span class="x">        -&gt;setParameter(&#39;id&#39;, $id)</span>
+<span class="x">        -&gt;setParameter(&#39;date&#39;, new \DateTime())</span>
+<span class="x">        -&gt;getQuery()</span>
+<span class="x">        -&gt;getOneOrNullResult();</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Now to change the <code class="docutils literal notranslate"><span class="pre">show</span></code> from the <code class="docutils literal notranslate"><span class="pre">JobController</span></code> to use the new repository method, we need to specify it to the Doctrine Entity by adding a new annotation (and also add use <code class="docutils literal notranslate"><span class="pre">Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity</span></code> to the beginning of the file):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;</span>
+
+<span class="x">class JobController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+<span class="x">    </span>
+<span class="x">    /**</span>
+<span class="x">     * Finds and displays a job entity.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;job/{id}&quot;, name=&quot;job.show&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</span>
+<span class="x">     * @Method(&quot;GET&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @Entity(&quot;job&quot;, expr=&quot;repository.findActiveJob(id)&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @param Job $job</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function show(Job $job) : Response</span>
+<span class="x">    // ...</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Now, if you try to get an expired job, you will be forwarded to a 404 page.</p>
+<p>That’s all for today, you can find the code here: <a class="reference external" href="https://github.com/gregurco/jobeet/tree/day6">https://github.com/gregurco/jobeet/tree/day6</a></p>
+<p>See you tomorrow!</p>
+</div>
+<div class="section" id="additional-information">
+<span id="additional-information"></span><h2>Additional information<a class="headerlink" href="#additional-information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://symfony.com/doc/4.1/templating/global_variables.html">How to Inject Variables into all Templates (i.e. global Variables)</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html">&#64;ParamConverter and &#64;Entity</a></li>
+</ul>
+</div>
+<div class="section" id="next-steps">
+<span id="next-steps"></span><h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Continue this tutorial here: <a class="reference external" href="/days/day-7.md">Jobeet Day 7: Playing with the Category Page</a></p>
+<p>Previous post is available here: <a class="reference external" href="/days/day-5.md">Jobeet Day 5: The Routing</a></p>
+<p>Main page is available here: <a class="reference external" href="/README.md">Symfony 4.1 Jobeet Tutorial</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018, Vlad Gregurco.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

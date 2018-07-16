@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jobeet Day 3: The Data Model &#8212; Jobeet 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../README.html">
+          Jobeet</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../README.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Jobeet Day 3: The Data Model</a><ul>
+<li><a class="reference internal" href="#the-relational-model">The Relational Model</a></li>
+<li><a class="reference internal" href="#the-database">The Database</a></li>
+<li><a class="reference internal" href="#creating-entity-classes">Creating Entity Classes</a></li>
+<li><a class="reference internal" href="#adding-mapping-information">Adding Mapping Information</a></li>
+<li><a class="reference internal" href="#constructors-getters-and-setters">Constructors, Getters and Setters</a></li>
+<li><a class="reference internal" href="#lifecycle-callbacks">Lifecycle Callbacks</a></li>
+<li><a class="reference internal" href="#creating-the-database-tables-schema">Creating the Database Tables/Schema</a></li>
+<li><a class="reference internal" href="#the-initial-data">The Initial Data</a></li>
+<li><a class="reference internal" href="#additional-information">Additional information</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/days/day-3.md.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="jobeet-day-3-the-data-model">
+<span id="jobeet-day-3-the-data-model"></span><h1>Jobeet Day 3: The Data Model<a class="headerlink" href="#jobeet-day-3-the-data-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-relational-model">
+<span id="the-relational-model"></span><h2>The Relational Model<a class="headerlink" href="#the-relational-model" title="Permalink to this headline">¶</a></h2>
+<p>The user stories from the previous day describe the main objects of our project: jobs, affiliates, and categories. Here is the corresponding entity relationship diagram:</p>
+<p><img alt="DB schema" src="../_images/screenshot_6.png" /></p>
+<p>In addition to the columns described in the stories, we have also added <code class="docutils literal notranslate"><span class="pre">created_at</span></code> and <code class="docutils literal notranslate"><span class="pre">updated_at</span></code> columns. We will configure Symfony 4 to set their value automatically when an object is saved or updated.</p>
+</div>
+<div class="section" id="the-database">
+<span id="the-database"></span><h2>The Database<a class="headerlink" href="#the-database" title="Permalink to this headline">¶</a></h2>
+<p>To store the jobs, affiliates and categories in the database, Symfony 4 uses Doctrine ORM. To define the database connection parameters you have to edit the <code class="docutils literal notranslate"><span class="pre">.env</span></code> file (for this tutorial we will use MySQL).</p>
+<div class="highlight-dotenv notranslate"><div class="highlight"><pre><span></span>DATABASE_URL=mysql://user:password@mysql:3306/jobeet
+</pre></div>
+</div>
+<p>Now that Doctrine knows about your database, you can let it create the database for you (if you did not already created it):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:database:create --if-not-exists
+</pre></div>
+</div>
+<blockquote>
+<div>Note: don’t forget first to enter php container if you are not in: <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">exec</span> <span class="pre">php-fpm</span> <span class="pre">bash</span></code>and to execute command from container</div></blockquote>
+</div>
+<div class="section" id="creating-entity-classes">
+<span id="creating-entity-classes"></span><h2>Creating Entity Classes<a class="headerlink" href="#creating-entity-classes" title="Permalink to this headline">¶</a></h2>
+<p>For each type of object we need, we will create an entity class (just a simple PHP class with some properties).</p>
+<p>src/Entity/Category.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">class Category</span>
+<span class="x">{</span>
+<span class="x">    private $id;</span>
+<span class="x">    private $name;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>src/Entity/Job.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">class Job</span>
+<span class="x">{</span>
+<span class="x">    private $id;</span>
+<span class="x">    private $category;</span>
+<span class="x">    private $type;</span>
+<span class="x">    private $company;</span>
+<span class="x">    private $logo;</span>
+<span class="x">    private $url;</span>
+<span class="x">    private $position;</span>
+<span class="x">    private $location;</span>
+<span class="x">    private $description;</span>
+<span class="x">    private $howToApply;</span>
+<span class="x">    private $token;</span>
+<span class="x">    private $public;</span>
+<span class="x">    private $activated;</span>
+<span class="x">    private $email;</span>
+<span class="x">    private $expiresAt;</span>
+<span class="x">    private $createdAt;</span>
+<span class="x">    private $updatedAt;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>src/Entity/Affiliate.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">class Affiliate</span>
+<span class="x">{</span>
+<span class="x">    private $id;</span>
+<span class="x">    private $categories;</span>
+<span class="x">    private $url;</span>
+<span class="x">    private $email;</span>
+<span class="x">    private $token;</span>
+<span class="x">    private $active;</span>
+<span class="x">    private $createdAt;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-mapping-information">
+<span id="adding-mapping-information"></span><h2>Adding Mapping Information<a class="headerlink" href="#adding-mapping-information" title="Permalink to this headline">¶</a></h2>
+<p>To tell Doctrine about our objects, we will create “metadata” that will describe how our objects will be stored in the database.
+We will use annotations for this project but you can also use YAML or XML files to achieve the same result.</p>
+<p>src/Entity/Category.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\Common\Collections\ArrayCollection;</span>
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;categories&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Category</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @var int</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;integer&quot;)</span>
+<span class="x">     * @ORM\Id</span>
+<span class="x">     * @ORM\GeneratedValue(strategy=&quot;AUTO&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $id;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=100)</span>
+<span class="x">     */</span>
+<span class="x">    private $name;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var Job[]|ArrayCollection</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\OneToMany(targetEntity=&quot;Job&quot;, mappedBy=&quot;category&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $jobs;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var Affiliate[]|ArrayCollection</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\ManyToMany(targetEntity=&quot;Affiliate&quot;, mappedBy=&quot;categories&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $affiliates;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>src/Entity/Job.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;jobs&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Job</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @var int</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;integer&quot;)</span>
+<span class="x">     * @ORM\Id</span>
+<span class="x">     * @ORM\GeneratedValue(strategy=&quot;AUTO&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $id;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255)</span>
+<span class="x">     */</span>
+<span class="x">    private $type;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255)</span>
+<span class="x">     */</span>
+<span class="x">    private $company;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string|null</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255, nullable=true)</span>
+<span class="x">     */</span>
+<span class="x">    private $logo;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string|null</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255, nullable=true)</span>
+<span class="x">     */</span>
+<span class="x">    private $url;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255)</span>
+<span class="x">     */</span>
+<span class="x">    private $position;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255)</span>
+<span class="x">     */</span>
+<span class="x">    private $location;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;text&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $description;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;text&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $howToApply;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255, unique=true)</span>
+<span class="x">     */</span>
+<span class="x">    private $token;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var bool</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;boolean&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $public;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var bool</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;boolean&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $activated;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255)</span>
+<span class="x">     */</span>
+<span class="x">    private $email;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var \DateTime</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;datetime&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $expiresAt;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var \DateTime</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;datetime&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $createdAt;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var \DateTime</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;datetime&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $updatedAt;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var Category</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\ManyToOne(targetEntity=&quot;Category&quot;, inversedBy=&quot;jobs&quot;)</span>
+<span class="x">     * @ORM\JoinColumn(name=&quot;category_id&quot;, referencedColumnName=&quot;id&quot;, nullable=false)</span>
+<span class="x">     */</span>
+<span class="x">    private $category;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>src/Entity/Affiliate.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\Common\Collections\ArrayCollection;</span>
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;affiliates&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Affiliate</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @var int</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;integer&quot;)</span>
+<span class="x">     * @ORM\Id</span>
+<span class="x">     * @ORM\GeneratedValue(strategy=&quot;AUTO&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $id;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255)</span>
+<span class="x">     */</span>
+<span class="x">    private $url;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255)</span>
+<span class="x">     */</span>
+<span class="x">    private $email;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=255, unique=true)</span>
+<span class="x">     */</span>
+<span class="x">    private $token;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var bool</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;boolean&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $active;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var \DateTime</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;datetime&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $createdAt;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var Category[]|ArrayCollection</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\ManyToMany(targetEntity=&quot;Category&quot;, inversedBy=&quot;affiliates&quot;)</span>
+<span class="x">     * @ORM\JoinTable(name=&quot;affiliates_categories&quot;)</span>
+<span class="x">     */</span>
+<span class="x">    private $categories;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>After creating the entities we can validate the mappings with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:schema:validate
+</pre></div>
+</div>
+<p>This is what you should get:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Mapping
+-------
+
+ <span class="o">[</span>OK<span class="o">]</span> The mapping files are correct.
+
+Database
+--------
+
+ <span class="o">[</span>ERROR<span class="o">]</span> The database schema is not in sync with the current mapping file.
+</pre></div>
+</div>
+<p>Don’t worry about that error for now. We will fix it in a few minutes.</p>
+</div>
+<div class="section" id="constructors-getters-and-setters">
+<span id="constructors-getters-and-setters"></span><h2>Constructors, Getters and Setters<a class="headerlink" href="#constructors-getters-and-setters" title="Permalink to this headline">¶</a></h2>
+<p>Fists of all we should create constructors in entities with OneToMany or ManyToMany relations.
+Collection property, such as $categories, must be a collection object that implements Doctrine’s Collection interface. In this case, an ArrayCollection object is used.
+This looks and acts almost exactly like an array, but has some added flexibility. Just imagine that it’s an array and you’ll be in good shape.</p>
+<p>src/Entity/Category.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\Common\Collections\ArrayCollection;</span>
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;categories&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Category</span>
+<span class="x">{</span>
+<span class="x">    // properties</span>
+<span class="x">    </span>
+<span class="x">    public function __construct()</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;jobs = new ArrayCollection();</span>
+<span class="x">        $this-&gt;affiliates = new ArrayCollection();</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    // setters and getters</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>src/Entity/Affiliate.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\Common\Collections\ArrayCollection;</span>
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;affiliates&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Affiliate</span>
+<span class="x">{</span>
+<span class="x">    // properties</span>
+<span class="x">    </span>
+<span class="x">    public function __construct()</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;categories = new ArrayCollection();</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    // setters and getters</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>As you can notice, all properties are <code class="docutils literal notranslate"><span class="pre">private</span></code> but we should access them somehow. Let’s generate setters and getters.
+If you use an IDE like PHPStorm, it can generate these for you. In PHPStorm, put your cursor anywhere in the class, then go to the Code -&gt; Generate menu and select “Getters and Setters” (Alt + Insert).
+Notice #1: for boolean variables we generate <code class="docutils literal notranslate"><span class="pre">is</span></code> and <code class="docutils literal notranslate"><span class="pre">set</span></code> methods, for collections we generate <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">remove</span></code> but for everyone else we generate <code class="docutils literal notranslate"><span class="pre">get</span></code> and <code class="docutils literal notranslate"><span class="pre">set</span></code> methods.
+Notice #2: for id we generate ONLY getter. We don’t have case when to set id, but doctrine knows how to set id without setter.</p>
+<p>src/Entity/Category.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\Common\Collections\ArrayCollection;</span>
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;categories&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Category</span>
+<span class="x">{</span>
+<span class="x">    // properties</span>
+<span class="x">    </span>
+<span class="x">    // constructor</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return int</span>
+<span class="x">     */</span>
+<span class="x">    public function getId() : ?int</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;id;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getName() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;name;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $name</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setName(string $name) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;name = $name;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return Job[]|ArrayCollection</span>
+<span class="x">     */</span>
+<span class="x">    public function getJobs()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;jobs;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param Job $job</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function addJob(Job $job) : self</span>
+<span class="x">    {</span>
+<span class="x">        if (!$this-&gt;jobs-&gt;contains($job)) {</span>
+<span class="x">            $this-&gt;jobs-&gt;add($job);</span>
+<span class="x">        }</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param Job $job</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function removeJob(Job $job) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;jobs-&gt;removeElement($job);</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return Affiliate[]|ArrayCollection</span>
+<span class="x">     */</span>
+<span class="x">    public function getAffiliates()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;affiliates;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param Affiliate $affiliate</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function addAffiliate($affiliate) : self</span>
+<span class="x">    {</span>
+<span class="x">        if (!$this-&gt;affiliates-&gt;contains($affiliate)) {</span>
+<span class="x">            $this-&gt;affiliates-&gt;add($affiliate);</span>
+<span class="x">        }</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param Affiliate $affiliate</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function removeAffiliate($affiliate) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;affiliates-&gt;removeElement($affiliate);</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>src/Entity/Job.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;jobs&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Job</span>
+<span class="x">{</span>
+<span class="x">    // properties</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return int</span>
+<span class="x">     */</span>
+<span class="x">    public function getId() : ?int</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;id;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getType() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;type;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $type</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setType(string $type) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;type = $type;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getCompany() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;company;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $company</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setCompany(string $company) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;company = $company;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string|null</span>
+<span class="x">     */</span>
+<span class="x">    public function getLogo() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;logo;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string|null $logo</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setLogo(?string $logo) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;logo = $logo;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string|null</span>
+<span class="x">     */</span>
+<span class="x">    public function getUrl() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;url;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string|null $url</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setUrl(?string $url) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;url = $url;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getPosition() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;position;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $position</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setPosition(string $position) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;position = $position;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getLocation() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;location;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $location</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setLocation(string $location) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;location = $location;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getDescription() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;description;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $description</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setDescription(string $description) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;description = $description;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getHowToApply() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;howToApply;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $howToApply</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setHowToApply(string $howToApply) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;howToApply = $howToApply;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getToken() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;token;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $token</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setToken(string $token) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;token = $token;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return bool</span>
+<span class="x">     */</span>
+<span class="x">    public function isPublic() : ?bool</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;public;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param bool $public</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setPublic(bool $public) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;public = $public;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return bool</span>
+<span class="x">     */</span>
+<span class="x">    public function isActivated() : ?bool</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;activated;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param bool $activated</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setActivated(bool $activated) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;activated = $activated;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getEmail() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;email;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $email</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setEmail(string $email) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;email = $email;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return \DateTime</span>
+<span class="x">     */</span>
+<span class="x">    public function getExpiresAt() : ?\DateTime</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;expiresAt;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param \DateTime $expiresAt</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setExpiresAt(\DateTime $expiresAt) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;expiresAt = $expiresAt;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return \DateTime</span>
+<span class="x">     */</span>
+<span class="x">    public function getCreatedAt() : ?\DateTime</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;createdAt;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return \DateTime</span>
+<span class="x">     */</span>
+<span class="x">    public function getUpdatedAt() : ?\DateTime</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;updatedAt;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return Category</span>
+<span class="x">     */</span>
+<span class="x">    public function getCategory() : ?Category</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;category;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setCategory(Category $category) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;category = $category;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>src/Entity/Affiliate.php:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Entity;</span>
+
+<span class="x">use Doctrine\Common\Collections\ArrayCollection;</span>
+<span class="x">use Doctrine\ORM\Mapping as ORM;</span>
+
+<span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;affiliates&quot;)</span>
+<span class="x"> */</span>
+<span class="x">class Affiliate</span>
+<span class="x">{</span>
+<span class="x">    // properties</span>
+<span class="x">    </span>
+<span class="x">    // constructor</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return int</span>
+<span class="x">     */</span>
+<span class="x">    public function getId() : ?int</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;id;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getUrl() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;url;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $url</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setUrl(string $url) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;url = $url;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getEmail() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;email;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $email</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setEmail(string $email) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;email = $email;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return string</span>
+<span class="x">     */</span>
+<span class="x">    public function getToken() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;token;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string|null $token</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setToken(?string $token) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;token = $token;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return bool</span>
+<span class="x">     */</span>
+<span class="x">    public function isActive() : ?bool</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;active;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param bool $active</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setActive(bool $active) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;active = $active;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return \DateTime</span>
+<span class="x">     */</span>
+<span class="x">    public function getCreatedAt() : ?\DateTime</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;createdAt;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return Category[]|ArrayCollection</span>
+<span class="x">     */</span>
+<span class="x">    public function getCategories()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;categories;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param Category[]|ArrayCollection $categories</span>
+<span class="x">     *</span>
+<span class="x">     * @return self</span>
+<span class="x">     */</span>
+<span class="x">    public function setCategories($categories) : self</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;categories = $categories;</span>
+
+<span class="x">        return $this;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lifecycle-callbacks">
+<span id="lifecycle-callbacks"></span><h2>Lifecycle Callbacks<a class="headerlink" href="#lifecycle-callbacks" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, you need to perform an action right before or after an entity is inserted, updated, or deleted.
+These types of actions are known as “lifecycle” callbacks, as they’re callback methods that you need to execute during different stages of the lifecycle of an entity (e.g. the entity is inserted, updated, deleted, etc).</p>
+<p>We already added the created_at and updated_at properties in our Job and Affiliate classes, and it will be great if Doctrine will update them automatically when needed.</p>
+<p>To enable the lifecycle callbacks for an entity we need to add a new <code class="docutils literal notranslate"><span class="pre">HasLifecycleCallbacks</span></code> annotation to our class. We will also add methods to be called when specified by the PrePersist and PreUpdate annotations:</p>
+<p>For Job:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;jobs&quot;)</span>
+<span class="x"> * @ORM\HasLifecycleCallbacks()</span>
+<span class="x"> */</span>
+<span class="x">class Job</span>
+<span class="x">{</span>
+<span class="x">    // properties</span>
+<span class="x">    </span>
+<span class="x">    // getters/setters</span>
+<span class="x">    </span>
+<span class="x">    /**</span>
+<span class="x">     * @ORM\PrePersist()</span>
+<span class="x">     */</span>
+<span class="x">    public function prePersist()</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;createdAt = new \DateTime();</span>
+<span class="x">        $this-&gt;updatedAt = new \DateTime();</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @ORM\PreUpdate()</span>
+<span class="x">     */</span>
+<span class="x">    public function preUpdate()</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;updatedAt = new \DateTime();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>For Affiliate:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">/**</span>
+<span class="x"> * @ORM\Entity()</span>
+<span class="x"> * @ORM\Table(name=&quot;affiliates&quot;)</span>
+<span class="x"> * @ORM\HasLifecycleCallbacks()</span>
+<span class="x"> */</span>
+<span class="x">class Affiliate</span>
+<span class="x">{</span>
+<span class="x">    // properties</span>
+<span class="x">    </span>
+<span class="x">    // contructor</span>
+<span class="x">    </span>
+<span class="x">    // getters/setters</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @ORM\PrePersist</span>
+<span class="x">     */</span>
+<span class="x">    public function prePersist()</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;createdAt = new \DateTime();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-the-database-tables-schema">
+<span id="creating-the-database-tables-schema"></span><h2>Creating the Database Tables/Schema<a class="headerlink" href="#creating-the-database-tables-schema" title="Permalink to this headline">¶</a></h2>
+<p>Now we have usable entity classes with mapping information so Doctrine knows exactly how to persist it.
+Of course, we don’t yet have the corresponding product table in our database.
+Fortunately, Doctrine Migration Bundle can automatically create migrations with SQL to sync DB with entities. To do this, let’s install the bundle:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer require doctrine/doctrine-migrations-bundle
+</pre></div>
+</div>
+<p>After that let’s generate first migration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:migration:diff
+</pre></div>
+</div>
+<p>New migration was generated in folder <code class="docutils literal notranslate"><span class="pre">src/Migrations</span></code> but this migration is not executed yet. Let’s execute it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:migration:migrate
+</pre></div>
+</div>
+<p>Now DB will have all information described in entities.</p>
+</div>
+<div class="section" id="the-initial-data">
+<span id="the-initial-data"></span><h2>The Initial Data<a class="headerlink" href="#the-initial-data" title="Permalink to this headline">¶</a></h2>
+<p>The tables have been created in the database but there is no data in them. For any web application, there are three types of data: <strong>initial data</strong> (this is needed for the application to work, in our case we some initial categories and an admin user), <strong>test data</strong> (needed for the application to be tested) and <strong>user data</strong> (created by the users during the normal life of the application).</p>
+<p>To populate the database with some initial data we will use <a class="reference external" href="https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html">DoctrineFixturesBundle</a>. To setup this bundle we have to follow the next steps:</p>
+<p>Let’s download the Bundle</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer require --dev doctrine/doctrine-fixtures-bundle
+</pre></div>
+</div>
+<p>Now that everything is set up we will create some new classes to load data in a new folder in our bundle: <code class="docutils literal notranslate"><span class="pre">src/DataFixtures</span></code>.</p>
+<p>First we need some categories. Create the <code class="docutils literal notranslate"><span class="pre">src/DataFixtures/CategoryFixtures.php</span></code> file:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\DataFixtures;</span>
+
+<span class="x">use App\Entity\Category;</span>
+<span class="x">use Doctrine\Bundle\FixturesBundle\Fixture;</span>
+<span class="x">use Doctrine\Common\DataFixtures\OrderedFixtureInterface;</span>
+<span class="x">use Doctrine\Common\Persistence\ObjectManager;</span>
+
+<span class="x">class CategoryFixtures extends Fixture implements OrderedFixtureInterface</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @param ObjectManager $manager</span>
+<span class="x">     *</span>
+<span class="x">     * @return void</span>
+<span class="x">     */</span>
+<span class="x">    public function load(ObjectManager $manager) : void</span>
+<span class="x">    {</span>
+<span class="x">        $designCategory = new Category();</span>
+<span class="x">        $designCategory-&gt;setName(&#39;Design&#39;);</span>
+
+<span class="x">        $programmingCategory = new Category();</span>
+<span class="x">        $programmingCategory-&gt;setName(&#39;Programming&#39;);</span>
+
+<span class="x">        $managerCategory = new Category();</span>
+<span class="x">        $managerCategory-&gt;setName(&#39;Manager&#39;);</span>
+
+<span class="x">        $administratorCategory = new Category();</span>
+<span class="x">        $administratorCategory-&gt;setName(&#39;Administrator&#39;);</span>
+
+<span class="x">        $manager-&gt;persist($designCategory);</span>
+<span class="x">        $manager-&gt;persist($programmingCategory);</span>
+<span class="x">        $manager-&gt;persist($managerCategory);</span>
+<span class="x">        $manager-&gt;persist($administratorCategory);</span>
+
+<span class="x">        $manager-&gt;flush();</span>
+
+<span class="x">        $this-&gt;addReference(&#39;category-design&#39;, $designCategory);</span>
+<span class="x">        $this-&gt;addReference(&#39;category-programming&#39;, $programmingCategory);</span>
+<span class="x">        $this-&gt;addReference(&#39;category-manager&#39;, $managerCategory);</span>
+<span class="x">        $this-&gt;addReference(&#39;category-administrator&#39;, $administratorCategory);</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return int</span>
+<span class="x">     */</span>
+<span class="x">    public function getOrder() : int</span>
+<span class="x">    {</span>
+<span class="x">        return 1;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>And now some jobs (src/DataFixtures/JobFixtures.php):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\DataFixtures;</span>
+
+<span class="x">use App\Entity\Job;</span>
+<span class="x">use Doctrine\Bundle\FixturesBundle\Fixture;</span>
+<span class="x">use Doctrine\Common\DataFixtures\OrderedFixtureInterface;</span>
+<span class="x">use Doctrine\Common\Persistence\ObjectManager;</span>
+
+<span class="x">class JobFixtures extends Fixture implements OrderedFixtureInterface</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @param ObjectManager $manager</span>
+<span class="x">     *</span>
+<span class="x">     * @return void</span>
+<span class="x">     */</span>
+<span class="x">    public function load(ObjectManager $manager) : void</span>
+<span class="x">    {</span>
+<span class="x">        $jobSensioLabs = new Job();</span>
+<span class="x">        $jobSensioLabs-&gt;setCategory($manager-&gt;merge($this-&gt;getReference(&#39;category-programming&#39;)));</span>
+<span class="x">        $jobSensioLabs-&gt;setType(&#39;full-time&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setCompany(&#39;Sensio Labs&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setLogo(&#39;sensio-labs.gif&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setUrl(&#39;http://www.sensiolabs.com/&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setPosition(&#39;Web Developer&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setLocation(&#39;Paris, France&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setDescription(&#39;You\&#39;ve already developed websites with symfony and you want to work with Open-Source technologies. You have a minimum of 3 years experience in web development with PHP or Java and you wish to participate to development of Web 2.0 sites using the best frameworks available.&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setHowToApply(&#39;Send your resume to fabien.potencier [at] sensio.com&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setPublic(true);</span>
+<span class="x">        $jobSensioLabs-&gt;setActivated(true);</span>
+<span class="x">        $jobSensioLabs-&gt;setToken(&#39;job_sensio_labs&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setEmail(&#39;job@example.com&#39;);</span>
+<span class="x">        $jobSensioLabs-&gt;setExpiresAt(new \DateTime(&#39;+30 days&#39;));</span>
+
+<span class="x">        $jobExtremeSensio = new Job();</span>
+<span class="x">        $jobExtremeSensio-&gt;setCategory($manager-&gt;merge($this-&gt;getReference(&#39;category-design&#39;)));</span>
+<span class="x">        $jobExtremeSensio-&gt;setType(&#39;part-time&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setCompany(&#39;Extreme Sensio&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setLogo(&#39;extreme-sensio.gif&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setUrl(&#39;http://www.extreme-sensio.com/&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setPosition(&#39;Web Designer&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setLocation(&#39;Paris, France&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setDescription(&#39;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in.&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setHowToApply(&#39;Send your resume to fabien.potencier [at] sensio.com&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setPublic(true);</span>
+<span class="x">        $jobExtremeSensio-&gt;setActivated(true);</span>
+<span class="x">        $jobExtremeSensio-&gt;setToken(&#39;job_extreme_sensio&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setEmail(&#39;job@example.com&#39;);</span>
+<span class="x">        $jobExtremeSensio-&gt;setExpiresAt(new \DateTime(&#39;+30 days&#39;));</span>
+
+<span class="x">        $manager-&gt;persist($jobSensioLabs);</span>
+<span class="x">        $manager-&gt;persist($jobExtremeSensio);</span>
+
+<span class="x">        $manager-&gt;flush();</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @return int</span>
+<span class="x">     */</span>
+<span class="x">    public function getOrder() : int</span>
+<span class="x">    {</span>
+<span class="x">        return 2;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Once your fixtures have been written, you can load them via the command line by using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:fixtures:load
+</pre></div>
+</div>
+<p>Now check your database, you should see the data loaded into tables.</p>
+<p>The job fixtures file references two images. You can download them from below and put them under the <code class="docutils literal notranslate"><span class="pre">public/uploads/jobs/</span></code> directory:</p>
+<p><img alt="Save this as sensio-labs.gif" src="../_images/sensio-labs.gif" /></p>
+<p><img alt="Save this as extreme-sensio.gif" src="../_images/extreme-sensio.gif" /></p>
+<p>You can find the code from day 3 here: <a class="reference external" href="https://github.com/gregurco/jobeet/tree/day3">https://github.com/gregurco/jobeet/tree/day3</a>.</p>
+</div>
+<div class="section" id="additional-information">
+<span id="additional-information"></span><h2>Additional information<a class="headerlink" href="#additional-information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://symfony.com/doc/4.1/doctrine.html">Databases and the Doctrine ORM</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/4.1/doctrine/associations.html">How to Work with Doctrine Associations / Relations</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/4.1/doctrine/lifecycle_callbacks.html">How to Work with Lifecycle Callbacks</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/master/bundles/DoctrineMigrationsBundle/index.html">DoctrineMigrationsBundle</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html">DoctrineFixturesBundle</a></li>
+<li><a class="reference external" href="https://github.com/fzaninotto/Faker">Faker</a></li>
+</ul>
+</div>
+<div class="section" id="next-steps">
+<span id="next-steps"></span><h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Continue this tutorial here: <a class="reference external" href="/days/day-4.md">Jobeet Day 4: The Controller and the View</a></p>
+<p>Previous post is available here: <a class="reference external" href="/days/day-2.md">Jobeet Day 2: The Project</a></p>
+<p>Main page is available here: <a class="reference external" href="/README.md">Symfony 4.1 Jobeet Tutorial</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018, Vlad Gregurco.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jobeet Day 10: The Admin &#8212; Jobeet 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../README.html">
+          Jobeet</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../README.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Jobeet Day 10: The Admin</a><ul>
+<li><a class="reference internal" href="#main-concept">Main concept</a></li>
+<li><a class="reference internal" href="#first-admin-controller">First admin controller</a></li>
+<li><a class="reference internal" href="#admin-templates-layout">Admin templates layout</a></li>
+<li><a class="reference internal" href="#category-crud">Category CRUD</a><ul>
+<li><a class="reference internal" href="#list-action">List action</a></li>
+<li><a class="reference internal" href="#create-action">Create action</a></li>
+<li><a class="reference internal" href="#edit-action">Edit action</a></li>
+<li><a class="reference internal" href="#delete-action">Delete action</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#job-crud">Job CRUD</a><ul>
+<li><a class="reference internal" href="#list-action">List action</a></li>
+<li><a class="reference internal" href="#create-action">Create action</a></li>
+<li><a class="reference internal" href="#edit-action">Edit action</a></li>
+<li><a class="reference internal" href="#delete-action">Delete action</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#additional-information">Additional information</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/days/day-10.md.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="jobeet-day-10-the-admin">
+<span id="jobeet-day-10-the-admin"></span><h1>Jobeet Day 10: The Admin<a class="headerlink" href="#jobeet-day-10-the-admin" title="Permalink to this headline">¶</a></h1>
+<p>With the addition we made in day 9 on Jobeet, the frontend application is now fully useable by job seekers and job posters. It’s time to talk a bit about the backend application.Today we will develop a complete backend interface for Jobeet in just one day.</p>
+<div class="section" id="main-concept">
+<span id="main-concept"></span><h2>Main concept<a class="headerlink" href="#main-concept" title="Permalink to this headline">¶</a></h2>
+<p>The Admin part is another side of Jobeet application and this side includes functionality that is not available in frontend application, for example: creation and deletion of categories.For security and architectural reasons this logic should be <strong>separated</strong> from frontend application. Let’s keep in mind this idea during all this day.</p>
+</div>
+<div class="section" id="first-admin-controller">
+<span id="first-admin-controller"></span><h2>First admin controller<a class="headerlink" href="#first-admin-controller" title="Permalink to this headline">¶</a></h2>
+<p>We have to create our first admin controller and we know that this controller should be separated from existing ones.Create new folder <code class="docutils literal notranslate"><span class="pre">src/Controller/Admin</span></code> with new file <code class="docutils literal notranslate"><span class="pre">CategoryController.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Controller\Admin;</span>
+
+<span class="x">use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>All admin controllers will be created in this folder.</p>
+</div>
+<div class="section" id="admin-templates-layout">
+<span id="admin-templates-layout"></span><h2>Admin templates layout<a class="headerlink" href="#admin-templates-layout" title="Permalink to this headline">¶</a></h2>
+<p>We will create admin templates and all of them will extend some layout, like we did with all out templates:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="c">{# page content #}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>But we can’t use this one, because admin layout have some differences:</p>
+<ul class="simple">
+<li>left menu with links to all CRUDs</li>
+<li>button from top menu will redirect to admin default CRUD and not to jobeet main page</li>
+<li><em>and probably many other things will differ with time.</em></li>
+</ul>
+<p>Also like we did with controllers, we will keep admin templates separately in folder <code class="docutils literal notranslate"><span class="pre">/templates/admin</span></code>.
+Let’s create admin templates layout <code class="docutils literal notranslate"><span class="pre">base.html.twig</span></code>:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x">Jobeet - Admin</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x">&lt;/title&gt;</span>
+
+<span class="x">    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;</span>
+
+<span class="x">    </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">stylesheets</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x">    </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">javascripts</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x">    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css&quot;&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+<span class="x">&lt;nav class=&quot;navbar navbar-default&quot;&gt;</span>
+<span class="x">    &lt;div class=&quot;container-fluid&quot;&gt;</span>
+<span class="x">        &lt;div class=&quot;navbar-header&quot;&gt;</span>
+<span class="x">            &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;Jobeet Admin&lt;/a&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/nav&gt;</span>
+
+<span class="x">&lt;div class=&quot;container&quot;&gt;</span>
+<span class="x">    &lt;div class=&quot;row&quot;&gt;</span>
+<span class="x">        &lt;div class=&quot;col-md-2&quot;&gt;</span>
+<span class="x">            &lt;ul class=&quot;nav nav-pills nav-stacked nav-pills-stacked-example&quot;&gt;</span>
+<span class="x">                &lt;li role=&quot;presentation&quot;&gt;</span>
+<span class="x">                    &lt;a href=&quot;#&quot;&gt;Categories&lt;/a&gt;</span>
+<span class="x">                &lt;/li&gt;</span>
+
+<span class="x">                &lt;li role=&quot;presentation&quot;&gt;</span>
+<span class="x">                    &lt;a href=&quot;#&quot;&gt;Jobs&lt;/a&gt;</span>
+<span class="x">                &lt;/li&gt;</span>
+<span class="x">            &lt;/ul&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div class=&quot;col-md-10&quot;&gt;</span>
+<span class="x">            </span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span>
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+</div>
+<p>Now it’s pretty similar with one we have, but it gives us possibility to change it without affecting public pages.</p>
+</div>
+<div class="section" id="category-crud">
+<span id="category-crud"></span><h2>Category CRUD<a class="headerlink" href="#category-crud" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="list-action">
+<span id="list-action"></span><h3>List action<a class="headerlink" href="#list-action" title="Permalink to this headline">¶</a></h3>
+<p>We have controller and layout, now let’s start creating CRUD from list action:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Controller\Admin;</span>
+
+<span class="x">use App\Entity\Category;</span>
+<span class="x">use Doctrine\ORM\EntityManagerInterface;</span>
+<span class="x">use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;</span>
+<span class="x">use Symfony\Component\Routing\Annotation\Route;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Response;</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * Lists all categories entities.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/admin/categories&quot;, name=&quot;admin.category.list&quot;, methods=&quot;GET&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function list(EntityManagerInterface $em) : Response</span>
+<span class="x">    {</span>
+<span class="x">        $categories = $em-&gt;getRepository(Category::class)-&gt;findAll();</span>
+
+<span class="x">        return $this-&gt;render(&#39;admin/category/list.html.twig&#39;, [</span>
+<span class="x">            &#39;categories&#39; =&gt; $categories,</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>It’s very simple and small: we get all categories from database and pass them to template.
+Just pay attention to route: path starts with <code class="docutils literal notranslate"><span class="pre">/admin/</span></code> and name starts with <code class="docutils literal notranslate"><span class="pre">admin.</span></code>. It will help us to keep admin routes grouped.</p>
+<p>Now create a template <code class="docutils literal notranslate"><span class="pre">admin/category/list.html.twig</span></code> where all the categories will be shown:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;admin/base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;table class=&quot;table&quot;&gt;</span>
+<span class="x">        &lt;thead&gt;</span>
+<span class="x">        &lt;tr class=&quot;active&quot;&gt;</span>
+<span class="x">            &lt;th&gt;Name&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Position&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Jobs&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Affiliates&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Actions&lt;/th&gt;</span>
+<span class="x">        &lt;/tr&gt;</span>
+<span class="x">        &lt;/thead&gt;</span>
+
+<span class="x">        &lt;tbody&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">category</span> <span class="k">in</span> <span class="nv">categories</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            &lt;tr&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.slug</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.jobs.count</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.affiliates.count</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span>
+<span class="x">                    &lt;ul class=&quot;list-inline&quot;&gt;</span>
+<span class="x">                        &lt;li&gt;</span>
+<span class="x">                            &lt;a href=&quot;#&quot; class=&quot;btn btn-default&quot;&gt;Edit&lt;/a&gt;</span>
+<span class="x">                        &lt;/li&gt;</span>
+
+<span class="x">                        &lt;li&gt;</span>
+<span class="x">                            &lt;a href=&quot;#&quot; class=&quot;btn btn-danger&quot;&gt;Delete&lt;/a&gt;</span>
+<span class="x">                        &lt;/li&gt;</span>
+<span class="x">                    &lt;/ul&gt;</span>
+<span class="x">                &lt;/td&gt;</span>
+<span class="x">            &lt;/tr&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;/tbody&gt;</span>
+<span class="x">    &lt;/table&gt;</span>
+
+<span class="x">    &lt;a href=&quot;#&quot; class=&quot;btn btn-success&quot;&gt;Create new&lt;/a&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-action">
+<span id="create-action"></span><h3>Create action<a class="headerlink" href="#create-action" title="Permalink to this headline">¶</a></h3>
+<p>For create action first of all we have to create form. Forms that are strictly related to admin will be placed in separate folder too.Create <code class="docutils literal notranslate"><span class="pre">CategoryType</span></code> class in <code class="docutils literal notranslate"><span class="pre">/src/Form/Admin</span></code> folder:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Form\Admin;</span>
+
+<span class="x">use App\Entity\Category;</span>
+<span class="x">use Symfony\Component\Form\AbstractType;</span>
+<span class="x">use Symfony\Component\Form\Extension\Core\Type\TextType;</span>
+<span class="x">use Symfony\Component\Form\FormBuilderInterface;</span>
+<span class="x">use Symfony\Component\OptionsResolver\OptionsResolver;</span>
+<span class="x">use Symfony\Component\Validator\Constraints\Length;</span>
+<span class="x">use Symfony\Component\Validator\Constraints\NotBlank;</span>
+
+<span class="x">class CategoryType extends AbstractType</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * @param FormBuilderInterface $builder</span>
+<span class="x">     * @param array $options</span>
+<span class="x">     */</span>
+<span class="x">    public function buildForm(FormBuilderInterface $builder, array $options)</span>
+<span class="x">    {</span>
+<span class="x">        $builder-&gt;add(&#39;name&#39;, TextType::class, [</span>
+<span class="x">            &#39;constraints&#39; =&gt; [</span>
+<span class="x">                new NotBlank(),</span>
+<span class="x">                new Length([&#39;max&#39; =&gt; 100]),</span>
+<span class="x">            ]</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param OptionsResolver $resolver</span>
+<span class="x">     */</span>
+<span class="x">    public function configureOptions(OptionsResolver $resolver)</span>
+<span class="x">    {</span>
+<span class="x">        $resolver-&gt;setDefaults([</span>
+<span class="x">            &#39;data_class&#39; =&gt; Category::class,</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>It’s very simple form with only one field and some basic validation rules.
+Just notice that <code class="docutils literal notranslate"><span class="pre">slug</span></code> is generated automatically and we don’t have to provide it.</p>
+<p>The next step is to create action in controller and to build form:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use App\Form\Admin\CategoryType;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Request;</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * Create category.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/admin/category/create&quot;, name=&quot;admin.category.create&quot;, methods=&quot;GET|POST&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @param Request $request</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function create(Request $request, EntityManagerInterface $em) : Response</span>
+<span class="x">    {</span>
+<span class="x">        $category = new Category();</span>
+<span class="x">        $form = $this-&gt;createForm(CategoryType::class, $category);</span>
+
+<span class="x">        return $this-&gt;render(&#39;admin/category/create.html.twig&#39;, [</span>
+<span class="x">            &#39;form&#39; =&gt; $form-&gt;createView(),</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Now create template ‘admin/category/create.html.twig’ and render the form:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;admin/base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h1&gt;Create new category&lt;/h1&gt;</span>
+<span class="x">    </span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">form_start</span><span class="o">(</span><span class="nv">form</span><span class="o">,</span> <span class="o">{</span><span class="s1">&#39;attr&#39;</span><span class="o">:</span> <span class="o">{</span><span class="s1">&#39;novalidate&#39;</span><span class="o">:</span> <span class="s1">&#39;novalidate&#39;</span><span class="cp">}}</span><span class="x">) }}</span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">form_widget</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span>
+<span class="x">        &lt;div class=&quot;form-group&quot;&gt;</span>
+<span class="x">            &lt;div class=&quot;col-sm-offset-2 col-sm-10&quot;&gt;</span>
+<span class="x">                &lt;button type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;Save&lt;/button&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">form_end</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span>
+<span class="x">    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;admin.category.list&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot; class=&quot;btn btn-default&quot;&gt;</span>
+<span class="x">        &lt;span class=&quot;glyphicon glyphicon-arrow-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;</span>
+<span class="x">        back to list</span>
+<span class="x">    &lt;/a&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Link the “Create new” button from list page with create page in <code class="docutils literal notranslate"><span class="pre">templates/admin/category/list.html.twig</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- &lt;a href=&quot;#&quot; class=&quot;btn btn-success&quot;&gt;Create new&lt;/a&gt;</span>
+<span class="gi">+ &lt;a href=&quot;{{ path(&#39;admin.category.create&#39;) }}&quot; class=&quot;btn btn-success&quot;&gt;Create new&lt;/a&gt;</span>
+</pre></div>
+</div>
+<p>Page is accessible and form is displayed, but not handled.Add handling of form in <code class="docutils literal notranslate"><span class="pre">create</span></code> action:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+<span class="x">    public function create(Request $request, EntityManagerInterface $em) : Response</span>
+<span class="x">    {</span>
+<span class="x">        $category = new Category();</span>
+<span class="x">        $form = $this-&gt;createForm(CategoryType::class, $category);</span>
+
+<span class="x">        if ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {</span>
+<span class="x">            $em-&gt;persist($category);</span>
+<span class="x">            $em-&gt;flush();</span>
+
+<span class="x">            return $this-&gt;redirectToRoute(&#39;admin.category.list&#39;);</span>
+<span class="x">        }</span>
+
+<span class="x">        return $this-&gt;render(&#39;admin/category/create.html.twig&#39;, [</span>
+<span class="x">            &#39;form&#39; =&gt; $form-&gt;createView(),</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>That’s it. Now admin can create as much categories as wants.</p>
+</div>
+<div class="section" id="edit-action">
+<span id="edit-action"></span><h3>Edit action<a class="headerlink" href="#edit-action" title="Permalink to this headline">¶</a></h3>
+<p>In edit action we can use the same form, so let’s move on to creating a method in controller:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * Edit category.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/admin/category/{id}/edit&quot;, name=&quot;admin.category.edit&quot;, methods=&quot;GET|POST&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</span>
+<span class="x">     *</span>
+<span class="x">     * @param Request $request</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function edit(Request $request, EntityManagerInterface $em, Category $category) : Response</span>
+<span class="x">    {</span>
+<span class="x">        $form = $this-&gt;createForm(CategoryType::class, $category);</span>
+<span class="x">        $form-&gt;handleRequest($request);</span>
+
+<span class="x">        if ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {</span>
+<span class="x">            $em-&gt;flush();</span>
+
+<span class="x">            return $this-&gt;redirectToRoute(&#39;admin.category.list&#39;);</span>
+<span class="x">        }</span>
+
+<span class="x">        return $this-&gt;render(&#39;admin/category/edit.html.twig&#39;, [</span>
+<span class="x">            &#39;category&#39; =&gt; $category,</span>
+<span class="x">            &#39;form&#39; =&gt; $form-&gt;createView(),</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>and template <code class="docutils literal notranslate"><span class="pre">templates/admin/category/edit.html.twig</span></code>:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;admin/base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h1&gt;Edit category &quot;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&quot;&lt;/h1&gt;</span>
+
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">form_start</span><span class="o">(</span><span class="nv">form</span><span class="o">,</span> <span class="o">{</span><span class="s1">&#39;attr&#39;</span><span class="o">:</span> <span class="o">{</span><span class="s1">&#39;novalidate&#39;</span><span class="o">:</span> <span class="s1">&#39;novalidate&#39;</span><span class="cp">}}</span><span class="x">) }}</span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">form_widget</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span>
+<span class="x">        &lt;div class=&quot;form-group&quot;&gt;</span>
+<span class="x">            &lt;div class=&quot;col-sm-offset-2 col-sm-10&quot;&gt;</span>
+<span class="x">                &lt;button type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;Save&lt;/button&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">form_end</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="x">    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;admin.category.list&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot; class=&quot;btn btn-default&quot;&gt;</span>
+<span class="x">        &lt;span class=&quot;glyphicon glyphicon-arrow-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;</span>
+<span class="x">        back to list</span>
+<span class="x">    &lt;/a&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>change link to the edit page in <code class="docutils literal notranslate"><span class="pre">list.html.twig</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- &lt;a href=&quot;#&quot; class=&quot;btn btn-default&quot;&gt;Edit&lt;/a&gt;</span>
+<span class="gi">+ &lt;a href=&quot;{{ path(&#39;admin.category.edit&#39;, {id: category.id}) }}&quot; class=&quot;btn btn-default&quot;&gt;Edit&lt;/a&gt;</span>
+</pre></div>
+</div>
+<p>The editing of categories works now and slug is automatically changed but the rendering of form is same in create and edit template.
+Move it to separate template <code class="docutils literal notranslate"><span class="pre">templates/admin/category/_form.html.twig</span></code>:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">form_start</span><span class="o">(</span><span class="nv">form</span><span class="o">,</span> <span class="o">{</span><span class="s1">&#39;attr&#39;</span><span class="o">:</span> <span class="o">{</span><span class="s1">&#39;novalidate&#39;</span><span class="o">:</span> <span class="s1">&#39;novalidate&#39;</span><span class="cp">}}</span><span class="x">) }}</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">form_widget</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="x">    &lt;div class=&quot;form-group&quot;&gt;</span>
+<span class="x">        &lt;div class=&quot;col-sm-offset-2 col-sm-10&quot;&gt;</span>
+<span class="x">            &lt;button type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;Save&lt;/button&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="cp">{{</span> <span class="nv">form_end</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>and include in both places:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;admin/category/_form.html.twig&#39;</span> <span class="nv">with</span> <span class="o">{</span><span class="s1">&#39;form&#39;</span><span class="o">:</span> <span class="nv">form</span><span class="o">}</span> <span class="nv">only</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-action">
+<span id="delete-action"></span><h3>Delete action<a class="headerlink" href="#delete-action" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes it’s no need to create separate form type class, but we have to perform POST|PUT|DELETE action.In this case we can write the form directly in template, but not to lose <a class="reference external" href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF</a> protection we can use <a class="reference external" href="https://symfony.com/doc/4.1/reference/twig_reference.html#csrf-token">csrf_token</a> function.
+Let’s add the form in <code class="docutils literal notranslate"><span class="pre">templates/admin/category/list.html.twig</span></code> template:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="c">{# ... #}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">category</span> <span class="k">in</span> <span class="nv">categories</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;tr&gt;</span>
+<span class="x">        &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">        &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.slug</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">        &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.jobs.count</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">        &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">category.affiliates.count</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">        &lt;td&gt;</span>
+<span class="x">            &lt;ul class=&quot;list-inline&quot;&gt;</span>
+<span class="x">                &lt;li&gt;</span>
+<span class="x">                    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;admin.category.edit&#39;</span><span class="o">,</span> <span class="o">{</span><span class="nv">id</span><span class="o">:</span> <span class="nv">category.id</span><span class="o">})</span> <span class="cp">}}</span><span class="x">&quot; class=&quot;btn btn-default&quot;&gt;Edit&lt;/a&gt;</span>
+<span class="x">                &lt;/li&gt;</span>
+
+<span class="x">                &lt;li&gt;</span>
+<span class="x">                    &lt;form method=&quot;post&quot; action=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;admin.category.delete&#39;</span><span class="o">,</span> <span class="o">{</span><span class="nv">id</span><span class="o">:</span> <span class="nv">category.id</span><span class="o">})</span> <span class="cp">}}</span><span class="x">&quot; onsubmit=&quot;return confirm(&#39;Are you sure you want to delete this item?&#39;);&quot;&gt;</span>
+<span class="x">                        &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;DELETE&quot;&gt;</span>
+<span class="x">                        &lt;input type=&quot;hidden&quot; name=&quot;_token&quot; value=&quot;</span><span class="cp">{{</span> <span class="nv">csrf_token</span><span class="o">(</span><span class="s1">&#39;delete&#39;</span> <span class="o">~</span> <span class="nv">category.id</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span>
+<span class="x">                        &lt;button class=&quot;btn btn-danger&quot;&gt;Delete&lt;/button&gt;</span>
+<span class="x">                    &lt;/form&gt;</span>
+<span class="x">                &lt;/li&gt;</span>
+<span class="x">            &lt;/ul&gt;</span>
+<span class="x">        &lt;/td&gt;</span>
+<span class="x">    &lt;/tr&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span>
+<span class="c">{# ... #}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>create the action in controller:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * Delete category.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/admin/category/{id}/delete&quot;, name=&quot;admin.category.delete&quot;, methods=&quot;DELETE&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</span>
+<span class="x">     *</span>
+<span class="x">     * @param Request $request</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function delete(Request $request, EntityManagerInterface $em, Category $category) : Response</span>
+<span class="x">    {</span>
+
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>validate CSRF token and delete the category:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * Delete category.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/admin/category/{id}/delete&quot;, name=&quot;admin.category.delete&quot;, methods=&quot;DELETE&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</span>
+<span class="x">     *</span>
+<span class="x">     * @param Request $request</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function delete(Request $request, EntityManagerInterface $em, Category $category) : Response</span>
+<span class="x">    {</span>
+<span class="x">        if ($this-&gt;isCsrfTokenValid(&#39;delete&#39; . $category-&gt;getId(), $request-&gt;request-&gt;get(&#39;_token&#39;))) {</span>
+<span class="x">            $em-&gt;remove($category);</span>
+<span class="x">            $em-&gt;flush();</span>
+<span class="x">        }</span>
+
+<span class="x">        return $this-&gt;redirectToRoute(&#39;admin.category.list&#39;);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>The shortcut method <code class="docutils literal notranslate"><span class="pre">isCsrfTokenValid</span></code> was added in <a class="reference external" href="https://symfony.com/blog/new-in-symfony-2-6-new-shortcut-methods-for-controllers">Symfony 2.6</a> and helps us to validate the token manually.</p>
+<p>It should work good, but the error will be thrown in case category has related jobs.
+It’s because doctrine doesn’t know what to do with relation: to remove jobs or to set NULL in <code class="docutils literal notranslate"><span class="pre">category_id</span></code> and default behavior is simply to restrict.If we want to allow cascade delete, then we have to modify <code class="docutils literal notranslate"><span class="pre">src/Entity/Category.php</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span> /**
+  * @var Job[]|ArrayCollection
+  *
+<span class="gd">- * @ORM\OneToMany(targetEntity=&quot;Job&quot;, mappedBy=&quot;category&quot;)</span>
+<span class="gi">+ * @ORM\OneToMany(targetEntity=&quot;Job&quot;, mappedBy=&quot;category&quot;, cascade={&quot;remove&quot;})</span>
+  */
+ private $jobs;
+</pre></div>
+</div>
+<p>Note: no migration needed here.</p>
+</div>
+</div>
+<div class="section" id="job-crud">
+<span id="job-crud"></span><h2>Job CRUD<a class="headerlink" href="#job-crud" title="Permalink to this headline">¶</a></h2>
+<p>Admin should have the same CRUD for jobs and we will do it in the same way as previous CRUD, but with one small difference: we plan to have posted many jobs and we should think about pagination.Let’s introduce one more variable in <code class="docutils literal notranslate"><span class="pre">config/services.yaml</span></code>, but for this time this variable will be more generic and we will be able to use it anywhere:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="x">parameters:</span>
+<span class="x">    # ...</span>
+<span class="x">    max_per_page: 10</span>
+</pre></div>
+</div>
+<div class="section" id="list-action">
+<span id="id1"></span><h3>List action<a class="headerlink" href="#list-action" title="Permalink to this headline">¶</a></h3>
+<p>Create <code class="docutils literal notranslate"><span class="pre">JobController</span></code> in the same folder as <code class="docutils literal notranslate"><span class="pre">CategoryController</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Controller\Admin;</span>
+
+<span class="x">use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;</span>
+
+<span class="x">class JobController extends AbstractController</span>
+<span class="x">{</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>and add list action:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Controller\Admin;</span>
+
+<span class="x">use App\Entity\Job;</span>
+<span class="x">use Doctrine\ORM\EntityManagerInterface;</span>
+<span class="x">use Knp\Component\Pager\PaginatorInterface;</span>
+<span class="x">use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;</span>
+<span class="x">use Symfony\Component\Routing\Annotation\Route;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Response;</span>
+
+<span class="x">class JobController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * Lists all jobs entities.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/admin/jobs/{page}&quot;,</span>
+<span class="x">     *     name=&quot;admin.job.list&quot;,</span>
+<span class="x">     *     methods=&quot;GET&quot;,</span>
+<span class="x">     *     defaults={&quot;page&quot;: 1},</span>
+<span class="x">     *     requirements={&quot;page&quot; = &quot;\d+&quot;}</span>
+<span class="x">     * )</span>
+<span class="x">     *</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     * @param PaginatorInterface $paginator</span>
+<span class="x">     * @param int $page</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function list(EntityManagerInterface $em, PaginatorInterface $paginator, int $page) : Response</span>
+<span class="x">    {</span>
+<span class="x">        $jobs = $paginator-&gt;paginate(</span>
+<span class="x">            $em-&gt;getRepository(Job::class)-&gt;findAll(),</span>
+<span class="x">            $page,</span>
+<span class="x">            $this-&gt;getParameter(&#39;max_per_page&#39;)</span>
+<span class="x">        );</span>
+
+<span class="x">        return $this-&gt;render(&#39;admin/job/list.html.twig&#39;, [</span>
+<span class="x">            &#39;jobs&#39; =&gt; $jobs,</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Note: we used <code class="docutils literal notranslate"><span class="pre">max_per_page</span></code> variable for pagination limit.</p>
+<p>Now create template <code class="docutils literal notranslate"><span class="pre">templates/admin/job/list.html.twig</span></code>:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;admin/base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;table class=&quot;table&quot;&gt;</span>
+<span class="x">        &lt;thead&gt;</span>
+<span class="x">        &lt;tr class=&quot;active&quot;&gt;</span>
+<span class="x">            &lt;th&gt;Company&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Position&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Location&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Email&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;URL&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Activated&lt;/th&gt;</span>
+<span class="x">            &lt;th&gt;Actions&lt;/th&gt;</span>
+<span class="x">        &lt;/tr&gt;</span>
+<span class="x">        &lt;/thead&gt;</span>
+
+<span class="x">        &lt;tbody&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">job</span> <span class="k">in</span> <span class="nv">jobs</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            &lt;tr&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.company</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.position</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.location</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.email</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.url</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span>
+<span class="x">                    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">job.activated</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">                        &lt;span class=&quot;glyphicon glyphicon-ok&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;</span>
+<span class="x">                    </span><span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">                        &lt;span class=&quot;glyphicon glyphicon-remove&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;</span>
+<span class="x">                    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">                &lt;/td&gt;</span>
+<span class="x">                &lt;td class=&quot;text-nowrap&quot;&gt;</span>
+<span class="x">                    &lt;ul class=&quot;list-inline&quot;&gt;</span>
+<span class="x">                        &lt;li&gt;</span>
+<span class="x">                            &lt;a href=&quot;#&quot; class=&quot;btn btn-default&quot;&gt;Edit&lt;/a&gt;</span>
+<span class="x">                        &lt;/li&gt;</span>
+
+<span class="x">                        &lt;li&gt;</span>
+<span class="x">                            &lt;a href=&quot;#&quot; class=&quot;btn btn-danger&quot;&gt;Delete&lt;/a&gt;</span>
+<span class="x">                        &lt;/li&gt;</span>
+<span class="x">                    &lt;/ul&gt;</span>
+<span class="x">                &lt;/td&gt;</span>
+<span class="x">            &lt;/tr&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;/tbody&gt;</span>
+<span class="x">    &lt;/table&gt;</span>
+
+<span class="x">    &lt;div class=&quot;navigation text-center&quot;&gt;</span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">knp_pagination_render</span><span class="o">(</span><span class="nv">jobs</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    &lt;/div&gt;</span>
+
+<span class="x">    &lt;a href=&quot;#&quot; class=&quot;btn btn-success&quot;&gt;Create new&lt;/a&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Fix the link in left menu, to be able to access this page:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span># templates/admin/base.html.twig
+
+<span class="gd">- &lt;a href=&quot;#&quot;&gt;Jobs&lt;/a&gt;</span>
+<span class="gi">+ &lt;a href=&quot;{{ path(&#39;admin.job.list&#39;) }}&quot;&gt;Jobs&lt;/a&gt;</span>
+</pre></div>
+</div>
+<p>The list of jobs is shown!</p>
+</div>
+<div class="section" id="create-action">
+<span id="id2"></span><h3>Create action<a class="headerlink" href="#create-action" title="Permalink to this headline">¶</a></h3>
+<p>Create action for job is pretty similar with create action for categories, but with one small exception: we already have form type class and we gonna use it:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use App\Form\JobType;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Request;</span>
+
+<span class="x">class JobController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * Create job.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/admin/job/create&quot;, name=&quot;admin.job.create&quot;, methods=&quot;GET|POST&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @param Request $request</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function create(Request $request, EntityManagerInterface $em) : Response</span>
+<span class="x">    {</span>
+<span class="x">        $job = new Job();</span>
+<span class="x">        $form = $this-&gt;createForm(JobType::class, $job);</span>
+<span class="x">        $form-&gt;handleRequest($request);</span>
+
+<span class="x">        if ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {</span>
+<span class="x">            $em-&gt;persist($job);</span>
+<span class="x">            $em-&gt;flush();</span>
+
+<span class="x">            return $this-&gt;redirectToRoute(&#39;admin.job.list&#39;);</span>
+<span class="x">        }</span>
+
+<span class="x">        return $this-&gt;render(&#39;admin/job/create.html.twig&#39;, [</span>
+<span class="x">            &#39;form&#39; =&gt; $form-&gt;createView(),</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Link the button from list page with this new action:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span># templates/admin/job/list.html.twig
+
+<span class="gd">- &lt;a href=&quot;#&quot; class=&quot;btn btn-success&quot;&gt;Create new&lt;/a&gt;</span>
+<span class="gi">+ &lt;a href=&quot;{{ path(&#39;admin.job.create&#39;) }}&quot; class=&quot;btn btn-success&quot;&gt;Create new&lt;/a&gt;</span>
+</pre></div>
+</div>
+<p>Create template <code class="docutils literal notranslate"><span class="pre">templates/admin/job/create.html.twig</span></code> and let’s move the form to separate file from the beginning, because we know, that the same rendering will be in the edit action:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;admin/base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h1&gt;Create new job&lt;/h1&gt;</span>
+
+<span class="x">    </span><span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;admin/job/_form.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x">    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;admin.job.list&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot; class=&quot;btn btn-default&quot;&gt;</span>
+<span class="x">        &lt;span class=&quot;glyphicon glyphicon-arrow-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;</span>
+<span class="x">        back to list</span>
+<span class="x">    &lt;/a&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Form rendering in <code class="docutils literal notranslate"><span class="pre">templates/admin/job/_form.html.twig</span></code>:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="nv">form_start</span><span class="o">(</span><span class="nv">form</span><span class="o">,</span> <span class="o">{</span><span class="s1">&#39;attr&#39;</span><span class="o">:</span> <span class="o">{</span><span class="s1">&#39;novalidate&#39;</span><span class="o">:</span> <span class="s1">&#39;novalidate&#39;</span><span class="cp">}}</span><span class="x">) }}</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">form_widget</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="x">    &lt;div class=&quot;form-group&quot;&gt;</span>
+<span class="x">        &lt;div class=&quot;col-sm-offset-2 col-sm-10&quot;&gt;</span>
+<span class="x">            &lt;button type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;Save&lt;/button&gt;</span>
+<span class="x">        &lt;/div&gt;</span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="cp">{{</span> <span class="nv">form_end</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Now admin is able to create jobs directly from admin panel!</p>
+</div>
+<div class="section" id="edit-action">
+<span id="id3"></span><h3>Edit action<a class="headerlink" href="#edit-action" title="Permalink to this headline">¶</a></h3>
+<p>…</p>
+</div>
+<div class="section" id="delete-action">
+<span id="id4"></span><h3>Delete action<a class="headerlink" href="#delete-action" title="Permalink to this headline">¶</a></h3>
+<p>…</p>
+</div>
+</div>
+<div class="section" id="additional-information">
+<span id="additional-information"></span><h2>Additional information<a class="headerlink" href="#additional-information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://symfony.com/doc/1.0/bundles/SymfonyMakerBundle/index.html">The Symfony MakerBundle</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/4.1/security/csrf.html">CSRF</a></li>
+<li><a class="reference external" href="https://doctrine-project.org/projects/doctrine-orm/en/2.6/reference/working-with-associations.html#transitive-persistence-cascade-operations">Working with Associations: Transitive persistence / Cascade Operations</a></li>
+</ul>
+</div>
+<div class="section" id="next-steps">
+<span id="next-steps"></span><h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Continue this tutorial here: <a class="reference external" href="/days/day-11.md">Jobeet Day 11: The User</a></p>
+<p>Previous post is available here: <a class="reference external" href="/days/day-9.md">Jobeet Day 9: Console Commands</a></p>
+<p>Main page is available here: <a class="reference external" href="/README.md">Symfony 4.1 Jobeet Tutorial</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018, Vlad Gregurco.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

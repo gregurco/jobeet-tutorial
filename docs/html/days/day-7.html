@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jobeet Day 7: Playing with the Category Page &#8212; Jobeet 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../README.html">
+          Jobeet</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../README.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Jobeet Day 7: Playing with the Category Page</a><ul>
+<li><a class="reference internal" href="#the-category-route">The Category Route</a></li>
+<li><a class="reference internal" href="#category-slug">Category slug</a></li>
+<li><a class="reference internal" href="#the-job-category-controller">The Job Category Controller</a></li>
+<li><a class="reference internal" href="#the-category-page">The Category Page</a></li>
+<li><a class="reference internal" href="#including-other-twig-templates">Including Other Twig Templates</a></li>
+<li><a class="reference internal" href="#the-category-link">The Category Link</a></li>
+<li><a class="reference internal" href="#list-pagination">List Pagination</a></li>
+<li><a class="reference internal" href="#additional-information">Additional information</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/days/day-7.md.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="jobeet-day-7-playing-with-the-category-page">
+<span id="jobeet-day-7-playing-with-the-category-page"></span><h1>Jobeet Day 7: Playing with the Category Page<a class="headerlink" href="#jobeet-day-7-playing-with-the-category-page" title="Permalink to this headline">¶</a></h1>
+<p>Today we will make the Category page like it is described in the second day’s requirements:
+<em>“The user sees a list of all the jobs from the category sorted by date and paginated with 20 jobs per page“.</em></p>
+<div class="section" id="the-category-route">
+<span id="the-category-route"></span><h2>The Category Route<a class="headerlink" href="#the-category-route" title="Permalink to this headline">¶</a></h2>
+<p>First, let’s think about the route we will use for our category page.
+We will define a pretty URL that will contain the category slug: <code class="docutils literal notranslate"><span class="pre">/category/{slug}</span></code> named <code class="docutils literal notranslate"><span class="pre">category.show</span></code>.</p>
+</div>
+<div class="section" id="category-slug">
+<span id="category-slug"></span><h2>Category slug<a class="headerlink" href="#category-slug" title="Permalink to this headline">¶</a></h2>
+<p>To have the slug of categories we will need <a class="reference external" href="https://symfony.com/doc/current/bundles/StofDoctrineExtensionsBundle/index.html">StofDoctrineExtensionsBundle</a> that wraps <a class="reference external" href="https://symfony.com/doc/current/bundles/StofDoctrineExtensionsBundle/index.html">DoctrineExtensions</a> package.
+It consists of different useful extensions but we will use <a class="reference external" href="https://github.com/Atlantic18/DoctrineExtensions">Sluggable</a> only for now.</p>
+<p>First let’s install the bundle:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer require stof/doctrine-extensions-bundle
+</pre></div>
+</div>
+<p>This bundle has recipe and symfony will ask you to run this recipe, because it’s not official one. Type ‘y’ and accept it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Symfony operations: <span class="m">1</span> recipe <span class="o">(</span>3c3199f3aa23ea62ee911b3d6fe61a93<span class="o">)</span>
+  -  WARNING  stof/doctrine-extensions-bundle <span class="o">(</span>&gt;<span class="o">=</span><span class="m">1</span>.2<span class="o">)</span>: From github.com/symfony/recipes-contrib:master
+    The recipe <span class="k">for</span> this package comes from the <span class="s2">&quot;contrib&quot;</span> repository, which is open to community contributions.
+    Do you want to execute this recipe?
+    <span class="o">[</span>y<span class="o">]</span> Yes
+    <span class="o">[</span>n<span class="o">]</span> No
+    <span class="o">[</span>a<span class="o">]</span> Yes <span class="k">for</span> all packages, only <span class="k">for</span> the current installation session
+    <span class="o">[</span>p<span class="o">]</span> Yes permanently, never ask again <span class="k">for</span> this project
+    <span class="o">(</span>defaults to n<span class="o">)</span>: 
+</pre></div>
+</div>
+<p>Read about <a class="reference external" href="https://symfony.com/doc/4.1/setup/flex.html">Flex</a> system to know more about recipes.</p>
+<p>Activate <code class="docutils literal notranslate"><span class="pre">sluggable</span></code> extension in <code class="docutils literal notranslate"><span class="pre">config/packages/stof_doctrine_extensions.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stof_doctrine_extensions</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">default_locale</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">en_US</span>
+    <span class="l l-Scalar l-Scalar-Plain">orm</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">default</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">sluggable</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>Slug will be stored in DB and we need field for it. Add <code class="docutils literal notranslate"><span class="pre">slug</span></code> field in <code class="docutils literal notranslate"><span class="pre">Category</span></code> entity:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use Gedmo\Mapping\Annotation as Gedmo;</span>
+
+<span class="x">class Category</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @var string</span>
+<span class="x">     *</span>
+<span class="x">     * @Gedmo\Slug(fields={&quot;name&quot;})</span>
+<span class="x">     *</span>
+<span class="x">     * @ORM\Column(type=&quot;string&quot;, length=128, unique=true)</span>
+<span class="x">     */</span>
+<span class="x">    private $slug;</span>
+<span class="x">    </span>
+<span class="x">    // ...</span>
+<span class="x">    </span>
+<span class="x">    /**</span>
+<span class="x">     * @return string|null</span>
+<span class="x">     */</span>
+<span class="x">    public function getSlug() : ?string</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;slug;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    /**</span>
+<span class="x">     * @param string $slug</span>
+<span class="x">     */</span>
+<span class="x">    public function setSlug(string $slug): void</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;slug = $slug;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    // ...</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Pay attention to <code class="docutils literal notranslate"><span class="pre">&#64;Gedmo\Slug</span></code> annotation.</p>
+<p>Generate migration that will add <code class="docutils literal notranslate"><span class="pre">slug</span></code> field in <code class="docutils literal notranslate"><span class="pre">category</span></code> table:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:migrations:diff
+</pre></div>
+</div>
+<p>If we run migration now, we will see error, because we have several categories in DB without slug, that is required.
+First of all we should drop database:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:schema:drop --force --full-database
+</pre></div>
+</div>
+<p>Run migrations:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:migration:migrate
+</pre></div>
+</div>
+<p>Run fixtures:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:fixtures:load
+</pre></div>
+</div>
+<p>And check that categories have slug:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/console doctrine:query:sql <span class="s1">&#39;SELECT * from categories&#39;</span>
+</pre></div>
+</div>
+<p>The result should be similar:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>array<span class="o">(</span><span class="m">4</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">[</span><span class="m">0</span><span class="o">]=</span>&gt;
+  array<span class="o">(</span><span class="m">3</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">[</span><span class="s2">&quot;id&quot;</span><span class="o">]=</span>&gt;
+    string<span class="o">(</span><span class="m">1</span><span class="o">)</span> <span class="s2">&quot;1&quot;</span>
+    <span class="o">[</span><span class="s2">&quot;name&quot;</span><span class="o">]=</span>&gt;
+    string<span class="o">(</span><span class="m">6</span><span class="o">)</span> <span class="s2">&quot;Design&quot;</span>
+    <span class="o">[</span><span class="s2">&quot;slug&quot;</span><span class="o">]=</span>&gt;
+    string<span class="o">(</span><span class="m">6</span><span class="o">)</span> <span class="s2">&quot;design&quot;</span>
+  <span class="o">}</span>
+...
+</pre></div>
+</div>
+<p>The main advantage of this bundle for us is that slug is generated automatically. We don’t call ‘setSlug’ anywhere.</p>
+</div>
+<div class="section" id="the-job-category-controller">
+<span id="the-job-category-controller"></span><h2>The Job Category Controller<a class="headerlink" href="#the-job-category-controller" title="Permalink to this headline">¶</a></h2>
+<p>It’s now time to create the category controller. Create a new <code class="docutils literal notranslate"><span class="pre">CategoryController.php</span></code> file in your Controller directory:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Controller;</span>
+
+<span class="x">use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-category-page">
+<span id="the-category-page"></span><h2>The Category Page<a class="headerlink" href="#the-category-page" title="Permalink to this headline">¶</a></h2>
+<p>Add the following code to the <code class="docutils literal notranslate"><span class="pre">CategoryController.php</span></code> file:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use App\Entity\Category;</span>
+<span class="x">use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;</span>
+<span class="x">use Symfony\Component\Routing\Annotation\Route;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Response;</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * Finds and displays a category entity.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/category/{slug}&quot;, name=&quot;category.show&quot;)</span>
+<span class="x">     * @Method(&quot;GET&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function show(Category $category) : Response</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;render(&#39;category/show.html.twig&#39;, [</span>
+<span class="x">            &#39;category&#39; =&gt; $category,</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>The last step is to create the <code class="docutils literal notranslate"><span class="pre">templates/category/show.html.twig</span></code> template:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    Jobs in the </span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x"> category</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h4&gt;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&lt;/h4&gt;</span>
+
+<span class="x">    &lt;table class=&quot;table text-center&quot;&gt;</span>
+<span class="x">        &lt;thead&gt;</span>
+<span class="x">        &lt;tr&gt;</span>
+<span class="x">            &lt;th class=&quot;active text-center&quot;&gt;City&lt;/th&gt;</span>
+<span class="x">            &lt;th class=&quot;active text-center&quot;&gt;Position&lt;/th&gt;</span>
+<span class="x">            &lt;th class=&quot;active text-center&quot;&gt;Company&lt;/th&gt;</span>
+<span class="x">        &lt;/tr&gt;</span>
+<span class="x">        &lt;/thead&gt;</span>
+
+<span class="x">        &lt;tbody&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">job</span> <span class="k">in</span> <span class="nv">category.activeJobs</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">            &lt;tr&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.location</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span>
+<span class="x">                    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;job.show&#39;</span><span class="o">,</span> <span class="o">{</span><span class="nv">id</span><span class="o">:</span> <span class="nv">job.id</span><span class="o">})</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span>
+<span class="x">                        </span><span class="cp">{{</span> <span class="nv">job.position</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">                    &lt;/a&gt;</span>
+<span class="x">                &lt;/td&gt;</span>
+<span class="x">                &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.company</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">            &lt;/tr&gt;</span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;/tbody&gt;</span>
+<span class="x">    &lt;/table&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="including-other-twig-templates">
+<span id="including-other-twig-templates"></span><h2>Including Other Twig Templates<a class="headerlink" href="#including-other-twig-templates" title="Permalink to this headline">¶</a></h2>
+<p>Notice that we have copied and pasted the <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code> tag that create a list of jobs from the job <code class="docutils literal notranslate"><span class="pre">list.html.twig</span></code> template. That’s bad.
+When you need to reuse some portion of a template, you need to create a new twig template with that code and include it where you need.</p>
+<p>Create the <code class="docutils literal notranslate"><span class="pre">templates/job/table.html.twig</span></code> file:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="x">&lt;table class=&quot;table text-center&quot;&gt;</span>
+<span class="x">    &lt;thead&gt;</span>
+<span class="x">    &lt;tr&gt;</span>
+<span class="x">        &lt;th class=&quot;active text-center&quot;&gt;City&lt;/th&gt;</span>
+<span class="x">        &lt;th class=&quot;active text-center&quot;&gt;Position&lt;/th&gt;</span>
+<span class="x">        &lt;th class=&quot;active text-center&quot;&gt;Company&lt;/th&gt;</span>
+<span class="x">    &lt;/tr&gt;</span>
+<span class="x">    &lt;/thead&gt;</span>
+
+<span class="x">    &lt;tbody&gt;</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">job</span> <span class="k">in</span> <span class="nv">jobs</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &lt;tr&gt;</span>
+<span class="x">            &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.location</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">            &lt;td&gt;</span>
+<span class="x">                &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;job.show&#39;</span><span class="o">,</span> <span class="o">{</span><span class="nv">id</span><span class="o">:</span> <span class="nv">job.id</span><span class="o">})</span> <span class="cp">}}</span><span class="x">&quot;&gt;</span>
+<span class="x">                    </span><span class="cp">{{</span> <span class="nv">job.position</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">                &lt;/a&gt;</span>
+<span class="x">            &lt;/td&gt;</span>
+<span class="x">            &lt;td&gt;</span><span class="cp">{{</span> <span class="nv">job.company</span> <span class="cp">}}</span><span class="x">&lt;/td&gt;</span>
+<span class="x">        &lt;/tr&gt;</span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;/tbody&gt;</span>
+<span class="x">&lt;/table&gt;</span>
+</pre></div>
+</div>
+<p>Notice that we changed one thing: we use to iterate <code class="docutils literal notranslate"><span class="pre">jobs</span></code> instead of <code class="docutils literal notranslate"><span class="pre">category.activeJobs</span></code>. It will help us in next step.</p>
+<p>You can include a template by using the <code class="docutils literal notranslate"><span class="pre">{%</span> <span class="pre">include</span> <span class="pre">%}</span></code> statement.
+Replace the <table> HTML code from <code class="docutils literal notranslate"><span class="pre">templates/category/show.html.twig</span></code> with the include function:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    Jobs in the </span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x"> category</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h4&gt;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&lt;/h4&gt;</span>
+
+<span class="x">    </span><span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;job/table.html.twig&#39;</span> <span class="nv">with</span> <span class="o">{</span><span class="s1">&#39;jobs&#39;</span><span class="o">:</span> <span class="nv">category.activeJobs</span><span class="o">}</span> <span class="nv">only</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>and <code class="docutils literal notranslate"><span class="pre">templates/job/list.html.twig</span></code></p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h4&gt;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&lt;/h4&gt;</span>
+
+<span class="x">    </span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">category</span> <span class="k">in</span> <span class="nv">categories</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        </span><span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;job/table.html.twig&#39;</span> <span class="nv">with</span> <span class="o">{</span>
+            <span class="s1">&#39;jobs&#39;</span><span class="o">:</span> <span class="nv">category.activeJobs</span><span class="o">|</span><span class="nf">slice</span><span class="o">(</span><span class="m">0</span><span class="o">,</span> <span class="nv">max_jobs_on_homepage</span><span class="o">)</span>
+        <span class="o">}</span> <span class="nv">only</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>We included table template with key words <code class="docutils literal notranslate"><span class="pre">with</span></code> and <code class="docutils literal notranslate"><span class="pre">only</span></code>. That means that we pass to table template <strong>only</strong> jobs variables.</p>
+<blockquote>
+<div>Read also about about <a class="reference external" href="https://twig.symfony.com/doc/2.x/functions/include.html">include function</a></div></blockquote>
+</div>
+<div class="section" id="the-category-link">
+<span id="the-category-link"></span><h2>The Category Link<a class="headerlink" href="#the-category-link" title="Permalink to this headline">¶</a></h2>
+<p>Now, edit the <code class="docutils literal notranslate"><span class="pre">templates/job/list.html.twig</span></code> template of the job controller to add the link to the category page:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- &lt;h4&gt;{{ category.name }}&lt;/h4&gt;</span>
+<span class="gi">+ &lt;h4&gt;</span>
+<span class="gi">+     &lt;a href=&quot;{{ path(&#39;category.show&#39;, {slug: category.slug}) }}&quot;&gt;{{ category.name }}&lt;/a&gt;</span>
+<span class="gi">+ &lt;/h4&gt;</span>
+</pre></div>
+</div>
+<p>Now you can go from categories page to specific category page.</p>
+</div>
+<div class="section" id="list-pagination">
+<span id="list-pagination"></span><h2>List Pagination<a class="headerlink" href="#list-pagination" title="Permalink to this headline">¶</a></h2>
+<p>To implement pagination we will use <a class="reference external" href="https://github.com/KnpLabs/KnpPaginatorBundle">KnpPaginatorBundle</a>.</p>
+<p>First, let’s install the bundle:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer require knplabs/knp-paginator-bundle
+</pre></div>
+</div>
+<p>Bundle is installed and ready to use.</p>
+<p>As you can see in documentation of the bundle, paginator consumes doctrine query, not the result.
+We need to create the new method in job repository <code class="docutils literal notranslate"><span class="pre">src/Repository/JobRepository.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use App\Entity\Category;</span>
+<span class="x">use Doctrine\ORM\AbstractQuery;</span>
+
+<span class="x">class JobRepository extends EntityRepository</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     *</span>
+<span class="x">     * @return AbstractQuery</span>
+<span class="x">     */</span>
+<span class="x">    public function getPaginatedActiveJobsByCategoryQuery(Category $category) : AbstractQuery</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;createQueryBuilder(&#39;j&#39;)</span>
+<span class="x">            -&gt;where(&#39;j.category = :category&#39;)</span>
+<span class="x">            -&gt;andWhere(&#39;j.expiresAt &gt; :date&#39;)</span>
+<span class="x">            -&gt;setParameter(&#39;category&#39;, $category)</span>
+<span class="x">            -&gt;setParameter(&#39;date&#39;, new \DateTime())</span>
+<span class="x">            -&gt;getQuery();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>This method create query which will get all active jobs by category. But where is pagination?
+Let’s do it in controller <code class="docutils literal notranslate"><span class="pre">src/Controller/CategoryController.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use App\Entity\Job;</span>
+<span class="x">use Knp\Component\Pager\PaginatorInterface;</span>
+
+<span class="x">class CategoryController extends AbstractController</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * Finds and displays a category entity.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(&quot;/category/{slug}&quot;, name=&quot;category.show&quot;)</span>
+<span class="x">     * @Method(&quot;GET&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     * @param PaginatorInterface $paginator</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function show(Category $category, PaginatorInterface $paginator) : Response</span>
+<span class="x">    {</span>
+<span class="x">        $activeJobs = $paginator-&gt;paginate(</span>
+<span class="x">            $this-&gt;getDoctrine()-&gt;getRepository(Job::class)-&gt;getPaginatedActiveJobsByCategoryQuery($category),</span>
+<span class="x">            1, // page</span>
+<span class="x">            10 // elements per page</span>
+<span class="x">        );</span>
+
+<span class="x">        return $this-&gt;render(&#39;category/show.html.twig&#39;, [</span>
+<span class="x">            &#39;category&#39; =&gt; $category,</span>
+<span class="x">            &#39;activeJobs&#39; =&gt; $activeJobs,</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>We added <code class="docutils literal notranslate"><span class="pre">PaginatorInterface</span></code> in parameters of the method and autowire component will inject paginator service automatically.
+Also we call paginator and pass query from repository, page (for now let’s get only first) and how many element we want per page.
+The result we send to template. Let’s use it there <code class="docutils literal notranslate"><span class="pre">templates/category/show.html.twig</span></code>:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- {% include &#39;job/table.html.twig&#39; with {&#39;jobs&#39;: category.activeJobs} only %}</span>
+<span class="gi">+ {% include &#39;job/table.html.twig&#39; with {&#39;jobs&#39;: activeJobs} only %}</span>
+</pre></div>
+</div>
+<p>If now you open the  browser, you will see only 10 jobs on the page, but what about pagination?
+How to access second page? And what if we want to have 20 element on the page?</p>
+<p>First let’s define new parameter in <code class="docutils literal notranslate"><span class="pre">config/services.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">parameters</span><span class="p p-Indicator">:</span>
+    <span class="c1"># ...</span>
+    <span class="l l-Scalar l-Scalar-Plain">max_jobs_on_category</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+</pre></div>
+</div>
+<p>and now some changes in <code class="docutils literal notranslate"><span class="pre">src/Controller/CategoryController.php</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Controller;</span>
+
+<span class="x">use App\Entity\Category;</span>
+<span class="x">use App\Entity\Job;</span>
+<span class="x">use Knp\Component\Pager\PaginatorInterface;</span>
+<span class="x">use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;</span>
+<span class="x">use Symfony\Bundle\FrameworkBundle\Controller\Controller;</span>
+<span class="x">use Symfony\Component\Routing\Annotation\Route;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Response;</span>
+
+<span class="x">class CategoryController extends Controller</span>
+<span class="x">{</span>
+<span class="x">    /**</span>
+<span class="x">     * Finds and displays a category entity.</span>
+<span class="x">     *</span>
+<span class="x">     * @Route(</span>
+<span class="x">     *     &quot;/category/{slug}/{page}&quot;,</span>
+<span class="x">     *     name=&quot;category.show&quot;,</span>
+<span class="x">     *     defaults={&quot;page&quot;: 1},</span>
+<span class="x">     *     requirements={&quot;page&quot; = &quot;\d+&quot;}</span>
+<span class="x">     * )</span>
+<span class="x">     *</span>
+<span class="x">     * @Method(&quot;GET&quot;)</span>
+<span class="x">     *</span>
+<span class="x">     * @param Category $category</span>
+<span class="x">     * @param PaginatorInterface $paginator</span>
+<span class="x">     * @param int $page</span>
+<span class="x">     *</span>
+<span class="x">     * @return Response</span>
+<span class="x">     */</span>
+<span class="x">    public function show(</span>
+<span class="x">        Category $category,</span>
+<span class="x">        int $page,</span>
+<span class="x">        PaginatorInterface $paginator</span>
+<span class="x">    ) : Response {</span>
+<span class="x">        $activeJobs = $paginator-&gt;paginate(</span>
+<span class="x">            $this-&gt;getDoctrine()-&gt;getRepository(Job::class)-&gt;getPaginatedActiveJobsByCategoryQuery($category),</span>
+<span class="x">            $page,</span>
+<span class="x">            $this-&gt;getParameter(&#39;max_jobs_on_category&#39;)</span>
+<span class="x">        );</span>
+
+<span class="x">        return $this-&gt;render(&#39;category/show.html.twig&#39;, [</span>
+<span class="x">            &#39;category&#39; =&gt; $category,</span>
+<span class="x">            &#39;activeJobs&#39; =&gt; $activeJobs,</span>
+<span class="x">        ]);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>We added <code class="docutils literal notranslate"><span class="pre">page</span></code> in the URL path and defined default value, in case when page is not defined in the URL <em>(ex: <code class="docutils literal notranslate"><span class="pre">/category/design</span></code>)</em>.
+Variable <code class="docutils literal notranslate"><span class="pre">$path</span></code> is added in arguments of the method. It will be injected automatically by name in path.
+Also we need parameter <code class="docutils literal notranslate"><span class="pre">max_jobs_on_category</span></code> and <code class="docutils literal notranslate"><span class="pre">getParameter</span></code> methods to access it.
+That’s why this controller extends now <code class="docutils literal notranslate"><span class="pre">Symfony\Bundle\FrameworkBundle\Controller\Controller</span></code> but not <code class="docutils literal notranslate"><span class="pre">Symfony\Bundle\FrameworkBundle\Controller\AbstractController</span></code>.</p>
+<p>Now let’s render page selector in template <code class="docutils literal notranslate"><span class="pre">templates/category/show.html.twig</span></code>:</p>
+<div class="highlight-twig notranslate"><div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html.twig&#39;</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    Jobs in the </span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x"> category</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">body</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    &lt;h4&gt;</span><span class="cp">{{</span> <span class="nv">category.name</span> <span class="cp">}}</span><span class="x">&lt;/h4&gt;</span>
+
+<span class="x">    </span><span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;job/table.html.twig&#39;</span> <span class="nv">with</span> <span class="o">{</span><span class="s1">&#39;jobs&#39;</span><span class="o">:</span> <span class="nv">activeJobs</span><span class="o">}</span> <span class="nv">only</span> <span class="cp">%}</span><span class="x"></span>
+
+<span class="x">    &lt;div class=&quot;navigation text-center&quot;&gt;</span>
+<span class="x">        </span><span class="cp">{{</span> <span class="nv">knp_pagination_render</span><span class="o">(</span><span class="nv">activeJobs</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    &lt;/div&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Pagination will work but will look not in style of Bootstrap 3. Let’s configure it.
+Create file <code class="docutils literal notranslate"><span class="pre">knp_paginator.yml</span></code> in <code class="docutils literal notranslate"><span class="pre">config/packages</span></code> and past there next code to change the style of paginator:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">knp_paginator</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">pagination</span><span class="p p-Indicator">:</span> <span class="s">&quot;@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig&quot;</span>
+</pre></div>
+</div>
+<p>Notice: don’t forget to clear cache after that.</p>
+<p>Now it should look like that:</p>
+<p><img alt="Paginated list of jobs" src="../_images/screenshot_8.png" /></p>
+<p>That’s all for today, you can find the code here: <a class="reference external" href="https://github.com/gregurco/jobeet/tree/day7">https://github.com/gregurco/jobeet/tree/day7</a></p>
+<p>See you tomorrow!</p>
+</div>
+<div class="section" id="additional-information">
+<span id="additional-information"></span><h2>Additional information<a class="headerlink" href="#additional-information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/KnpLabs/KnpPaginatorBundle">KnpPaginatorBundle</a></li>
+<li><a class="reference external" href="https://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/pagination.html">Doctrine Pagination</a></li>
+</ul>
+</div>
+<div class="section" id="next-steps">
+<span id="next-steps"></span><h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Continue this tutorial here: <a class="reference external" href="/days/day-8.md">Jobeet Day 8: The Forms</a></p>
+<p>Previous post is available here: <a class="reference external" href="/days/day-6.md">Jobeet Day 6: More with the Entity</a></p>
+<p>Main page is available here: <a class="reference external" href="/README.md">Symfony 4.1 Jobeet Tutorial</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018, Vlad Gregurco.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

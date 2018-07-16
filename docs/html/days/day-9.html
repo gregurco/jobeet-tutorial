@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jobeet Day 9: Console Commands &#8212; Jobeet 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../README.html">
+          Jobeet</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../README.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Jobeet Day 9: Console Commands</a><ul>
+<li><a class="reference internal" href="#creating-a-command">Creating a Command</a></li>
+<li><a class="reference internal" href="#configuring-the-command">Configuring the Command</a></li>
+<li><a class="reference internal" href="#registering-the-command">Registering the Command</a></li>
+<li><a class="reference internal" href="#executing-the-command">Executing the Command</a></li>
+<li><a class="reference internal" href="#console-input">Console Input</a></li>
+<li><a class="reference internal" href="#getting-services-from-the-service-container">Getting Services from the Service Container</a></li>
+<li><a class="reference internal" href="#interacting-with-user">Interacting with user</a></li>
+<li><a class="reference internal" href="#command-lifecycle">Command Lifecycle</a></li>
+<li><a class="reference internal" href="#color-the-console-output">Color the console output</a></li>
+<li><a class="reference internal" href="#additional-information">Additional information</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/days/day-9.md.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="jobeet-day-9-console-commands">
+<span id="jobeet-day-9-console-commands"></span><h1>Jobeet Day 9: Console Commands<a class="headerlink" href="#jobeet-day-9-console-commands" title="Permalink to this headline">¶</a></h1>
+<p>The Symfony provides lots of commands through the <code class="docutils literal notranslate"><span class="pre">bin/console</span></code> script (e.g. the well-known <code class="docutils literal notranslate"><span class="pre">bin/console</span> <span class="pre">cache:clear</span></code> command).
+These commands are created with the <a class="reference external" href="https://symfony.com/doc/4.1/components/console.html">Console component</a>. You can also use it to create your own commands.</p>
+<div class="section" id="creating-a-command">
+<span id="creating-a-command"></span><h2>Creating a Command<a class="headerlink" href="#creating-a-command" title="Permalink to this headline">¶</a></h2>
+<p>Commands are defined in classes extending <code class="docutils literal notranslate"><span class="pre">Symfony\Component\Console\Command\Command</span></code> and usually placed in <code class="docutils literal notranslate"><span class="pre">src/Command</span></code> folder.
+For example, you may want a command to create a category:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Command;</span>
+
+<span class="x">use Symfony\Component\Console\Command\Command;</span>
+<span class="x">use Symfony\Component\Console\Input\InputInterface;</span>
+<span class="x">use Symfony\Component\Console\Output\OutputInterface;</span>
+
+<span class="x">class CreateCategoryCommand extends Command</span>
+<span class="x">{</span>
+<span class="x">    protected function configure()</span>
+<span class="x">    {</span>
+<span class="x">        // ...</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param InputInterface $input</span>
+<span class="x">     * @param OutputInterface $output</span>
+<span class="x">     */</span>
+<span class="x">    protected function execute(InputInterface $input, OutputInterface $output)</span>
+<span class="x">    {</span>
+<span class="x">        // ...</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-the-command">
+<span id="configuring-the-command"></span><h2>Configuring the Command<a class="headerlink" href="#configuring-the-command" title="Permalink to this headline">¶</a></h2>
+<p>First of all, you must configure the name of the command in the <code class="docutils literal notranslate"><span class="pre">configure()</span></code> method.
+Then you can optionally define a help message and the input options and arguments:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">    protected function configure()</span>
+<span class="x">    {</span>
+<span class="x">        $this</span>
+<span class="x">            // the name of the command (the part after &quot;bin/console&quot;)</span>
+<span class="x">            -&gt;setName(&#39;app:create-category&#39;)</span>
+
+<span class="x">            // the short description shown while running &quot;php bin/console list&quot;</span>
+<span class="x">            -&gt;setDescription(&#39;Creates a new category.&#39;)</span>
+
+<span class="x">            // the full command description shown when running the command with</span>
+<span class="x">            // the &quot;--help&quot; option</span>
+<span class="x">            -&gt;setHelp(&#39;This command allows you to add new category in db...&#39;);</span>
+<span class="x">    }</span>
+<span class="x">// ....</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="registering-the-command">
+<span id="registering-the-command"></span><h2>Registering the Command<a class="headerlink" href="#registering-the-command" title="Permalink to this headline">¶</a></h2>
+<p>We are using symfony 4 and it automatically registers console commands by parent class.
+Be sure that <a class="reference external" href="https://symfony.com/doc/4.1/service_container.html#services-autoconfigure">autoconfiguration</a> is activated in <code class="docutils literal notranslate"><span class="pre">config/services.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">_defaults</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">autoconfigure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>In lower versions console commands were registered by adding <code class="docutils literal notranslate"><span class="pre">twig.extension</span></code> tag.
+Read more about it <a class="reference external" href="https://symfony.com/doc/4.1/service_container/tags.html">here</a>.</p>
+</div>
+<div class="section" id="executing-the-command">
+<span id="executing-the-command"></span><h2>Executing the Command<a class="headerlink" href="#executing-the-command" title="Permalink to this headline">¶</a></h2>
+<p>After configuring and registering the command, you can execute it in the terminal:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">php bin/console app:create-category</span>
+</pre></div>
+</div>
+<p>As you might expect, this command will do nothing as you didn’t write any logic yet.
+Add your own logic inside the <code class="docutils literal notranslate"><span class="pre">execute()</span></code> method, which has access to the input stream (e.g. options and arguments) and the output stream (to write messages to the console):</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param InputInterface $input</span>
+<span class="x">     * @param OutputInterface $output</span>
+<span class="x">     */</span>
+<span class="x">    protected function execute(InputInterface $input, OutputInterface $output)</span>
+<span class="x">    {</span>
+<span class="x">        // outputs multiple lines to the console (adding &quot;\n&quot; at the end of each line)</span>
+<span class="x">        $output-&gt;writeln([</span>
+<span class="x">            &#39;Category Creator&#39;,</span>
+<span class="x">            &#39;============&#39;,</span>
+<span class="x">            &#39;&#39;,</span>
+<span class="x">        ]);</span>
+
+<span class="x">        // outputs a message followed by a &quot;\n&quot;</span>
+<span class="x">        $output-&gt;writeln(&#39;Whoa!&#39;);</span>
+
+<span class="x">        // outputs a message without adding a &quot;\n&quot; at the end of the line</span>
+<span class="x">        $output-&gt;write(&#39;You are about to &#39;);</span>
+<span class="x">        $output-&gt;write(&#39;create a category.&#39;);</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">// ...</span>
+</pre></div>
+</div>
+<p>Now, try executing the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bin/console app:create-category
+Category Creator
+============
+
+Whoa!
+You are about to create a category.
+</pre></div>
+</div>
+</div>
+<div class="section" id="console-input">
+<span id="console-input"></span><h2>Console Input<a class="headerlink" href="#console-input" title="Permalink to this headline">¶</a></h2>
+<p>Use input options or arguments to pass information to the command:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use Symfony\Component\Console\Input\InputArgument;</span>
+
+<span class="x">class CreateCategoryCommand extends Command</span>
+<span class="x">{</span>
+<span class="x">    protected function configure()</span>
+<span class="x">    {</span>
+<span class="x">        $this</span>
+<span class="x">            // ...</span>
+
+<span class="x">            // configure an argument</span>
+<span class="x">            -&gt;addArgument(&#39;name&#39;, InputArgument::REQUIRED, &#39;The name of the category.&#39;);</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param InputInterface $input</span>
+<span class="x">     * @param OutputInterface $output</span>
+<span class="x">     */</span>
+<span class="x">    protected function execute(InputInterface $input, OutputInterface $output)</span>
+<span class="x">    {</span>
+<span class="x">        // outputs multiple lines to the console (adding &quot;\n&quot; at the end of each line)</span>
+<span class="x">        $output-&gt;writeln([</span>
+<span class="x">            &#39;Category Creator&#39;,</span>
+<span class="x">            &#39;============&#39;,</span>
+<span class="x">            &#39;&#39;,</span>
+<span class="x">        ]);</span>
+
+<span class="x">        // retrieve the argument value using getArgument()</span>
+<span class="x">        $output-&gt;writeln(sprintf(&#39;Name: %s&#39;, $input-&gt;getArgument(&#39;name&#39;)));</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Now, you can pass the name to the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bin/console app:create-category Tester
+Category Creator
+============
+
+Name: Tester
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-services-from-the-service-container">
+<span id="getting-services-from-the-service-container"></span><h2>Getting Services from the Service Container<a class="headerlink" href="#getting-services-from-the-service-container" title="Permalink to this headline">¶</a></h2>
+<p>First of all we need a service, that will create categories. Create <code class="docutils literal notranslate"><span class="pre">CategoryService</span></code> in already existing folder <code class="docutils literal notranslate"><span class="pre">Service</span></code>:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">namespace App\Service;</span>
+
+<span class="x">use App\Entity\Category;</span>
+<span class="x">use Doctrine\ORM\EntityManagerInterface;</span>
+
+<span class="x">class CategoryService</span>
+<span class="x">{</span>
+<span class="x">    /** @var EntityManagerInterface */</span>
+<span class="x">    private $em;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param EntityManagerInterface $em</span>
+<span class="x">     */</span>
+<span class="x">    public function __construct(EntityManagerInterface $em)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;em = $em;</span>
+<span class="x">    }</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param string $name</span>
+<span class="x">     *</span>
+<span class="x">     * @return Category</span>
+<span class="x">     */</span>
+<span class="x">    public function create(string $name) : Category</span>
+<span class="x">    {</span>
+<span class="x">        $category = new Category();</span>
+<span class="x">        $category-&gt;setName($name);</span>
+
+<span class="x">        $this-&gt;em-&gt;persist($category);</span>
+<span class="x">        $this-&gt;em-&gt;flush();</span>
+
+<span class="x">        return $category;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>This service has one method <code class="docutils literal notranslate"><span class="pre">create</span></code> that receives category name and create new category in DB.</p>
+<p>Now to create a new category, the command has to access this services.
+Since your command is already registered as a service, you can use normal dependency injection:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use App\Service\CategoryService;</span>
+
+<span class="x">class CreateCategoryCommand extends Command</span>
+<span class="x">{</span>
+<span class="x">    /** @var CategoryService */</span>
+<span class="x">    private $categoryService;</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param CategoryService $categoryService</span>
+<span class="x">     */</span>
+<span class="x">    public function __construct(CategoryService $categoryService)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;categoryService = $categoryService;</span>
+
+<span class="x">        parent::__construct();</span>
+<span class="x">    }</span>
+
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param InputInterface $input</span>
+<span class="x">     * @param OutputInterface $output</span>
+<span class="x">     */</span>
+<span class="x">    protected function execute(InputInterface $input, OutputInterface $output)</span>
+<span class="x">    {</span>
+<span class="x">        // ...</span>
+
+<span class="x">        $this-&gt;categoryService-&gt;create($input-&gt;getArgument(&#39;name&#39;));</span>
+<span class="x">        </span>
+<span class="x">        $output-&gt;writeln(&#39;Category successfully created!&#39;);</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interacting-with-user">
+<span id="interacting-with-user"></span><h2>Interacting with user<a class="headerlink" href="#interacting-with-user" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes user can forget to fill the name and we want somehow to interact with user and additionally to ask them the name of new category.
+It is possible due to <code class="docutils literal notranslate"><span class="pre">interact()</span></code> method. Let’s create it:</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">// ...</span>
+<span class="x">use Symfony\Component\Console\Question\Question;</span>
+
+<span class="x">class CreateCategoryCommand extends Command</span>
+<span class="x">{</span>
+<span class="x">    // ...</span>
+
+<span class="x">    /**</span>
+<span class="x">     * @param InputInterface $input</span>
+<span class="x">     * @param OutputInterface $output</span>
+<span class="x">     */</span>
+<span class="x">    protected function interact(InputInterface $input, OutputInterface $output)</span>
+<span class="x">    {</span>
+<span class="x">        if (!$input-&gt;getArgument(&#39;name&#39;)) {</span>
+<span class="x">            $question = new Question(&#39;Please choose a name: &#39;);</span>
+<span class="x">            $question-&gt;setValidator(function ($name) {</span>
+<span class="x">                if (empty($name)) {</span>
+<span class="x">                    throw new \Exception(&#39;Name can not be empty&#39;);</span>
+<span class="x">                }</span>
+<span class="x">                </span>
+<span class="x">                return $name;</span>
+<span class="x">            });</span>
+
+<span class="x">            $answer = $this-&gt;getHelper(&#39;question&#39;)-&gt;ask($input, $output, $question);</span>
+<span class="x">            $input-&gt;setArgument(&#39;name&#39;, $answer);</span>
+<span class="x">        }</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    // ...</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Now the user will have second chance to enter the name of new category.
+This command became more user-friendly.</p>
+</div>
+<div class="section" id="command-lifecycle">
+<span id="command-lifecycle"></span><h2>Command Lifecycle<a class="headerlink" href="#command-lifecycle" title="Permalink to this headline">¶</a></h2>
+<p>Commands have three lifecycle methods that are invoked when running the command:</p>
+<ul class="simple">
+<li><strong>initialize()</strong> <em>(optional)</em>This method is executed before the <code class="docutils literal notranslate"><span class="pre">interact()</span></code> and the <code class="docutils literal notranslate"><span class="pre">execute()</span></code> methods. Its main purpose is to initialize variables used in the rest of the command methods.</li>
+<li><strong>interact()</strong> <em>(optional)</em>This method is executed after <code class="docutils literal notranslate"><span class="pre">initialize()</span></code> and before <code class="docutils literal notranslate"><span class="pre">execute()</span></code>. Its purpose is to check if some of the options/arguments are missing and interactively ask the user for those values. This is the last place where you can ask for missing options/arguments. After this command, missing options/arguments will result in an error.</li>
+<li><strong>execute()</strong> <em>(required)</em>This method is executed after <code class="docutils literal notranslate"><span class="pre">interact()</span></code> and <code class="docutils literal notranslate"><span class="pre">initialize()</span></code>. It contains the logic you want the command to execute.</li>
+</ul>
+</div>
+<div class="section" id="color-the-console-output">
+<span id="color-the-console-output"></span><h2>Color the console output<a class="headerlink" href="#color-the-console-output" title="Permalink to this headline">¶</a></h2>
+<p>In created console command we have different types of messages: simple message, question and success message.
+But all them are displayed in the same way. Symfony Console component provides possibility to use colors.
+First let’s color in green the message that category is crated:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- $output-&gt;writeln(&#39;Category successfully created!&#39;);</span>
+<span class="gi">+ $output-&gt;writeln(&#39;&lt;fg=green&gt;Category successfully created!&lt;/&gt;&#39;);</span>
+</pre></div>
+</div>
+<p>Available colors are: black, red, green, yellow, blue, magenta, cyan and white.Also it’s possible to setup background color by using <code class="docutils literal notranslate"><span class="pre">bg=red</span></code> and options like bold text: <code class="docutils literal notranslate"><span class="pre">options=bold</span></code>.
+For example red bold text on a yellow background will be setup in next way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">fg</span><span class="o">=</span><span class="n">red</span><span class="p">;</span><span class="n">bg</span><span class="o">=</span><span class="n">yellow</span><span class="p">;</span><span class="n">options</span><span class="o">=</span><span class="n">bold</span><span class="o">&gt;</span><span class="n">foo</span><span class="o">&lt;/&gt;</span>
+</pre></div>
+</div>
+<p>Symfony has some predefined tags: <code class="docutils literal notranslate"><span class="pre">&lt;info&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;comment&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;question&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;error&gt;</span></code>.
+Wrap our question in proper style:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="gd">- $question = new Question(&#39;Please choose a name: &#39;);</span>
+<span class="gi">+ $question = new Question(&#39;&lt;question&gt;Please choose a name: &lt;/question&gt;&#39;);</span>
+</pre></div>
+</div>
+<p>Finally we should view next output:</p>
+<p><img alt="Console output with colors" src="../_images/screenshot_12.png" /></p>
+<p>That’s all for today, you can find the code here: <a class="reference external" href="https://github.com/gregurco/jobeet/tree/day9">https://github.com/gregurco/jobeet/tree/day9</a></p>
+<p>See you tomorrow!</p>
+</div>
+<div class="section" id="additional-information">
+<span id="additional-information"></span><h2>Additional information<a class="headerlink" href="#additional-information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://symfony.com/doc/4.1/components/console.html">The Console Component</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/4.1/console/input.html">Console Input (Arguments &amp; Options)</a></li>
+<li><a class="reference external" href="https://symfony.com/doc/4.1/console/coloring.html">How to Color and Style the Console Output</a></li>
+</ul>
+</div>
+<div class="section" id="next-steps">
+<span id="next-steps"></span><h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Continue this tutorial here: <a class="reference external" href="/days/day-10.md">Jobeet Day 10: The Admin</a></p>
+<p>Previous post is available here: <a class="reference external" href="/days/day-8.md">Jobeet Day 8: The Forms</a></p>
+<p>Main page is available here: <a class="reference external" href="/README.md">Symfony 4.1 Jobeet Tutorial</a></p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018, Vlad Gregurco.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
