@@ -754,11 +754,147 @@ Now admin is able to create jobs directly from admin panel!
 
 ### Edit action
 
-...
+For edit action we have to add action in controller:
+
+```php
+// ...
+
+class JobController extends AbstractController
+{
+    // ...
+
+    /**
+     * Edit job.
+     *
+     * @Route("/admin/job/{id}/edit", name="admin.job.edit", methods="GET|POST", requirements={"id" = "\d+"})
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Job $job
+     *
+     * @return Response
+     */
+    public function edit(Request $request, EntityManagerInterface $em, Job $job) : Response
+    {
+        $form = $this->createForm(JobType::class, $job);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('admin.job.list');
+        }
+
+        return $this->render('admin/job/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+}
+```
+
+*Note: don't forget about method and parameters restriction.*
+
+After that connect the link from list page with edit action:
+
+```diff
+- <a href="#" class="btn btn-default">Edit</a>
++ <a href="{{ path('admin.job.edit', {id: job.id}) }}" class="btn btn-default">Edit</a>
+```
+
+And now create template `admin/job/edit.html.twig`:
+
+```twig
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+    <h1>Edit job</h1>
+
+    {% include 'admin/job/_form.html.twig' %}
+
+    <a href="{{ path('admin.job.list') }}" class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+        back to list
+    </a>
+{% endblock %}
+```
+
+Edit action is done!
 
 ### Delete action
 
-...
+Create a method in `JobController` to add the delete functionality:
+
+```php
+// ...
+
+class JobController extends AbstractController
+{
+    // ...
+    
+    /**
+     * Delete category.
+     *
+     * @Route("/admin/category/{id}/delete", name="admin.category.delete", methods="DELETE", requirements={"id" = "\d+"})
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param Category $category
+     *
+     * @return Response
+     */
+    public function delete(Request $request, EntityManagerInterface $em, Category $category) : Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
+            $em->remove($category);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin.category.list');
+    }
+}
+```
+
+Add a form in list action:
+
+```twig
+{# ... #}
+
+{% for job in jobs %}
+    <tr>
+        <td>{{ job.company }}</td>
+        <td>{{ job.position }}</td>
+        <td>{{ job.location }}</td>
+        <td>{{ job.email }}</td>
+        <td>{{ job.url }}</td>
+        <td>
+            {% if job.activated %}
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            {% else %}
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            {% endif %}
+        </td>
+        <td class="text-nowrap">
+            <ul class="list-inline">
+                <li>
+                    <a href="{{ path('admin.job.edit', {id: job.id}) }}" class="btn btn-default">Edit</a>
+                </li>
+
+                <li>
+                    <form method="post" action="{{ path('admin.job.delete', {id: job.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ job.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </li>
+            </ul>
+        </td>
+    </tr>
+{% endfor %}
+        
+{# ... #}
+```
+
+Now admin is able to delete jobs.
 
 ## Additional information
 - [The Symfony MakerBundle][1]

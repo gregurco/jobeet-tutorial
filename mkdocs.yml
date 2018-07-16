@@ -1,4 +1,4 @@
-site_name: 'Jobeet'
+site_name: 'Jobeet Tutorial'
 site_description: 'Symfony 4.1 Jobeet Tutorial'
 site_author: 'Gregurco Vlad'
 repo_url: 'https://github.com/gregurco/jobeet-tutorial'
@@ -6,13 +6,13 @@ repo_name: 'GitHub'
 theme: readthedocs
 pages:
   - Home: index.md
-  - Day 1: days/day-1.md
-  - Day 2: days/day-2.md
-  - Day 3: days/day-3.md
-  - Day 4: days/day-4.md
-  - Day 5: days/day-5.md
-  - Day 6: days/day-6.md
-  - Day 7: days/day-7.md
-  - Day 8: days/day-8.md
-  - Day 9: days/day-9.md
-  - Day 10: days/day-10.md
+  - 'Day 1: Starting up the Project': days/day-1.md
+  - 'Day 2: The Project': days/day-2.md
+  - 'Day 3: The Data Model': days/day-3.md
+  - 'Day 4: The Controller and the View': days/day-4.md
+  - 'Day 5: The Routing': days/day-5.md
+  - 'Day 6: More with the Entity': days/day-6.md
+  - 'Day 7: Playing with the Category Page': days/day-7.md
+  - 'Day 8: The Forms': days/day-8.md
+  - 'Day 9: Console Commands': days/day-9.md
+  - 'Day 10: The Admin': days/day-10.md

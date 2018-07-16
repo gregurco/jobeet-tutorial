@@ -7,6 +7,8 @@ I will try to follow the original [Jobeet][2] tutorial, but I will also make som
 
 Please be free to make any observations and improvements you consider important by commenting on the posts that will follow.
 
+## List of days
+
 [Jobeet Day 1: Starting up the Project](days/day-1.md)
 
 [Jobeet Day 2: The Project](days/day-2.md)
