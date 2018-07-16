@@ -896,10 +896,26 @@ Add a form in list action:
 
 Now admin is able to delete jobs.
 
+## Conclusion
+
+We spent not so many time and implemented CRUDs for all the functionality we have on front side, but there is another option - to use bundles that provide admin functionality:
+- [EasyAdminBundle][7]
+- [SonataAdminBundle][8]
+- [and many others][9]
+
+These bundles are easy configurable and it's easy to start with them, but you will not have the same flexibility as in case you create all CRUDs manually.  
+The choice is yours!
+
+That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day10][10]
+
+See you tomorrow!
+
 ## Additional information
 - [The Symfony MakerBundle][1]
 - [CSRF][5]
 - [Working with Associations: Transitive persistence / Cascade Operations][6]
+- [EasyAdminBundle][7]
+- [SonataAdminBundle][8]
 
 ## Next Steps
 
@@ -915,3 +931,7 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [4]: https://symfony.com/blog/new-in-symfony-2-6-new-shortcut-methods-for-controllers
 [5]: https://symfony.com/doc/4.1/security/csrf.html
 [6]: https://doctrine-project.org/projects/doctrine-orm/en/2.6/reference/working-with-associations.html#transitive-persistence-cascade-operations
+[7]: https://symfony.com/doc/master/bundles/EasyAdminBundle/index.html
+[8]: https://symfony.com/doc/master/bundles/SonataAdminBundle/index.html
+[9]: https://packagist.org/?query=admin%20bundle&tags=symfony
+[10]: https://github.com/gregurco/jobeet/tree/day10
