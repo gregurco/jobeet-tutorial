@@ -3,8 +3,7 @@ site_description: 'Symfony 4.1 Jobeet Tutorial'
 site_author: 'Gregurco Vlad'
 repo_url: 'https://github.com/gregurco/jobeet-tutorial'
 repo_name: 'GitHub'
-edit_uri: blob/master/
-docs_dir: ''
 theme: readthedocs
 pages:
   - Home: README.md
+  - Day 1: days/day-1.md
