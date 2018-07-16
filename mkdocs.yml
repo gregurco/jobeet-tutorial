@@ -3,6 +3,7 @@ site_description: 'Symfony 4.1 Jobeet Tutorial'
 site_author: 'Gregurco Vlad'
 repo_url: 'https://github.com/gregurco/jobeet-tutorial'
 repo_name: 'GitHub'
+google_analytics: ['UA-82097850-2', 'jobeet-tutorial.readthedocs.io']
 theme: readthedocs
 pages:
   - Home: index.md

@@ -792,7 +792,7 @@ class JobController extends AbstractController
 }
 ```
 
-*Note: don't forget about method and parameters restriction.*
+> Note: don't forget about method and parameters restriction.
 
 After that connect the link from list page with edit action:
 

@@ -29,7 +29,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 10: The Admin](days/day-10.md)
 
-[Jobeet Day 11: The User](days/day-11.md)
+[[WIP] Jobeet Day 11: The User](days/day-11.md)
 
 ~~Jobeet Day 12: The Mailer~~
 
