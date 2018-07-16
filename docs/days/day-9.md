@@ -329,7 +329,7 @@ Wrap our question in proper style:
 
 Finally we should view next output:
 
-![Console output with colors](/files/images/screenshot_12.png)
+![Console output with colors](../files/images/screenshot_12.png)
 
 That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day9][5]
 
@@ -342,11 +342,11 @@ See you tomorrow!
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 10: The Admin](/days/day-10.md)
+Continue this tutorial here: [Jobeet Day 10: The Admin](day-10.md)
 
-Previous post is available here: [Jobeet Day 8: The Forms](/days/day-8.md)
+Previous post is available here: [Jobeet Day 8: The Forms](day-8.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/4.1/components/console.html
 [2]: https://symfony.com/doc/4.1/console/input.html

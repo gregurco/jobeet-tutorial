@@ -206,11 +206,11 @@ You can find the code from today here: [https://github.com/gregurco/jobeet/tree/
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 6: More with the Entity](/days/day-6.md)
+Continue this tutorial here: [Jobeet Day 6: More with the Entity](day-6.md)
 
-Previous post is available here: [Jobeet Day 4: The Controller and the View](/days/day-4.md)
+Previous post is available here: [Jobeet Day 4: The Controller and the View](day-4.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
 [2]: http://127.0.0.1/

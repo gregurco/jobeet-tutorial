@@ -3,7 +3,7 @@
 ## The Relational Model
 The user stories from the previous day describe the main objects of our project: jobs, affiliates, and categories. Here is the corresponding entity relationship diagram:
 
-![DB schema](/files/images/screenshot_6.png)
+![DB schema](../files/images/screenshot_6.png)
 
 In addition to the columns described in the stories, we have also added `created_at` and `updated_at` columns. We will configure Symfony 4 to set their value automatically when an object is saved or updated.
 
@@ -1209,9 +1209,9 @@ Now check your database, you should see the data loaded into tables.
 
 The job fixtures file references two images. You can download them from below and put them under the `public/uploads/jobs/` directory:
 
-![Save this as sensio-labs.gif](/files/images/sensio-labs.gif)
+![Save this as sensio-labs.gif](../files/images/sensio-labs.gif)
 
-![Save this as extreme-sensio.gif](/files/images/extreme-sensio.gif)
+![Save this as extreme-sensio.gif](../files/images/extreme-sensio.gif)
 
 You can find the code from day 3 here: [https://github.com/gregurco/jobeet/tree/day3][7].
 
@@ -1225,11 +1225,11 @@ You can find the code from day 3 here: [https://github.com/gregurco/jobeet/tree/
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 4: The Controller and the View](/days/day-4.md)
+Continue this tutorial here: [Jobeet Day 4: The Controller and the View](day-4.md)
 
-Previous post is available here: [Jobeet Day 2: The Project](/days/day-2.md)
+Previous post is available here: [Jobeet Day 2: The Project](day-2.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/4.1/doctrine.html
 [2]: https://symfony.com/doc/4.1/doctrine/associations.html

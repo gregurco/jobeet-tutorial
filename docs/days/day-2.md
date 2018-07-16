@@ -17,12 +17,12 @@ Using Symfony 4 we would not do that anymore. We will have only one application 
 On the Jobeet homepage a user sees a list of 10 recent active jobs grouped by category. Only the location, the position, and the company are displayed for each job.
 For each category there are links that allow to list all the jobs. The user can also search for jobs or post a new job.
 
-![Homepage mockup](/files/images/screenshot_2.png)
+![Homepage mockup](../files/images/screenshot_2.png)
 
 ## Story F2: A user can ask for all the jobs in a given category
 The user sees a list of all the jobs from the category sorted by date and paginated with 20 jobs per page.
 
-![Category mockup](/files/images/screenshot_3.png)
+![Category mockup](../files/images/screenshot_3.png)
 
 ## Story F3: A user refines the list with some keywords
 The user can enter some keywords to refine his search. Keywords can be words found in the location, the position, the category or the company fields.
@@ -30,7 +30,7 @@ The user can enter some keywords to refine his search. Keywords can be words fou
 ## Story F4: A user clicks on a job to see more detailed information
 The user can select a job from the list to see more detailed information.
 
-![Job mockup](/files/images/screenshot_4.png)
+![Job mockup](../files/images/screenshot_4.png)
 
 ## Story F5: A user posts a job
 
@@ -55,7 +55,7 @@ There is no need to create an account to post a job. A job can be modified after
 Each job post is online for 30 days (this is configurable by the admin).
 A user can come back to re-activate or extend the validity of the job for an extra 30 days but only when the job expires in less than 5 days.
 
-![Post job mockup](/files/images/screenshot_5.png)
+![Post job mockup](../files/images/screenshot_5.png)
 
 ## Story F6: A user applies to become an affiliate
 A user needs to apply to become an affiliate and be authorized to use the Jobeet API. He can also choose to get jobs from a sub-set of the available categories.
@@ -83,10 +83,10 @@ When the admin activates a new affiliate, the system creates a unique token to b
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 3: The Data Model](/days/day-3.md)
+Continue this tutorial here: [Jobeet Day 3: The Data Model](day-3.md)
 
-Previous post is available here: [Jobeet Day 1: Starting up the Project](/days/day-1.md)
+Previous post is available here: [Jobeet Day 1: Starting up the Project](day-1.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/legacy/doc/jobeet/1_4/en/02?orm=Propel

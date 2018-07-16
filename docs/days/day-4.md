@@ -246,11 +246,11 @@ You can find the code from day 4 here: [https://github.com/gregurco/jobeet/tree/
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 5: The Routing](/days/day-5.md)
+Continue this tutorial here: [Jobeet Day 5: The Routing](day-5.md)
 
-Previous post is available here: [Jobeet Day 3: The Data Model](/days/day-3.md)
+Previous post is available here: [Jobeet Day 3: The Data Model](day-3.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
 [2]: https://en.wikipedia.org/wiki/Decorator_pattern

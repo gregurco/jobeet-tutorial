@@ -400,7 +400,7 @@ Next field is `company` and it's required text field with a maximum length of 25
 
 Try to submit more than 255 characters and you will see error:
 
-![Validation error: max length](/files/images/screenshot_9.png)
+![Validation error: max length](../files/images/screenshot_9.png)
 
 Symfony has a big list of constraints out of the box. You can find all them [here][16].
 Review all fields and add relevant constraints and in final you should see something similar:
@@ -1163,10 +1163,10 @@ There is a lot of code, but most of the code is simple to understand.
 
 The admin bar displays the different actions depending on the job status:
 
-![Control panel: case 1](/files/images/screenshot_10.png)
+![Control panel: case 1](../files/images/screenshot_10.png)
 
 
-![Control panel: case 2](/files/images/screenshot_11.png)
+![Control panel: case 2](../files/images/screenshot_11.png)
 
 We now need redirect from `create` and `edit` actions of the `JobController` to the new preview page:
 
@@ -1544,11 +1544,11 @@ See you tomorrow!
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 9: Console Commands](/days/day-9.md)
+Continue this tutorial here: [Jobeet Day 9: Console Commands](day-9.md)
 
-Previous post is available here: [Jobeet Day 7: Playing with the Category Page](/days/day-7.md)
+Previous post is available here: [Jobeet Day 7: Playing with the Category Page](day-7.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/4.1/controller/upload_file.html
 [2]: https://symfony.com/doc/4.1/form/form_customization.html

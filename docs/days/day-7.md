@@ -483,7 +483,7 @@ Notice: don't forget to clear cache after that.
 
 Now it should look like that:
 
-![Paginated list of jobs](/files/images/screenshot_8.png)
+![Paginated list of jobs](../files/images/screenshot_8.png)
 
 That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day7][7]
 
@@ -495,11 +495,11 @@ See you tomorrow!
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 8: The Forms](/days/day-8.md)
+Continue this tutorial here: [Jobeet Day 8: The Forms](day-8.md)
 
-Previous post is available here: [Jobeet Day 6: More with the Entity](/days/day-6.md)
+Previous post is available here: [Jobeet Day 6: More with the Entity](day-6.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/current/bundles/StofDoctrineExtensionsBundle/index.html
 [2]: https://github.com/Atlantic18/DoctrineExtensions

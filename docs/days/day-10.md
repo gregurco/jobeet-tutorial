@@ -767,11 +767,11 @@ Now admin is able to create jobs directly from admin panel!
 
 ## Next Steps
 
-Continue this tutorial here: [Jobeet Day 11: The User](/days/day-11.md)
+Continue this tutorial here: [Jobeet Day 11: The User](day-11.md)
 
-Previous post is available here: [Jobeet Day 9: Console Commands](/days/day-9.md)
+Previous post is available here: [Jobeet Day 9: Console Commands](day-9.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](/README.md)
+Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/1.0/bundles/SymfonyMakerBundle/index.html
 [2]: https://en.wikipedia.org/wiki/Cross-site_request_forgery
