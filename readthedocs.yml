@@ -5,4 +5,6 @@ python:
   version: 3.6
   use_system_site_packages: true
 
+requirements_file: docs/requirements.txt
+
 formats: []
