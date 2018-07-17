@@ -56,6 +56,8 @@ exit;
 sudo chown -R $USER:$USER .
 ```
 
+We install into `tmp` directory and copy then to proper one, because `create-project` command requires target folder to be empty, but in project's folder we already have docker files.
+
 ## Test the Symfony installation
 
 Now open your web browser and enter the [http://127.0.0.1][7] URL. You should see error `No route found for "GET /"` but it's ok. You don't have any routes created yet.
