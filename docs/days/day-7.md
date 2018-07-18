@@ -149,7 +149,6 @@ Add the following code to the `CategoryController.php` file:
 ```php
 // ...
 use App\Entity\Category;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -158,8 +157,7 @@ class CategoryController extends AbstractController
     /**
      * Finds and displays a category entity.
      *
-     * @Route("/category/{slug}", name="category.show")
-     * @Method("GET")
+     * @Route("/category/{slug}", name="category.show", methods="GET")
      *
      * @param Category $category
      *
@@ -350,8 +348,7 @@ class CategoryController extends AbstractController
     /**
      * Finds and displays a category entity.
      *
-     * @Route("/category/{slug}", name="category.show")
-     * @Method("GET")
+     * @Route("/category/{slug}", name="category.show", methods="GET")
      *
      * @param Category $category
      * @param PaginatorInterface $paginator
@@ -401,7 +398,6 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Job;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -414,11 +410,10 @@ class CategoryController extends Controller
      * @Route(
      *     "/category/{slug}/{page}",
      *     name="category.show",
+     *     methods="GET",
      *     defaults={"page": 1},
      *     requirements={"page" = "\d+"}
      * )
-     *
-     * @Method("GET")
      *
      * @param Category $category
      * @param PaginatorInterface $paginator

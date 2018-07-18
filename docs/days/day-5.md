@@ -152,15 +152,12 @@ The above `requirements` entry forces the id to be a numeric value. If not, the 
 
 Now let's restrict methods allowed for our routes. For now we should accept only `GET` methods:
 ```php
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
 class JobController extends AbstractController
 {
     /**
      * Lists all job entities.
      *
-     * @Route("/", name="job.list")
-     * @Method("GET")
+     * @Route("/", name="job.list", methods="GET")
      */
     public function list() : Response
     ...
@@ -168,8 +165,7 @@ class JobController extends AbstractController
     /**
      * Finds and displays a job entity.
      *
-     * @Route("job/{id}", name="job.show", requirements={"id" = "\d+"})
-     * @Method("GET")
+     * @Route("job/{id}", name="job.show", methods="GET", requirements={"id" = "\d+"})
      */
     public function show(Job $job) : Response
     ...
@@ -196,13 +192,12 @@ bin/console debug:router job.show
 ### Final Thoughts
 That’s all for today! To learn more about the Symfony routing system read the [Routing chapter][3] from the documentation.
 
-You can find the code from today here: [https://github.com/gregurco/jobeet/tree/day5][7]
+You can find the code from today here: [https://github.com/gregurco/jobeet/tree/day5][6]
 
 ## Additional information
-- [HTTP Methods][6]
+- [HTTP Methods][5]
 - [Routing Component][3]
 - [How to Define Route Requirements][4]
-- [@Method Guide][5]
 
 ## Next Steps
 
@@ -216,6 +211,5 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [2]: http://127.0.0.1/
 [3]: https://symfony.com/doc/4.1/routing.html
 [4]: https://symfony.com/doc/4.1/routing/requirements.html
-[5]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/routing.html#route-method
-[6]: https://www.w3schools.com/tags/ref_httpmethods.asp
-[7]: https://github.com/gregurco/jobeet/tree/day5
+[5]: https://www.w3schools.com/tags/ref_httpmethods.asp
+[6]: https://github.com/gregurco/jobeet/tree/day5
