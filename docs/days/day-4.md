@@ -9,7 +9,7 @@ For web development, the most common solution for organizing your code nowadays 
 
 - The **Model** layer defines the business logic (the database belongs to this layer). You already know that Symfony stores all the classes and files related to the Model in the `src/Entity/` directory of your bundles.
 - The **View** is what the user interacts with (a template engine is part of this layer). In Symfony, the View layer is mainly made of Twig templates. They are stored in various `templates/` directories as we will see later.
-- The **Controller** is a piece of code that calls the Model to get some data that it passes to the View for rendering to the client. When we installed Symfony at the beginning of this tutorial, we saw that all requests are managed by front controller (`public/index.php`). This front controller delegate the real work to actions.
+- The **Controller** is a piece of code that calls the Model to get some data that it passes to the View for rendering to the client. When we installed Symfony at the beginning of this tutorial, we saw that all requests are managed by front controller (`public/index.php`). This front controller delegate the real work to actions (class methods).
 
 ## Controller
 
@@ -37,7 +37,7 @@ If you have a closer look at the mockups, you will notice that much of each page
 One way to solve the problem is to define a header and a footer and include them in each template. A better way is to use another design pattern to solve this problem: the [decorator design pattern][2].
 The decorator design pattern resolves the problem the other way around: the template is decorated after the content is rendered by a global template, called a **layout**.
 
-If you take a look in the `templates` folder, you will find there a `base.html.twig` template. That is the default layout that decorates our job pages right now. Open it and replace it’s content with the following:
+If you take a look in the `templates` folder, you will find there `base.html.twig` template. That is the default layout that decorates our job pages right now. Open it and replace it’s content with the following:
 
 ```twig
 <!DOCTYPE html>
@@ -116,11 +116,10 @@ class JobController extends AbstractController
 }
 ```
 
-Let’s have a closer look at the code: the `list()` method gets the `Doctrine` object, which is responsible for working with database, and then the `repository`, that will create a query to retrieve all the jobs.
-It returns a Doctrine `ArrayCollection` of Job objects that are passed to the template (the View).
+Let’s have a closer look at the code: the `list()` method gets the `Doctrine` object, which is responsible for working with database. `Doctrine` object is able to retrieve `repository` object that has lots of built-in methods to query database. At last `Repository` will retrieve all the jobs in the form of `ArrayCollection` of Job objects that are passed to the template (the View).
 
-Probably you observed line starting with `@Route` in comment block above method. This line is not simple comment. This line is related to [Routing component][6].
-It tells to symfony which URL path is related to which action in controller. We will learn more about that in next lesson.
+Probably you have already noticed line starting with `@Route` in comment block above method. This line is not a simple comment. This line is related to the[Routing component][6].
+It tells Symfony which URL path is related to which action in controller. We will learn more about that in next lesson.
 
 ## The Job Homepage Template
 
@@ -183,6 +182,7 @@ class JobController extends AbstractController
     }
 }
 ```
+Here you may notice a bit of a Symfony's magic that happens behind the scenes - there is a type hinted $job parameter in the method signature, but how Symfony loads that Job object you may ask yourself? It uses __id__ from the URL, automatically queries table by this __id__ and returns fully fledged Job object for you. Nice!
 
 ## The Job Page Template
 

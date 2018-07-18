@@ -2,8 +2,8 @@
 
 ## First links
 
-In previous day we created two actions with two templates but did not link them. It's impossible to move from list page to view job description page.
-Let's do that! Let's open and do changes in file `templates/job/list.html.twig`:
+In the previous lesson we created two actions with two templates but did not link them. It's impossible to move from list page to view job description page.
+Let's do that! Let's edit `templates/job/list.html.twig`:
 
 ```diff
 - <a href="#">
@@ -26,11 +26,12 @@ and also in `templates/base.html.twig`:
 + <a class="navbar-brand" href="{{ path('job.list') }}">Jobeet</a>
 ```
 
-Now it's possible to view job description and go back to list action.
+Now it's possible to view job description and go back to the job list page.
 
 ## URLs
 
-If you click on a job on the Jobeet homepage, the URL looks like this: `/job/1`. How does Symfony make it work? How does Symfony determine the action to call based on this URL?
+If you click on a job on the Jobeet homepage, the URL looks like this: `/job/1`. 
+How does Symfony make it work? How does Symfony determine the action to call based on this URL?
 Why is the job retrieved with the `$job` parameter in the action? Here, we will answer all these questions. 
 
 Symfony uses the `path` template helper function to generate the url for the job which has the id 1. The `job.show` is the name of the route used, defined in the configuration as you will see below.
@@ -71,7 +72,10 @@ class JobController extends AbstractController
 }
 ```
 
-Let’s have a closer look to the `job.show` route. The pattern defined by the this route acts like `/job/*` where the wildcard is given the name id (the `/job` part comes from the `@Route(“job”)` definition found at the beginning of the class that acts like a prefix for all the routes defined in that class).
+Let’s have a closer look at the `job.show` route. The pattern defined by the this route is `/job/*`. It consist of two parts:
+ - the wildcard `*` which stands for ID in the given example
+ - `job` is a general route prefix defined in the class annotation - `@Route("job")`. That prefix will prepend all the routes defined in the class.
+
 For the URL `/job/1`, the id variable gets a value of 1, which is used by the [Doctrine Converter][1] to retrieve the corresponding job and then made available for you to use in your controller.
 
 The route parameters are especially important because each is made available as an argument to the controller method.
@@ -79,7 +83,7 @@ The route parameters are especially important because each is made available as 
 ## Routing Configuration in Dev Environment
 
 The dev environment loads files from `config/routes/dev` folder which contains the routes used by the Web Debug Toolbar, among others.
-These files loads, at the end, the main routing configuration file.
+These files are being loaded at the end of the main routing configuration file.
 
 `config/routes/dev/web_profiler.yaml`:
 ```yaml
@@ -127,7 +131,7 @@ class JobController extends AbstractController
 }
 ```
 
-Now, if you go to [http://127.0.0.1/][2] from your browser, you will see the Job homepage.
+Now, if you open [http://127.0.0.1/][2] in your browser, you'll see the Job homepage.
 
 ## Route Requirements
 
@@ -150,7 +154,7 @@ class JobController extends AbstractController
 
 The above `requirements` entry forces the id to be a numeric value. If not, the route won’t match.
 
-Now let's restrict methods allowed for our routes. For now we should accept only `GET` methods:
+We can also define HTTP methods allowed for our routes. For now we should accept only `GET` methods:
 ```php
 class JobController extends AbstractController
 {
@@ -175,13 +179,14 @@ class JobController extends AbstractController
 ## Route Debugging
 
 While adding and customizing routes, it’s helpful to be able to visualize and get detailed information about your routes.
-A great way to see every route in your application is via the `debug:router` console command. Execute the command by running the following from the root of your project:
+A great way to see every route in your application is via the `debug:router` console command.  
+ Execute the following command from the root of your project:
 ```bash
 bin/console debug:router
 ```
 
-> Note: don't forget first to enter in php container if you are not in: `docker-compose exec php-fpm bash`  
-> and to execute command from container
+> Note: don't forget first to enter php container if you are not in: `docker-compose exec php-fpm bash`  
+> and to execute command within container
 
 The command will print a helpful list of all the configured routes in your application.
 You can also get very specific information on a single route by including the route name after the command:
