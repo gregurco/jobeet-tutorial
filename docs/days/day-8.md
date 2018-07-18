@@ -305,7 +305,7 @@ The good new is that [Twig Bridge][12] component, that is responsible for integr
 We use bootstrap 3 and will choose `bootstrap_3_horizontal_layout.html.twig` theme file. Let's setup it in `config/packages/twig.yaml`:
 ```twig
 twig:
-    # ...
+    {# ... #}
     form_themes:
         - 'bootstrap_3_horizontal_layout.html.twig'
 ```
@@ -1389,7 +1389,7 @@ Also you can notice that we called `addFlash` method in controller. It's a stora
 We added message and not let's display it in `show.html.twig`:
 
 ```twig
-# ...
+{# ... #}
 
 {% for message in app.flashes('notice') %}
     <div class="alert alert-success" role="alert">
@@ -1399,7 +1399,7 @@ We added message and not let's display it in `show.html.twig`:
 
 <h1>Job</h1>
 
-# ...
+{# ... #}
 ```
 
 Message is deleted from storage right after displaying. That's why after refresh it will not be shown.

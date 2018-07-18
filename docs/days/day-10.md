@@ -818,7 +818,40 @@ And now create template `admin/job/edit.html.twig`:
 {% endblock %}
 ```
 
-Edit action is done!
+### Improve edit form
+
+In the edit form we have one specific field: **logo**. Try to open edit form for job with logo:
+
+![Edit form with logo](../files/images/screenshot_14.png)
+
+Did you notice that it's impossible to know if there is a logo without looking into database.
+Let's show the logo image above logo field.
+
+Symfony gives us possibility to customize rendering of any parts of form. Open `templates/admin/job/edit.html.twig` and add next code between `extend` and `body` block:
+```twig
+{% form_theme form _self %}
+
+{% block _job_logo_widget %}
+    {% if form.vars.data %}
+        <img class="media-object" style="width:100px; height:100px;" src="{{ asset(jobs_web_directory ~ '/' ~ form.vars.data.filename) }}">
+    {% endif %}
+
+    {{ form_widget(form) }}
+{% endblock %}
+```
+
+By using the special `{% form_theme form _self %}` tag, Twig looks inside the same template for any overridden form blocks.
+But with tag `{% block _job_logo_widget %}` we override rendering of `logo` field for `job` form.  
+It's important to note that variable `form` inside of block `_job_logo_widget` represents not the whole form, but the `logo` field and in `form.vars` we can find a lot of useful information, like in `form.vars.data` we have the value of logo field (same as to call `$job->getLogo()`).  
+Tag `{{ form_widget(form) }}` renders the file input, like it was before.  
+Now form looks more informative:
+
+![Edit form with logo displayed](../files/images/screenshot_15.png)
+
+> Why did we override field in `edit.html.twig` file and not in `_form.html.twig`?
+> In a template which does not extend a parent *(in our case `_form.html.twig` is just included)*, a {% block %} tag does 2 things:
+> - it defines a block  
+> - it renders this block right where it was defined
 
 ### Delete action
 
@@ -896,6 +929,34 @@ Add a form in list action:
 
 Now admin is able to delete jobs.
 
+## Improve left menu
+
+How can we activate items in left menu? Just track name of current route.
+For example, if it starts with `admin.category.` then category item should be active.
+In Twig we have global variable `app` with property `request`, where current request is stored. Let's use it active menu items:
+
+```twig
+{# ... #}
+
+<div class="col-md-2">
+    {% set currentRouteName = app.request.get('_route') %}
+
+    <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
+        <li role="presentation" {% if currentRouteName starts with 'admin.category.' %}class="active"{% endif %}>
+            <a href="{{ path('admin.category.list') }}">Categories</a>
+        </li>
+
+        <li role="presentation" {% if currentRouteName starts with 'admin.job.' %}class="active"{% endif %}>
+            <a href="{{ path('admin.job.list') }}">Jobs</a>
+        </li>
+    </ul>
+</div>
+
+{# ... #}
+```
+
+`starts with` is build-in functionality and helps to track if string starts with another string.
+
 ## Conclusion
 
 We spent not so many time and implemented CRUDs for all the functionality we have on front side, but there is another option - to use bundles that provide admin functionality:
@@ -916,6 +977,7 @@ See you tomorrow!
 - [Working with Associations: Transitive persistence / Cascade Operations][6]
 - [EasyAdminBundle][7]
 - [SonataAdminBundle][8]
+- [How to Customize Form Rendering][11]
 
 ## Next Steps
 
@@ -935,3 +997,4 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [8]: https://symfony.com/doc/master/bundles/SonataAdminBundle/index.html
 [9]: https://packagist.org/?query=admin%20bundle&tags=symfony
 [10]: https://github.com/gregurco/jobeet/tree/day10
+[11]: https://symfony.com/doc/4.1/form/form_customization.html
