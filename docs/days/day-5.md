@@ -16,7 +16,7 @@ in `templates/job/show.html.twig`:
 - <a class="btn btn-default" href="#">
 + <a class="btn btn-default" href="{{ path('job.list') }}">
       <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-      Back to the job list
+      Back to list
   </a>
 ```
 
@@ -154,7 +154,7 @@ class JobController extends AbstractController
 
 The above `requirements` entry forces the id to be a numeric value. If not, the route won’t match.
 
-We cal also define HTTP methods allowed for our routes. For now we should accept only `GET` methods:
+We can also define HTTP methods allowed for our routes. For now we should accept only `GET` methods:
 ```php
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
