@@ -584,9 +584,13 @@ class JobController extends AbstractController
     public function list(EntityManagerInterface $em, PaginatorInterface $paginator, int $page) : Response
     {
         $jobs = $paginator->paginate(
-            $em->getRepository(Job::class)->findAll(),
+            $em->getRepository(Job::class)->createQueryBuilder('j'),
             $page,
-            $this->getParameter('max_per_page')
+            $this->getParameter('max_per_page'),
+            [
+                PaginatorInterface::DEFAULT_SORT_FIELD_NAME => 'j.createdAt',
+                PaginatorInterface::DEFAULT_SORT_DIRECTION => 'DESC',
+            ]
         );
 
         return $this->render('admin/job/list.html.twig', [
@@ -596,7 +600,8 @@ class JobController extends AbstractController
 }
 ```
 
-Note: we used `max_per_page` variable for pagination limit.
+We used `max_per_page` variable for pagination limit and additional options in method `paginate` in order to change sorting of elements.
+Admin will see new jobs on first page.
 
 Now create template `templates/admin/job/list.html.twig`:
 
