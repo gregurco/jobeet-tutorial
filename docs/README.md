@@ -1,5 +1,8 @@
 # Symfony 4.1 Jobeet Tutorial
 
+[![Documentation Status](https://readthedocs.org/projects/jobeet-tutorial/badge/?version=latest)](https://jobeet-tutorial.readthedocs.io/en/latest/?badge=latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 **Jobeet** is a great tutorial on how to build a fully functional job board website. It was written by the [Symfony][1] team for Symfony 1.x version and I want to adapt it for **Symfony 4.1**.
 
 In the following weeks I will begin to post the parts of making the Jobeet website using Symfony 4.1, so it will help beginners to learn and understand how the framework works.  
@@ -45,6 +48,30 @@ Please be free to make any observations and improvements you consider important 
 
 ~~Jobeet Day 18: The Deployment~~
 
+## Feedback
+
+If something is not clear, is described not properly or you know the way to describe it better then feel free to [open an issue][4].
+
+## Track the progress
+
+We are still working to finish the tutorial and you can track the progress and plans [here][7].
+
+Also don't forget to click on "Star" and "Watch" buttons. It's really motivating.
+
+## Contributors
+
+This project is brought to you by these awesome contributors:
+- [jobeet-tutorial/contributors][5]
+- [jobeet/contributors][5]
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE][3] file for details.
 
 [1]: https://symfony.com
 [2]: https://symfony.com/legacy/doc/jobeet?orm=Propel
+[3]: https://github.com/gregurco/jobeet-tutorial/blob/master/LICENSE
+[4]: https://github.com/gregurco/jobeet-tutorial/issues/new
+[5]: https://github.com/gregurco/jobeet-tutorial/graphs/contributors
+[6]: https://github.com/gregurco/jobeet/graphs/contributors
+[7]: https://github.com/gregurco/jobeet-tutorial/projects/1
