@@ -34,19 +34,19 @@ Please be free to make any observations and improvements you consider important 
 
 [[WIP] Jobeet Day 11: The User](days/day-11.md)
 
-~~Jobeet Day 12: The Mailer~~
+<del>Jobeet Day 12: The Mailer</del>
 
-~~Jobeet Day 13: Translations~~
+<del>Jobeet Day 13: Translations</del>
 
-~~Jobeet Day 14: API~~
+<del>Jobeet Day 14: API</del>
 
-~~Jobeet Day 15: The Unit Tests~~
+<del>Jobeet Day 15: The Unit Tests</del>
 
-~~Jobeet Day 16: The Functional Tests~~
+<del>Jobeet Day 16: The Functional Tests</del>
 
-~~Jobeet Day 17: The Cache~~
+<del>Jobeet Day 17: The Cache</del>
 
-~~Jobeet Day 18: The Deployment~~
+<del>Jobeet Day 18: The Deployment</del>
 
 ## Feedback
 
@@ -61,8 +61,9 @@ Also don't forget to click on "Star" and "Watch" buttons. It's really motivating
 ## Contributors
 
 This project is brought to you by these awesome contributors:
-- [jobeet-tutorial/contributors][5]
-- [jobeet/contributors][5]
+
+* [jobeet-tutorial/contributors][5]
+* [jobeet/contributors][5]
 
 ## License
 
