@@ -361,8 +361,108 @@ Now user will see recently viewed jobs:
 
 ![Job History](../files/images/screenshot_17.png)
 
+## Application Security
+
+### Authentication
+
+Like many other symfony features, security is managed by a YAML file, `security.yml`.
+For instance, you can find the default configuration for the application in the `config/packages` directory:
+
+```yaml
+security:
+    providers:
+        in_memory: { memory: ~ }
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+```
+
+From the beginning we have two `firewalls`: `dev` isn't important, it's used only in dev mode and gives access to some dev routes, but `main` firewall handles all other routes because there is no `pattern` key.
+
+Let's activate HTTP basic authentication in `main` firewall:
+
+```diff
+  security:
+      providers:
+          in_memory: { memory: ~ }
+  
+      firewalls:
+          dev:
+              pattern: ^/(_(profiler|wdt)|css|images|js)/
+              security: false
+          main:
+              anonymous: ~
++             http_basic: ~
+```
+
+and restrict access for routes that start with `/admin` to be accessible only by users with role `ROLE_ADMIN`:
+
+```diff
+  security:
+      providers:
+          in_memory: { memory: ~ }
+  
+      firewalls:
+          dev:
+              pattern: ^/(_(profiler|wdt)|css|images|js)/
+              security: false
+          main:
+              anonymous: ~
+              http_basic: ~
+
++     access_control:
++         - { path: ^/admin, roles: ROLE_ADMIN }
+```
+
+Open any admin route and you will be requested to provide login and password:
+
+![Basic Auth Required](../files/images/screenshot_18.png)
+
+We don't have any users in database, but Symfony gives us possibility to list users directly in this `yaml` file too:
+
+```diff
+  security:
+      providers:
+          in_memory:
++            memory:
++                users:
++                    admin:
++                        password: someStrongPassword
++                        roles: 'ROLE_ADMIN'
+ 
++     encoders:
++        Symfony\Component\Security\Core\User\User: plaintext
+  
+      firewalls:
+          dev:
+              pattern: ^/(_(profiler|wdt)|css|images|js)/
+              security: false
+          main:
+              anonymous: ~
+              http_basic: ~
+  
+      access_control:
+          - { path: ^/admin, roles: ROLE_ADMIN }
+  
+```
+
+Try to login using username `admin` and password `someStrongPassword`. It should work!
+
+User provider loads user information and put it into a `User` object. If you load users from the database or some other source, you'll use your own custom User class. But when you use the "in memory" provider, it gives you a `Symfony\Component\Security\Core\User\User` object.
+
+Whatever your User class is, you need to tell Symfony what algorithm was used to encode the passwords. In this case, the passwords are just `plaintext`.
+
+If you refresh now, you'll be logged in! The web debug toolbar even tells you who you are and what roles you have:
+
+![Auth Information](../files/images/screenshot_19.png)
+
 ## Additional information
 - [Session Management][1]
+- [Security][3]
 
 ## Next Steps
 
@@ -372,5 +472,6 @@ Previous post is available here: [Jobeet Day 10: The Admin](day-10.md)
 
 Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 
-[1]: http://symfony.com/doc/4.1/components/http_foundation/sessions.html
+[1]: https://symfony.com/doc/4.1/components/http_foundation/sessions.html
 [2]: http://127.0.0.1/_profiler
+[3]: https://symfony.com/doc/4.1/security.html
