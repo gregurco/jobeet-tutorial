@@ -127,6 +127,10 @@ In the MVC model, the Model defines all the business logic, and the Controller o
 As the code returns a collection of jobs, let’s move the code to the repository, that is part of model layer.
 For that we will need to create a custom `repository` class for Job entity and to add the query to that class.
 
+At this point, you may have a question - what is this Repository class anyway? 
+Repository is a pattern, a common solution to the well know problem. It has been around for quite some time and was popularizer around 90's by people like Martin Forwler and Eric Evans. If you try to describe it briefly it can get quite complex. For now think of it as just another layer of abstraction
+above the Entity that contains all the useful methods to work with database. If you are still curious about Repository pattern continue to learn [here][4]
+
 Open `src/Entity/Job.php` and modify `@ORM\Entity` annotation to specify the repository class for this entity:
 
 ```php
@@ -151,7 +155,7 @@ class JobRepository extends EntityRepository
 ```
 
 Next, add a new method, `findActiveJobs()`, to the newly created repository class.
-This method will query for all of the active Job entities sorted by the expiresAt column (and filtered by category if it receives the $categoryId parameter).
+This method will query for all of the active Job entities sorted by the `expiresAt` column and filtered by category if it receives the `$categoryId` parameter. The method will return special ArrayCollection object from Doctrine bundle, that object will containt all results and can be iterated with foreach just like the usual array.
 
 ```php
 // ...
@@ -228,7 +232,7 @@ class CategoryRepository extends EntityRepository
 }
 ```
 
-Add a `findWithActiveJobs()` method:
+Add `findWithActiveJobs()` method:
 
 ```php
 use App\Entity\Category;
@@ -252,8 +256,8 @@ class CategoryRepository extends EntityRepository
 }
 ```
 
-This methods will give us only the categories with active jobs, but if you will call `getJobs` method on each category you will receive all jobs, including expired.
-Let's create `getActiveJobs` method in `Category` entity, which will return only not expired jobs:
+This methods will give us only categories with active jobs, but if you will call `getJobs` method on each category you will receive all jobs, including expired.
+Let's create `getActiveJobs` method in `Category` entity, which will return only non expired jobs:
 
 ```php
 /**
@@ -407,7 +411,8 @@ public function findActiveJob(int $id) : ?Job
 }
 ```
 
-Now to change the `show` from the `JobController` to use the new repository method, we need to specify it to the Doctrine Entity by adding a new annotation (and also add use `Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity` to the beginning of the file):
+Now we need to change the `show` from the `JobController` to use the new repository method. 
+It is necessary to let Doctrine Entity know about action by adding a new annotation. Do not forget to add `use` statement at the top of the page:
 
 ```php
 // ...
@@ -454,3 +459,4 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [1]: https://symfony.com/doc/4.1/templating/global_variables.html
 [2]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
 [3]: https://github.com/gregurco/jobeet/tree/day6
+[4]: https://martinfowler.com/eaaCatalog/repository.html
