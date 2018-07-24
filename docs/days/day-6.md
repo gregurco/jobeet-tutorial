@@ -128,8 +128,8 @@ As the code returns a collection of jobs, let’s move the code to the repositor
 For that we will need to create a custom `repository` class for Job entity and to add the query to that class.
 
 At this point, you may have a question - what is this Repository class anyway? 
-Repository is a pattern, a common solution to the well know problem. It has been around for quite some time and was popularizer around 90's by people like Martin Forwler and Eric Evans. If you try to describe it briefly it can get quite complex. For now think of it as just another layer of abstraction
-above the Entity that contains all the useful methods to work with database. If you are still curious about Repository pattern continue to learn [here][4]
+Repository is a pattern, a common solution to the well know problem. It has been around for quite some time and was popularized around 90's by people like Martin Fowler and Eric Evans. If you try to describe it briefly it can get quite complex. For now think of it as just another layer of abstraction
+above the Entity that contains all the useful methods to work with database. If you are still curious about Repository pattern continue to learn [here][4].
 
 Open `src/Entity/Job.php` and modify `@ORM\Entity` annotation to specify the repository class for this entity:
 
@@ -155,7 +155,7 @@ class JobRepository extends EntityRepository
 ```
 
 Next, add a new method, `findActiveJobs()`, to the newly created repository class.
-This method will query for all of the active Job entities sorted by the `expiresAt` column and filtered by category if it receives the `$categoryId` parameter. The method will return special ArrayCollection object from Doctrine bundle, that object will containt all results and can be iterated with foreach just like the usual array.
+This method will query for all of the active Job entities sorted by the `expiresAt` column and filtered by category if it receives the `$categoryId` parameter. The method will return special ArrayCollection object from Doctrine bundle, that object will contain all results and can be iterated with foreach just like the usual array.
 
 ```php
 // ...
