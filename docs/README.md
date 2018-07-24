@@ -63,7 +63,7 @@ Also don't forget to click on "Star" and "Watch" buttons. It's really motivating
 This project is brought to you by these awesome contributors:
 
 * [jobeet-tutorial/contributors][5]
-* [jobeet/contributors][5]
+* [jobeet/contributors][6]
 
 ## License
 
