@@ -45,7 +45,7 @@ In the dev environment, thanks to the symfony web debug toolbar, all the informa
 Even if the above code works, it is far from perfect as it does not take into account some requirements from day 2:
 *“A user can come back to re-activate or extend the validity of the job for an extra 30 days…”.*
 
-But as the above code only relies on the createdAt value, and because this column stores the creation date, we cannot satisfy the above requirement.
+But as the above code only relies on the createdAt value, and because this column stores the creation date, we can not satisfy the above requirement.
 
 If you remember the database schema we have described during day 3, we also have defined an `expiresAt` column.
 Currently, if this value is not set in fixture file, it remains always empty.

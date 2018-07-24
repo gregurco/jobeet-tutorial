@@ -34,12 +34,12 @@ If you click on a job on the Jobeet homepage, the URL looks like this: `/job/1`.
 How does Symfony make it work? How does Symfony determine the action to call based on this URL?
 Why is the job retrieved with the `$job` parameter in the action? Here, we will answer all these questions. 
 
-Symfony uses the `path` template helper function to generate the url for the job which has the id 1. The `job.show` is the name of the route used, defined in the configuration as you will see below.
+Symfony uses the `path` template helper function to generate the url for the job which has the id 1.
+The `job.show` is the name of the route used, defined in the configuration as you will see below.
 
 ## Routing Configuration
 
-In Symfony, routing configuration is usually done in the `config/routes/annotations.yaml`. This imports routing configuration.
-In our case, the routing is imported from all controllers in folder `src/Controller`, using annotations:
+In Symfony, routing configuration is usually done in the `config/routes/annotations.yaml`. Let's take a look at the default configuration:
 
 ```yaml
 controllers:
@@ -47,7 +47,9 @@ controllers:
     type: annotation
 ```
 
-In the `JobController` you will find every job related route defined:
+It imports routing configuration from all controllers in folder `src/Controller` *(and also subfolders)* and which are written in annotations.
+
+In the `JobController` you can find all routes related to jobs *(list all, show one, etc.)*:
 ```php
 /**
  * @Route("job")
@@ -72,13 +74,18 @@ class JobController extends AbstractController
 }
 ```
 
-Let’s have a closer look at the `job.show` route. The pattern defined by the this route is `/job/*`. It consist of two parts:
- - the wildcard `*` which stands for ID in the given example
- - `job` is a general route prefix defined in the class annotation - `@Route("job")`. That prefix will prepend all the routes defined in the class.
+First we see class annotation `@Route("job")` - it prepends `job` to all the routes defined in the class.
 
-For the URL `/job/1`, the id variable gets a value of 1, which is used by the [Doctrine Converter][1] to retrieve the corresponding job and then made available for you to use in your controller.
+Thanks to these two routes in controller:
+- If user goes to `/job`, the first route is marched and `list()` method is executed.
+- If user goes to `/job/*` *(\* - means any character but at least one)*, the second route is matched and `show()` method is executed. *(Example: `/job/1`, `/job/2`, etc.)*  
 
-The route parameters are especially important because each is made available as an argument to the controller method.
+Let’s have a closer look at the second route. For this route we can not provide exact path, because id field is generated and for job with id 1 the route is `/job/1`, for the next one the route is `/job/2` and so on. 
+For this purpose Routing Component provides us possibility to define **variables** and it is written in the following way: `{variableName}`. In our case it's **id** variable in route `/job/{id}`.  
+
+For the URL `/job/1`, the id variable gets a value of 1, which is used by the [Doctrine Converter][1] to retrieve the job with corresponding id and then do it available to use in controller.
+
+The route parameters are especially important because they give us possibility to define different kinds of routes.
 
 ## Routing Configuration in Dev Environment
 
