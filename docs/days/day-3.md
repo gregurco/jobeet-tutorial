@@ -407,8 +407,8 @@ class Affiliate
 ```
 
 As you can notice, all properties are `private` but we should access them somehow. Let’s generate setters and getters.
-If you use an IDE like PHPStorm, it can generate these for you. In PHPStorm, put your cursor anywhere in the class, then go to the Code -> Generate menu and select "Getters and Setters" (Alt + Insert).
-Notice #1: for boolean variables we generate `is` and `set` methods, for collections we generate `get`, `add` and `remove` but for everyone else we generate `get` and `set` methods.
+If you use an IDE like PHPStorm, it can generate these for you. In PHPStorm, put your cursor anywhere in the class, then go to the Code -> Generate menu and select "Getters and Setters" (Alt + Insert).  
+Notice #1: for boolean variables we generate `is` and `set` methods, for collections we generate `get`, `add` and `remove` but for everyone else we generate `get` and `set` methods.  
 Notice #2: for ID we generate ONLY getter. We don’t have case when to set id, but doctrine knows how to set ID without setter.
 
 src/Entity/Category.php:

@@ -52,7 +52,7 @@ The process has only two steps: first, the user fills in the form with all the n
 
 There is no need to create an account to post a job. A job can be modified afterwards thanks to a specific URL (protected by a token given to the user when the job is created).
 
-Each job post is online for 30 days (this is configurable by the admin).
+Each job post is displayed for 30 days (this is configurable by the admin).
 A user can come back to re-activate or extend the validity of the job for an extra 30 days but only when the job expires in less than 5 days.
 
 ![Post job mockup](../files/images/screenshot_5.png)
