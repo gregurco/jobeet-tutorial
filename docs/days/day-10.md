@@ -256,7 +256,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-Now create template 'admin/category/create.html.twig’ and render the form:
+Now create template `admin/category/create.html.twig` and render the form:
 
 ```twig
 {% extends 'admin/base.html.twig' %}

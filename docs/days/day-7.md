@@ -18,7 +18,7 @@ First let’s install the bundle:
 composer require stof/doctrine-extensions-bundle
 ```
 
-This bundle has recipe and symfony will ask you to run this recipe, because it’s not official one. Type 'y’ and accept it:
+This bundle has recipe and symfony will ask you to run this recipe, because it’s not official one. Type `y` and accept it:
 ```bash
 Symfony operations: 1 recipe (3c3199f3aa23ea62ee911b3d6fe61a93)
   -  WARNING  stof/doctrine-extensions-bundle (>=1.2): From github.com/symfony/recipes-contrib:master
@@ -125,7 +125,7 @@ array(4) {
 ...
 ```
 
-The main advantage of this bundle for us is that slug is generated automatically. We don’t call 'setSlug’ anywhere.
+The main advantage of this bundle for us is that slug is generated automatically. We don’t call `setSlug` anywhere.
 
 ## The Job Category Controller
 

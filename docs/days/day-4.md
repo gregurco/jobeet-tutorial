@@ -182,7 +182,7 @@ class JobController extends AbstractController
     }
 }
 ```
-Here you may notice a bit of a Symfony’s magic that happens behind the scenes - there is a type hinted $job parameter in the method signature, but how Symfony loads that Job object you may ask yourself? It uses __ID__ from the URL, automatically queries table by this __ID__ and returns fully fledged Job object for you. Nice!
+Here you may notice a bit of a Symfony’s magic that happens behind the scenes - there is a type hinted $job parameter in the method signature, but how Symfony loads that Job object you may ask yourself? It uses `id` from the URL, automatically queries table by this `id` and returns fully fledged Job object for you. Nice!
 
 ## The Job Page Template
 
