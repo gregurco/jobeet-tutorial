@@ -7,7 +7,7 @@ This day is about the project specifications. They are the same as in the origin
 > It also provides feeds and an API to interact with it programmatically.
 
 ## The User Stories
-We will have four type of users: **admin** (owns and administers the website), **user** (visits the website looking for a job), **poster** (visits the website to post jobs) and **affiliate** (re-publishes jobs on his website).
+We will have four type of users: **admin** (owns and administers the website), **user** (visits the site looking for a job), **poster** (visits the site to post jobs) and **affiliate** (re-publishes jobs on his website).
 
 
 In the original tutorial we had to make two applications, the **frontend**, where the users interact with the website, and the **backend**, where admins manage the website.
@@ -63,7 +63,7 @@ To apply, the user must give the following information:
 
 - Name
 - Email
-- Website UR
+- Site UR
 
 The affiliate account must be activated by the admin. Once activated, the affiliate receives a token to use with the API via email.
 
@@ -71,8 +71,8 @@ The affiliate account must be activated by the admin. Once activated, the affili
 An affiliate will retrieve the current job list by calling the API with his affiliate token. The list can be returned in the XML, JSON or YAML format.
 The affiliate can limit the number of jobs to be returned, and refine his query by specifying a category.
 
-## Story B1: An admin configures the website
-An admin can edit the categories available on the website.
+## Story B1: An admin configures the site
+An admin can edit the categories available on the site.
 
 ## Story B2: An admin manages the jobs
 An admin can edit and remove any posted job.

@@ -3,9 +3,9 @@
 [![Documentation Status](https://readthedocs.org/projects/jobeet-tutorial/badge/?version=latest)](https://jobeet-tutorial.readthedocs.io/en/latest/?badge=latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-**Jobeet** is a great tutorial on how to build a fully functional job board website. It was written by the [Symfony][1] team for Symfony 1.x version and I want to adapt it for **Symfony 4.1**.
+**Jobeet** is a great tutorial on how to build a fully functional job board site. It was written by the [Symfony][1] team for Symfony 1.x version and I want to adapt it for **Symfony 4.1**.
 
-In the following weeks I will begin to post the parts of making the Jobeet website using Symfony 4.1, so it will help beginners to learn and understand how the framework works.  
+In the following weeks I will begin to post the parts of making the Jobeet site using Symfony 4.1, so it will help beginners to learn and understand how the framework works.  
 I will try to follow the original [Jobeet][2] tutorial, but I will also make some changes to include new technologies and to reflect my personal developing style.
 
 Please be free to make any observations and improvements you consider important by commenting on the posts that will follow.
@@ -56,7 +56,7 @@ If something is not clear, is described not properly or you know the way to desc
 
 We are still working to finish the tutorial and you can track the progress and plans [here][7].
 
-Also don't forget to click on "Star" and "Watch" buttons. It's really motivating.
+Also don’t forget to click on "Star" and "Watch" buttons. It’s really motivating.
 
 ## Contributors
 

@@ -2,8 +2,8 @@
 
 ## First links
 
-In the previous lesson we created two actions with two templates but did not link them. It's impossible to move from list page to view job description page.
-Let's do that! Let's edit `templates/job/list.html.twig`:
+In the previous lesson we created two actions with two templates but did not link them. It’s impossible to move from list page to view job description page.
+Let’s do that! Let’s edit `templates/job/list.html.twig`:
 
 ```diff
 - <a href="#">
@@ -26,7 +26,7 @@ and also in `templates/base.html.twig`:
 + <a class="navbar-brand" href="{{ path('job.list') }}">Jobeet</a>
 ```
 
-Now it's possible to view job description and go back to the job list page.
+Now it’s possible to view job description and go back to the job list page.
 
 ## URLs
 
@@ -34,12 +34,12 @@ If you click on a job on the Jobeet homepage, the URL looks like this: `/job/1`.
 How does Symfony make it work? How does Symfony determine the action to call based on this URL?
 Why is the job retrieved with the `$job` parameter in the action? Here, we will answer all these questions. 
 
-Symfony uses the `path` template helper function to generate the url for the job which has the id 1.
+Symfony uses the `path` template helper function to generate the URL for the job which has the ID 1.
 The `job.show` is the name of the route used, defined in the configuration as you will see below.
 
 ## Routing Configuration
 
-In Symfony, routing configuration is usually done in the `config/routes/annotations.yaml`. Let's take a look at the default configuration:
+In Symfony, routing configuration is usually done in the `config/routes/annotations.yaml`. Let’s take a look at the default configuration:
 
 ```yaml
 controllers:
@@ -76,14 +76,14 @@ class JobController extends AbstractController
 
 First we see class annotation `@Route("job")` - it prepends `job` to all the routes defined in the class.
 
-Thanks to these two routes in controller:
+Thanks to these two routes in controller:F
 - If user goes to `/job`, the first route is marched and `list()` method is executed.
 - If user goes to `/job/*` *(\* - means any character but at least one)*, the second route is matched and `show()` method is executed. *(Example: `/job/1`, `/job/2`, etc.)*  
 
-Let’s have a closer look at the second route. For this route we can not provide exact path, because id field is generated and for job with id 1 the route is `/job/1`, for the next one the route is `/job/2` and so on. 
-For this purpose Routing Component provides us possibility to define **variables** and it is written in the following way: `{variableName}`. In our case it's **id** variable in route `/job/{id}`.  
+Let’s have a closer look at the second route. For this route we can not provide exact path, because ID field is generated and for job with ID 1 the route is `/job/1`, for the next one the route is `/job/2` and so on. 
+For this purpose Routing Component provides us possibility to define **variables** and it is written in the following way: `{variableName}`. In our case it’s `id` variable in route `/job/{id}`.  
 
-For the URL `/job/1`, the id variable gets a value of 1, which is used by the [Doctrine Converter][1] to retrieve the job with corresponding id and then do it available to use in controller.
+For the URL `/job/1`, the ID variable gets a value of 1, which is used by the [Doctrine Converter][1] to retrieve the job with corresponding ID and then do it available to use in controller.
 
 The route parameters are especially important because they give us possibility to define different kinds of routes.
 
@@ -138,7 +138,7 @@ class JobController extends AbstractController
 }
 ```
 
-Now, if you open [http://127.0.0.1/][2] in your browser, you'll see the Job homepage.
+Now, if you open [http://127.0.0.1/][2] in your browser, you’ll see the Job homepage.
 
 ## Route Requirements
 
@@ -159,7 +159,7 @@ class JobController extends AbstractController
 }
 ```
 
-The above `requirements` entry forces the id to be a numeric value. If not, the route won’t match.
+The above `requirements` entry forces the ID to be a numeric value. If not, the route won’t match.
 
 We can also define HTTP methods allowed for our routes. For now we should accept only `GET` methods:
 ```php
@@ -192,7 +192,7 @@ A great way to see every route in your application is via the `debug:router` con
 bin/console debug:router
 ```
 
-> Note: don't forget first to enter php container if you are not in: `docker-compose exec php-fpm bash`  
+> Note: don’t forget first to enter php container if you are not in: `docker-compose exec php-fpm bash`  
 > and to execute command within container
 
 The command will print a helpful list of all the configured routes in your application.

@@ -18,7 +18,7 @@ Now that Doctrine knows about your database, you can let it create the database 
 bin/console doctrine:database:create --if-not-exists
 ```
 
-> Note: don't forget first to enter php container if you are not in: `docker-compose exec php-fpm bash`  
+> Note: don’t forget first to enter php container if you are not in: `docker-compose exec php-fpm bash`  
 > and to execute command from container
 
 ## Creating Entity Classes
@@ -354,8 +354,8 @@ Don’t worry about that error for now. We will fix it in a few minutes.
 ## Constructors, Getters and Setters
 
 Fists of all we should create constructors in entities with OneToMany or ManyToMany relations.
-Collection property, such as $categories, must be a collection object that implements Doctrine's Collection interface. In this case, an ArrayCollection object is used.
-This looks and acts almost exactly like an array, but has some added flexibility. Just imagine that it's an array and you'll be in good shape.
+Collection property, such as $categories, must be a collection object that implements Doctrine’s Collection interface. In this case, an ArrayCollection object is used.
+This looks and acts almost exactly like an array, but has some added flexibility. Just imagine that it’s an array and you’ll be in good shape.
 
 src/Entity/Category.php:
 ```php
@@ -406,10 +406,10 @@ class Affiliate
 }
 ```
 
-As you can notice, all properties are `private` but we should access them somehow. Let's generate setters and getters.
+As you can notice, all properties are `private` but we should access them somehow. Let’s generate setters and getters.
 If you use an IDE like PHPStorm, it can generate these for you. In PHPStorm, put your cursor anywhere in the class, then go to the Code -> Generate menu and select "Getters and Setters" (Alt + Insert).
 Notice #1: for boolean variables we generate `is` and `set` methods, for collections we generate `get`, `add` and `remove` but for everyone else we generate `get` and `set` methods.
-Notice #2: for id we generate ONLY getter. We don't have case when to set id, but doctrine knows how to set id without setter.
+Notice #2: for ID we generate ONLY getter. We don’t have case when to set id, but doctrine knows how to set ID without setter.
 
 src/Entity/Category.php:
 ```php
@@ -1051,17 +1051,17 @@ class Affiliate
 
 Now we have usable entity classes with mapping information so Doctrine knows exactly how to persist it.
 Of course, we don’t yet have the corresponding product table in our database.
-Fortunately, Doctrine Migration Bundle can automatically create migrations with SQL to sync DB with entities. To do this, let's install the bundle:
+Fortunately, Doctrine Migration Bundle can automatically create migrations with SQL to sync DB with entities. To do this, let’s install the bundle:
 ```bash
 composer require doctrine/doctrine-migrations-bundle
 ```
 
-After that let's generate first migration:
+After that let’s generate first migration:
 ```bash
 bin/console doctrine:migration:diff
 ```
 
-New migration was generated in folder `src/Migrations` but this migration is not executed yet. Let's execute it:
+New migration was generated in folder `src/Migrations` but this migration is not executed yet. Let’s execute it:
 ```bash
 bin/console doctrine:migration:migrate
 ```
@@ -1074,7 +1074,7 @@ The tables have been created in the database but there is no data in them. For a
 
 To populate the database with some initial data we will use [DoctrineFixturesBundle][5]. To setup this bundle we have to follow the next steps:
 
-Let's download the Bundle
+Let’s download the Bundle
 ```bash
 composer require --dev doctrine/doctrine-fixtures-bundle
 ```
@@ -1200,7 +1200,7 @@ class JobFixtures extends Fixture implements OrderedFixtureInterface
 }
 ```
 
-Once your fixtures have been written, you can load them via the command line by using the following command:
+Once your fixtures have been written, you can load them via the command-line by using the following command:
 ```bash
 bin/console doctrine:fixtures:load
 ```

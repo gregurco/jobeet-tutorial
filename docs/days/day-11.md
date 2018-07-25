@@ -2,7 +2,7 @@
 
 Yesterday was packed with a lot of information.
 
-Today, we will discover how symfony manages persistent data between HTTP requests. As you might know, the HTTP protocol is stateless, which means that each request is independent from its preceding or proceeding ones. Modern websites need a way to persist data between requests to enhance the user experience.
+Today, we will discover how symfony manages persistent data between HTTP requests. As you might know, the HTTP protocol is stateless, which means that each request is independent from its preceding or proceeding ones. Modern sites need a way to persist data between requests to enhance the user experience.
 
 A user session can be identified using a cookie. In Symfony, the developer does not need to manipulate the session directly, but rather uses the `Session` object from `HttpFoundation` component.
 
@@ -36,10 +36,10 @@ Message shown above is rendered in `templates/job/show.html.twig`:
 ## User Session
 
 Unfortunately, the Jobeet user stories have no requirement that includes storing something in the user session.
-So let's add a new requirement: to ease job browsing, the last three jobs viewed by the user should be displayed in the menu with links to come back to the job page later on.
+So let’s add a new requirement: to ease job browsing, the last three jobs viewed by the user should be displayed in the menu with links to come back to the job page later on.
 
 When a user access a job page, the displayed job object needs to be added in the user history and stored in the session.
-It's better to organize this logic in service from the beginning. Create new service `JobHistoryService` in already existing folder `/src/Service`:
+It’s better to organize this logic in service from the beginning. Create new service `JobHistoryService` in already existing folder `/src/Service`:
 
 ```php
 namespace App\Service;
@@ -128,7 +128,7 @@ class JobController extends AbstractController
 }
 ```
 
-Now let's write the implementation for `addJob` method:
+Now let’s write the implementation for `addJob` method:
 
 ```php
 // ...
@@ -178,9 +178,9 @@ To track request session open Symfony Profiler from bottom toolbar (or directly:
 
 ![Session in Profiler](../files/images/screenshot_16.png)
 
-there you can see key we used to store our ids and the current value *(in my case job was with id 47)*.
+there you can see key we used to store our IDs and the current value *(in my case job was with ID 47)*.
 
-Now use these ids to fetch jobs from database:
+Now use these IDs to fetch jobs from database:
 
 ```php
 // ...
@@ -262,7 +262,7 @@ and render in `templates/job/list.html.twig`:
 {% endblock %}
 ```
 
-But don't forget that we have one route in `CategoryController` with similar functionality and it would be good to display jobs history too.
+But don’t forget that we have one route in `CategoryController` with similar functionality and it would be good to display jobs history too.
 Move the `div` with all inner content to separate file `templates/job/_job_history.html.twig`:
 
 ```twig
@@ -381,9 +381,9 @@ security:
             anonymous: ~
 ```
 
-From the beginning we have two `firewalls`: `dev` isn't important, it's used only in dev mode and gives access to some dev routes, but `main` firewall handles all other routes because there is no `pattern` key.
+From the beginning we have two `firewalls`: `dev` isn’t important, it’s used only in dev mode and gives access to some dev routes, but `main` firewall handles all other routes because there is no `pattern` key.
 
-Let's activate HTTP basic authentication in `main` firewall:
+Let’s activate HTTP basic authentication in `main` firewall:
 
 ```diff
   security:
@@ -422,7 +422,7 @@ Open any admin route and you will be requested to provide login and password:
 
 ![Basic Auth Required](../files/images/screenshot_18.png)
 
-We don't have any users in database, but Symfony gives us possibility to list users directly in this `yaml` file too:
+We don’t have any users in database, but Symfony gives us possibility to list users directly in this `yaml` file too:
 
 ```diff
   security:
@@ -452,11 +452,11 @@ We don't have any users in database, but Symfony gives us possibility to list us
 
 Try to login using username `admin` and password `someStrongPassword`. It should work!
 
-User provider loads user information and put it into a `User` object. If you load users from the database or some other source, you'll use your own custom User class. But when you use the "in memory" provider, it gives you a `Symfony\Component\Security\Core\User\User` object.
+User provider loads user information and put it into a `User` object. If you load users from the database or some other source, you’ll use your own custom User class. But when you use the "in memory" provider, it gives you a `Symfony\Component\Security\Core\User\User` object.
 
 Whatever your User class is, you need to tell Symfony what algorithm was used to encode the passwords. In this case, the passwords are just `plaintext`.
 
-If you refresh now, you'll be logged in! The web debug toolbar even tells you who you are and what roles you have:
+If you refresh now, you’ll be logged in! The web debug toolbar even tells you who you are and what roles you have:
 
 ![Auth Information](../files/images/screenshot_19.png)
 

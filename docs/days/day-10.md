@@ -1,12 +1,12 @@
 # Jobeet Day 10: The Admin
 
-With the addition we made in day 9 on Jobeet, the frontend application is now fully useable by job seekers and job posters. It's time to talk a bit about the backend application.  
+With the addition we made in day 9 on Jobeet, the frontend application is now fully useable by job seekers and job posters. It’s time to talk a bit about the backend application.  
 Today we will develop a complete backend interface for Jobeet in just one day.
 
 ## Main concept
 
 The Admin part is another side of Jobeet application and this side includes functionality that is not available in frontend application, for example: creation and deletion of categories.  
-For security and architectural reasons this logic should be **separated** from frontend application. Let's keep in mind this idea during all this day.
+For security and architectural reasons this logic should be **separated** from frontend application. Let’s keep in mind this idea during all this day.
 
 ## First admin controller
 
@@ -36,13 +36,13 @@ We will create admin templates and all of them will extend some layout, like we 
 {# page content #}
 ```
 
-But we can't use this one, because admin layout have some differences:
+But we can’t use this one, because admin layout have some differences:
 - left menu with links to all CRUDs
 - button from top menu will redirect to admin default CRUD and not to jobeet main page
 - *and probably many other things will differ with time.*
 
 Also like we did with controllers, we will keep admin templates separately in folder `/templates/admin`.
-Let's create admin templates layout `base.html.twig`:
+Let’s create admin templates layout `base.html.twig`:
 
 ```twig
 <!DOCTYPE html>
@@ -90,13 +90,13 @@ Let's create admin templates layout `base.html.twig`:
 </html>
 ```
 
-Now it's pretty similar with one we have, but it gives us possibility to change it without affecting public pages.
+Now it’s pretty similar with one we have, but it gives us possibility to change it without affecting public pages.
 
 ## Category CRUD
 
 ### List action
 
-We have controller and layout, now let's start creating CRUD from list action:
+We have controller and layout, now let’s start creating CRUD from list action:
 
 ```php
 namespace App\Controller\Admin;
@@ -129,7 +129,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-It's very simple and small: we get all categories from database and pass them to template.
+It’s very simple and small: we get all categories from database and pass them to template.
 Just pay attention to route: path starts with `/admin/` and name starts with `admin.`. It will help us to keep admin routes grouped.  
 
 Now create a template `admin/category/list.html.twig` where all the categories will be shown:
@@ -220,8 +220,8 @@ class CategoryType extends AbstractType
 }
 ```
 
-It's very simple form with only one field and some basic validation rules.
-Just notice that `slug` is generated automatically and we don't have to provide it.
+It’s very simple form with only one field and some basic validation rules.
+Just notice that `slug` is generated automatically and we don’t have to provide it.
 
 The next step is to create action in controller and to build form:
 
@@ -256,7 +256,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-Now create template 'admin/category/create.html.twig' and render the form:
+Now create template `admin/category/create.html.twig` and render the form:
 
 ```twig
 {% extends 'admin/base.html.twig' %}
@@ -316,11 +316,11 @@ class CategoryController extends AbstractController
 }
 ```
 
-That's it. Now admin can create as much categories as wants.
+That’s it. Now admin can create as much categories as wants.
 
 ### Edit action
 
-In edit action we can use the same form, so let's move on to creating a method in controller:
+In edit action we can use the same form, so let’s move on to creating a method in controller:
 
 ```php
 // ...
@@ -414,9 +414,9 @@ and include in both places:
 
 ### Delete action
 
-Sometimes it's no need to create separate form type class, but we have to perform POST|PUT|DELETE action.  
+Sometimes it’s no need to create separate form type class, but we have to perform POST|PUT|DELETE action.  
 In this case we can write the form directly in template, but not to lose [CSRF][2] protection we can use [csrf_token][3] function.
-Let's add the form in `templates/admin/category/list.html.twig` template:
+Let’s add the form in `templates/admin/category/list.html.twig` template:
 
 ```twig
 {# ... #}
@@ -510,7 +510,7 @@ class CategoryController extends AbstractController
 The shortcut method `isCsrfTokenValid` was added in [Symfony 2.6][4] and helps us to validate the token manually.  
 
 It should work good, but the error will be thrown in case category has related jobs.
-It's because doctrine doesn't know what to do with relation: to remove jobs or to set NULL in `category_id` and default behavior is simply to restrict.  
+It’s because doctrine doesn’t know what to do with relation: to remove jobs or to set NULL in `category_id` and default behavior is simply to restrict.  
 If we want to allow cascade delete, then we have to modify `src/Entity/Category.php`:
 
 ```diff
@@ -528,7 +528,7 @@ Note: no migration needed here.
 ## Job CRUD
 
 Admin should have the same CRUD for jobs and we will do it in the same way as previous CRUD, but with one small difference: we plan to have posted many jobs and we should think about pagination.  
-Let's introduce one more variable in `config/services.yaml`, but for this time this variable will be more generic and we will be able to use it anywhere:
+Let’s introduce one more variable in `config/services.yaml`, but for this time this variable will be more generic and we will be able to use it anywhere:
 
 ```twig
 parameters:
@@ -724,7 +724,7 @@ Link the button from list page with this new action:
 + <a href="{{ path('admin.job.create') }}" class="btn btn-success">Create new</a>
 ```
 
-Create template `templates/admin/job/create.html.twig` and let's move the form to separate file from the beginning, because we know, that the same rendering will be in the edit action:
+Create template `templates/admin/job/create.html.twig` and let’s move the form to separate file from the beginning, because we know, that the same rendering will be in the edit action:
 
 ```twig
 {% extends 'admin/base.html.twig' %}
@@ -797,7 +797,7 @@ class JobController extends AbstractController
 }
 ```
 
-> Note: don't forget about method and parameters restriction.
+> Note: don’t forget about method and parameters restriction.
 
 After that connect the link from list page with edit action:
 
@@ -829,8 +829,8 @@ In the edit form we have one specific field: **logo**. Try to open edit form for
 
 ![Edit form with logo](../files/images/screenshot_14.png)
 
-Did you notice that it's impossible to know if there is a logo without looking into database.
-Let's show the logo image above logo field.
+Did you notice that it’s impossible to know if there is a logo without looking into database.
+Let’s show the logo image above logo field.
 
 Symfony gives us possibility to customize rendering of any parts of form. Open `templates/admin/job/edit.html.twig` and add next code between `extend` and `body` block:
 ```twig
@@ -847,7 +847,7 @@ Symfony gives us possibility to customize rendering of any parts of form. Open `
 
 By using the special `{% form_theme form _self %}` tag, Twig looks inside the same template for any overridden form blocks.
 But with tag `{% block _job_logo_widget %}` we override rendering of `logo` field for `job` form.  
-It's important to note that variable `form` inside of block `_job_logo_widget` represents not the whole form, but the `logo` field and in `form.vars` we can find a lot of useful information, like in `form.vars.data` we have the value of logo field (same as to call `$job->getLogo()`).  
+It’s important to note that variable `form` inside of block `_job_logo_widget` represents not the whole form, but the `logo` field and in `form.vars` we can find a lot of useful information, like in `form.vars.data` we have the value of logo field (same as to call `$job->getLogo()`).  
 Tag `{{ form_widget(form) }}` renders the file input, like it was before.  
 Now form looks more informative:
 
@@ -938,7 +938,7 @@ Now admin is able to delete jobs.
 
 How can we activate items in left menu? Just track name of current route.
 For example, if it starts with `admin.category.` then category item should be active.
-In Twig we have global variable `app` with property `request`, where current request is stored. Let's use it active menu items:
+In Twig we have global variable `app` with property `request`, where current request is stored. Let’s use it active menu items:
 
 ```twig
 {# ... #}
@@ -969,7 +969,7 @@ We spent not so many time and implemented CRUDs for all the functionality we hav
 - [SonataAdminBundle][8]
 - [and many others][9]
 
-These bundles are easy configurable and it's easy to start with them, but you will not have the same flexibility as in case you create all CRUDs manually.  
+These bundles are easy configurable and it’s easy to start with them, but you will not have the same flexibility as in case you create all CRUDs manually.  
 The choice is yours!
 
 That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day10][10]

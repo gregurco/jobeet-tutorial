@@ -1,0 +1,19 @@
+{
+  "filters": {},
+  "rules": {
+    "no-dead-link": {
+      "checkRelative": true,
+      "baseURI": null,
+      "ignore": [],
+      "preferGET": []
+    },
+    "terminology": {
+      "defaultTerms": true,
+      "skip": []
+    },
+    "common-misspellings": {
+      "ignore": []
+    },
+    "apostrophe": true
+  }
+}
