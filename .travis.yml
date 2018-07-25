@@ -1,10 +1,18 @@
 language: node_js
 
+sudo: required
+
 node_js:
     - 9
+
+before_install:
+    - sudo apt-get update
+    - sudo apt-get install python python-pip
+    - sudo pip install mkdocs
 
 install:
     - npm install
 
 script:
     - ./node_modules/.bin/textlint docs
+    - mkdocs build
