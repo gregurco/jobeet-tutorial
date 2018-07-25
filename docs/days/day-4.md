@@ -13,7 +13,7 @@ For web development, the most common solution for organizing your code nowadays 
 
 ## Controller
 
-Let's create our first controller. Create file `JobController.php` in `src/Controller` folder and put there next code:
+Let’s create our first controller. Create file `JobController.php` in `src/Controller` folder and put there next code:
 ```php
 namespace App\Controller;
 
@@ -79,10 +79,10 @@ If you take a look in the `templates` folder, you will find there `base.html.twi
 </html>
 ```
 
-## The Stylesheets
+## The style sheets
 
 As this tutorial is not about web design, we will use [bootstrap][3].
-Bootstrap is one of the most popular front-end library. It provides styles for frequently used elements, such as: grid, tables, forms, buttons and etc.
+Bootstrap is one of the most popular frontend library. It provides styles for frequently used elements, such as: grid, tables, forms, buttons and etc.
 We already connected it from [CDN][4] in layout from previous step:
 ```twig
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -90,7 +90,7 @@ We already connected it from [CDN][4] in layout from previous step:
 
 ## The Job Homepage Action
 
-Each action is represented by a method of a class. For the jobs list, the class is `JobController` and the method will be `list()`. Let's create this action:
+Each action is represented by a method of a class. For the jobs list, the class is `JobController` and the method will be `list()`. Let’s create this action:
 
 ```php
 use App\Entity\Job;
@@ -123,7 +123,7 @@ It tells Symfony which URL path is related to which action in controller. We wil
 
 ## The Job Homepage Template
 
-In `list` we passed jobs to `job/list.html.twig` but we don't have this file yet. Let's create it in `templates/job` folder:
+In `list` we passed jobs to `job/list.html.twig` but we don’t have this file yet. Let’s create it in `templates/job` folder:
 
 ```twig
 {% extends 'base.html.twig' %}
@@ -159,7 +159,7 @@ A twig block can have a default content (look at the title block for example) th
 
 ## The Job Page Action
 
-We have action to list all jobs, now let's create action to see one job:
+We have action to list all jobs, now let’s create action to see one job:
 ```php
 class JobController extends AbstractController
 {
@@ -182,11 +182,11 @@ class JobController extends AbstractController
     }
 }
 ```
-Here you may notice a bit of a Symfony's magic that happens behind the scenes - there is a type hinted $job parameter in the method signature, but how Symfony loads that Job object you may ask yourself? It uses __id__ from the URL, automatically queries table by this __id__ and returns fully fledged Job object for you. Nice!
+Here you may notice a bit of a Symfony’s magic that happens behind the scenes - there is a type hinted $job parameter in the method signature, but how Symfony loads that Job object you may ask yourself? It uses __ID__ from the URL, automatically queries table by this __ID__ and returns fully fledged Job object for you. Nice!
 
 ## The Job Page Template
 
-Now let's create `show.html.twig` file in `templates/job` folder:
+Now let’s create `show.html.twig` file in `templates/job` folder:
 
 ```twig
 {% extends 'base.html.twig' %}

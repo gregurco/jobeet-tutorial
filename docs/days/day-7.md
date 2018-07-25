@@ -13,12 +13,12 @@ We will define a pretty URL that will contain the category slug: `/category/{slu
 To have the slug of categories we will need [StofDoctrineExtensionsBundle][1] that wraps [DoctrineExtensions][1] package.
 It consists of different useful extensions but we will use [Sluggable][2] only for now.
 
-First let's install the bundle:
+First let’s install the bundle:
 ```bash
 composer require stof/doctrine-extensions-bundle
 ```
 
-This bundle has recipe and symfony will ask you to run this recipe, because it's not official one. Type 'y' and accept it:
+This bundle has recipe and symfony will ask you to run this recipe, because it’s not official one. Type 'y’ and accept it:
 ```bash
 Symfony operations: 1 recipe (3c3199f3aa23ea62ee911b3d6fe61a93)
   -  WARNING  stof/doctrine-extensions-bundle (>=1.2): From github.com/symfony/recipes-contrib:master
@@ -125,7 +125,7 @@ array(4) {
 ...
 ```
 
-The main advantage of this bundle for us is that slug is generated automatically. We don't call 'setSlug' anywhere.
+The main advantage of this bundle for us is that slug is generated automatically. We don’t call 'setSlug’ anywhere.
 
 ## The Job Category Controller
 
@@ -336,7 +336,7 @@ class JobRepository extends EntityRepository
 ```
 
 This method create query which will get all active jobs by category. But where is pagination?
-Let's do it in controller `src/Controller/CategoryController.php`:
+Let’s do it in controller `src/Controller/CategoryController.php`:
 
 ```php
 // ...
@@ -372,8 +372,8 @@ class CategoryController extends AbstractController
 ```
 
 We added `PaginatorInterface` in parameters of the method and autowire component will inject paginator service automatically.
-Also we call paginator and pass query from repository, page (for now let's get only first) and how many element we want per page.
-The result we send to template. Let's use it there `templates/category/show.html.twig`:
+Also we call paginator and pass query from repository, page (for now let’s get only first) and how many element we want per page.
+The result we send to template. Let’s use it there `templates/category/show.html.twig`:
 
 ```diff
 - {% include 'job/table.html.twig' with {'jobs': category.activeJobs} only %}
@@ -383,7 +383,7 @@ The result we send to template. Let's use it there `templates/category/show.html
 If now you open the  browser, you will see only 10 jobs on the page, but what about pagination?
 How to access second page? And what if we want to have 20 element on the page?
 
-First let's define new parameter in `config/services.yaml`:
+First let’s define new parameter in `config/services.yaml`:
 ```yaml
 parameters:
     # ...
@@ -443,9 +443,9 @@ class CategoryController extends Controller
 We added `page` in the URL path and defined default value, in case when page is not defined in the URL *(ex: `/category/design`)*.
 Variable `$path` is added in arguments of the method. It will be injected automatically by name in path.
 Also we need parameter `max_jobs_on_category` and `getParameter` methods to access it.
-That's why this controller extends now `Symfony\Bundle\FrameworkBundle\Controller\Controller` but not `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
+That’s why this controller extends now `Symfony\Bundle\FrameworkBundle\Controller\Controller` but not `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
 
-Now let's render page selector in template `templates/category/show.html.twig`:
+Now let’s render page selector in template `templates/category/show.html.twig`:
 
 ```twig
 {% extends 'base.html.twig' %}
@@ -465,7 +465,7 @@ Now let's render page selector in template `templates/category/show.html.twig`:
 {% endblock %}
 ```
 
-Pagination will work but will look not in style of Bootstrap 3. Let's configure it.
+Pagination will work but will look not in style of Bootstrap 3. Let’s configure it.
 Create file `knp_paginator.yml` in `config/packages` and past there next code to change the style of paginator:
 
 ```yaml
@@ -474,7 +474,7 @@ knp_paginator:
         pagination: "@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig"
 ```
 
-Notice: don't forget to clear cache after that.
+Notice: don’t forget to clear cache after that.
 
 Now it should look like that:
 

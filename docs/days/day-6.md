@@ -128,7 +128,7 @@ As the code returns a collection of jobs, let’s move the code to the repositor
 For that we will need to create a custom `repository` class for Job entity and to add the query to that class.
 
 At this point, you may have a question - what is this Repository class anyway? 
-Repository is a pattern, a common solution to the well know problem. It has been around for quite some time and was popularized around 90's by people like Martin Fowler and Eric Evans. If you try to describe it briefly it can get quite complex. For now think of it as just another layer of abstraction
+Repository is a pattern, a common solution to the well know problem. It has been around for quite some time and was popularized around 90’s by people like Martin Fowler and Eric Evans. If you try to describe it briefly it can get quite complex. For now think of it as just another layer of abstraction
 above the Entity that contains all the useful methods to work with database. If you are still curious about Repository pattern continue to learn [here][4].
 
 Open `src/Entity/Job.php` and modify `@ORM\Entity` annotation to specify the repository class for this entity:
@@ -142,7 +142,7 @@ Open `src/Entity/Job.php` and modify `@ORM\Entity` annotation to specify the rep
 class Job
 ```
 
-Now let's create file `JobRepository.php` in `src/Repository` folder:
+Now let’s create file `JobRepository.php` in `src/Repository` folder:
 ```php
 namespace App\Repository;
 
@@ -257,7 +257,7 @@ class CategoryRepository extends EntityRepository
 ```
 
 This methods will give us only categories with active jobs, but if you will call `getJobs` method on each category you will receive all jobs, including expired.
-Let's create `getActiveJobs` method in `Category` entity, which will return only non expired jobs:
+Let’s create `getActiveJobs` method in `Category` entity, which will return only non expired jobs:
 
 ```php
 /**
@@ -341,7 +341,7 @@ parameters:
 ```
 
 But this value will not be accessible in template until it will not be defined in `twig` configuration as global variable.
-Let's open `config/packages/twig.yaml` and add it:
+Let’s open `config/packages/twig.yaml` and add it:
 
 ```yaml
 twig:
@@ -360,7 +360,7 @@ This can now be accessed from a template:
 
 For now, you won’t see any difference because we have a very small amount of jobs in our database.
 We need to add a bunch of jobs to the fixture. So, you can copy and paste an existing job ten or twenty times by hand… but there’s a better way.
-Duplication is bad, even in fixture files. Let's create more jobs in `src/DataFixtures/JobFixtures.php`:
+Duplication is bad, even in fixture files. Let’s create more jobs in `src/DataFixtures/JobFixtures.php`:
 
 ```php
 public function load(ObjectManager $manager) : void

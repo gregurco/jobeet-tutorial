@@ -56,11 +56,11 @@ exit;
 sudo chown -R $USER:$USER .
 ```
 
-We install into `tmp` directory and copy then to proper one, because `create-project` command requires target folder to be empty, but in project's folder we already have docker files.
+We install into `tmp` directory and copy then to proper one, because `create-project` command requires target folder to be empty, but in project’s folder we already have docker files.
 
 ## Test the Symfony installation
 
-Now open your web browser and enter the [http://127.0.0.1][7] URL. You should see error `No route found for "GET /"` but it's ok. You don't have any routes created yet.
+Now open your web browser and enter the [http://127.0.0.1][7] URL. You should see error `No route found for "GET /"` but it’s OK. You don’t have any routes created yet.
 
 ## Symfony console
 
@@ -70,7 +70,7 @@ Symfony 4 comes with the console component tool that you will use for different 
 bin/console list
 ```
 
-> Note: don't forget first to enter in php container if you are not in: `docker-compose exec php-fpm bash`
+> Note: don’t forget first to enter in php container if you are not in: `docker-compose exec php-fpm bash`
 > and to execute this command from php container
 
 ## The Environments
@@ -84,7 +84,7 @@ Check the development environment by accessing [http://127.0.0.1][7] in your bro
 ![Debug toolbar](../files/images/screenshot_1.png)
 
 That’s all for today. You can find the code from this day here: [https://github.com/gregurco/jobeet/tree/day1][8].
-See you on the next day of this tutorial when we will talk about what exactly the Jobeet website will be about!
+See you on the next day of this tutorial when we will talk about what exactly the Jobeet site will be about!
 
 ## Additional information
 - [Installing & Setting up the Symfony Framework][10]

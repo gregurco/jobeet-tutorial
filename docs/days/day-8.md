@@ -1,6 +1,6 @@
 # Jobeet Day 8: The Forms
 
-Any website has forms, from the simple contact form to the complex ones with lots of fields.
+Any site has forms, from the simple contact form to the complex ones with lots of fields.
 Writing forms is also one of the most complex and tedious task for a web developer: you need to write the HTML form, implement validation
 rules for each field, process the values to store them in a database, display error messages, repopulate fields in case of errors, and much more…
 
@@ -9,7 +9,7 @@ rules for each field, process the values to store them in a database, display er
 To deal with creation of jobs we will need forms, that in Symfony are realized by [Form Component][3].
 The Form component allows you to easily create, process and reuse forms.
 We will crate a class that generally is `Form Builder` class. There we will define fields, that form should have, validation rules and many other things.
-So, let's create a folder `src/Form` where all forms will be placed and to create our first form in file `JobType.php`:
+So, let’s create a folder `src/Form` where all forms will be placed and to create our first form in file `JobType.php`:
 
 ```php
 namespace App\Form;
@@ -39,10 +39,10 @@ class JobType extends AbstractType
 ```
 
 As you can notice, our class extends `AbstractType` class and usually you will have to work with `buildForm` and `configureOptions` methods.
-That's why we defined them from the beginning.
+That’s why we defined them from the beginning.
 
 Every form needs to know the name of the class that holds the underlying data.
-Let's specify the `data_class` option by changing `configureOptions` method:
+Let’s specify the `data_class` option by changing `configureOptions` method:
 
 ```php
 public function configureOptions(OptionsResolver $resolver)
@@ -53,7 +53,7 @@ public function configureOptions(OptionsResolver $resolver)
 }
 ```
 
-*Note: don't forget to import `Job` class*
+*Note: don’t forget to import `Job` class*
 
 Now we should define form fields in `buildForm` method:
 
@@ -97,8 +97,8 @@ Field type affects rendering of field and also provides different options for co
 
 Example: `TextType` will be rendered as `<input type="text" ...>`
 
-Let's try other types. For example, we defined `public` field as `TextType`, but in entity it is boolean.
-It's better to render it as selector with YES and NO options. We will implement [ChoiceType][9]:
+Let’s try other types. For example, we defined `public` field as `TextType`, but in entity it is boolean.
+It’s better to render it as selector with YES and NO options. We will implement [ChoiceType][9]:
 
 ```diff
 - ->add('public', TextType::class)
@@ -129,10 +129,10 @@ It extends `ChoiceType` but with some additional options related to DB.
 We specified `choice_label` to select a field from entity that will be shown as option in selector.
 We changed only one line of code, but in template instead of simple input we will have select with all categories in options.
 
-Now let's change `type` field. For now it's text field, but in the second day’s description we have next requirement:
+Now let’s change `type` field. For now it’s text field, but in the second day’s description we have next requirement:
 > Type (full-time, part-time, or freelance)
 
-We need defined list of options and let's do it in `Job` entity:
+We need defined list of options and let’s do it in `Job` entity:
 
 ```php
 class Job
@@ -165,7 +165,7 @@ Why we used `array_combine` but not directly `Job::TYPES`? We want to show optio
 For example, option with label `freelance` should have value `freelance` (`<option value="freelance">freelance</option>`) and `array_combine` helps us to do that.
 Also `expanded` is true to show you how different `ChoiceType` can be rendered. We will see it later.
 
-Let's add some labels and options. The final result should be:
+Let’s add some labels and options. The final result should be:
 ```php
 namespace App\Form;
 
@@ -270,12 +270,12 @@ class JobController extends AbstractController
 
 We created new Job object and passed it to `createForm` method along with `JobType` class.
 This method will create a form class based on entity object and rules described in `JobType` class.
-In form we will need a special form "view" object, that's why we passed to template not the form, but the result of `createView` method.
+In form we will need a special form "view" object, that’s why we passed to template not the form, but the result of `createView` method.
 
 ## The Form Template
 
-In previous step we passed the data to `job/create.html.twig` template, but we don't have it yet.
-Let's create it and use a set of form helper functions:
+In previous step we passed the data to `job/create.html.twig` template, but we don’t have it yet.
+Let’s create it and use a set of form helper functions:
 
 ```twig
 {% extends 'base.html.twig' %}
@@ -294,7 +294,7 @@ Let's create it and use a set of form helper functions:
     {{ form_end(form) }}
 {% endblock %}
 ```
-That's it! Form will be rendered due to:
+That’s it! Form will be rendered due to:
 - `form_start` - renders `<form>` tag with all needed attributed (method, encryption, etc).
 - `form_widget` - renders all the fields, labels and any validation error messages.
 - `form_end` - renders `</form>` tag.
@@ -302,7 +302,7 @@ That's it! Form will be rendered due to:
 Open the browser and access `/job/create` path to see how form is rendered.
 The form with all fields are rendered, but the styling is not the same as in [bootstrap][11].
 The good new is that [Twig Bridge][12] component, that is responsible for integration of Twig in Symfony, comes with some [themes][13] out of the box.
-We use bootstrap 3 and will choose `bootstrap_3_horizontal_layout.html.twig` theme file. Let's setup it in `config/packages/twig.yaml`:
+We use bootstrap 3 and will choose `bootstrap_3_horizontal_layout.html.twig` theme file. Let’s setup it in `config/packages/twig.yaml`:
 ```twig
 twig:
     {# ... #}
@@ -312,13 +312,13 @@ twig:
 
 Refresh the page. Now form should look in bootstrap 3 style.
 
-Also you can notice that we wrote html for submit button and did't use [SubmitType][14].
-It's good practice because form become more reusable. Read more [here][15].
+Also you can notice that we wrote HTML for submit button and did’t use [SubmitType][14].
+It’s good practice because form become more reusable. Read more [here][15].
 
 ## Form processing
 
 Form is built and rendered. Processing is next.
-If you submit the form, nothing will happen. Let's fix it:
+If you submit the form, nothing will happen. Let’s fix it:
 
 ```php
 class JobController extends AbstractController
@@ -364,7 +364,7 @@ class JobController extends AbstractController
 
 ## Validation
 
-For now form is built, rendered and processed, but we don't validate any information.
+For now form is built, rendered and processed, but we don’t validate any information.
 Form accepts anything. We should add some validation rules.
 
 > Validation rules are called `constraints` in symfony forms.
@@ -385,7 +385,7 @@ Our first field in form is `type` field. According to entity this field should b
 ```
 
 and import `Symfony\Component\Validator\Constraints\NotBlank` class.  
-Next field is `company` and it's required text field with a maximum length of 255 characters:
+Next field is `company` and it’s required text field with a maximum length of 255 characters:
 
 ```diff
  ->add('company', TextType::class, [
@@ -518,13 +518,13 @@ class JobType extends AbstractType
 ```
 
 You can observe that we used `'required' => false` and `new NotBlank()` constraint. What is the difference?
-By default, all fields have `required` set to true and this option affects only the rendering of the field: it adds `required` to html field tag:
+By default, all fields have `required` set to true and this option affects only the rendering of the field: it adds `required` to HTML field tag:
 ```html
 <input type="text" name="company" required>
 ```
 
 But this "requirement" can be easy bypassed by developer tools provided by every browser.  
-`NotBlank` constraint checks on the level of form processing and can't be bypassed.
+`NotBlank` constraint checks on the level of form processing and can’t be bypassed.
 If you want to test fully the power of constraints or simply want to disable browser validation add next parameter to `form_start` function in template:
 ```twig
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -553,7 +553,7 @@ Also we need to add an `Image` constraint:
 ```
 
 When the form is submitted, the logo field will be an instance of `UploadedFile`.
-It can be used to move the file to a permanent location. After this we will set the job logo property to the uploaded file name.
+It can be used to move the file to a permanent location. After this we will set the job logo property to the uploaded filename.
 
 For this to work we need to add a new parameter, `jobs_directory`, in `config/services.yaml` file:
 
@@ -666,7 +666,7 @@ services:
             $targetDirectory: '%jobs_directory%'
 ```
 
-Now you're ready to use this service in the controller:
+Now you’re ready to use this service in the controller:
 
 ```php
 // ...
@@ -1248,7 +1248,7 @@ and render a form in control panel:
             {# ... #}
 ```
 
-This form will call `job.delete`, but we don't have it yet. Create this action:
+This form will call `job.delete`, but we don’t have it yet. Create this action:
 
 ```php
 // ...
@@ -1385,8 +1385,8 @@ We can now change the link of the "Publish" link (we will use a form here, like 
 + {{ form_end(deleteForm) }}
 ```
 
-Also you can notice that we called `addFlash` method in controller. It's a storage for special messages.
-We added message and not let's display it in `show.html.twig`:
+Also you can notice that we called `addFlash` method in controller. It’s a storage for special messages.
+We added message and not let’s display it in `show.html.twig`:
 
 ```twig
 {# ... #}
@@ -1402,7 +1402,7 @@ We added message and not let's display it in `show.html.twig`:
 {# ... #}
 ```
 
-Message is deleted from storage right after displaying. That's why after refresh it will not be shown.
+Message is deleted from storage right after displaying. That’s why after refresh it will not be shown.
 
 You can now test the new publish feature in your browser.
 

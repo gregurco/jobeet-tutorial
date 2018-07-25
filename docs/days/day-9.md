@@ -78,7 +78,7 @@ After configuring and registering the command, you can execute it in the termina
 php bin/console app:create-category
 ```
 
-As you might expect, this command will do nothing as you didn't write any logic yet.
+As you might expect, this command will do nothing as you didn’t write any logic yet.
 Add your own logic inside the `execute()` method, which has access to the input stream (e.g. options and arguments) and the output stream (to write messages to the console):
 
 ```php
@@ -252,7 +252,7 @@ class CreateCategoryCommand extends Command
 ## Interacting with user
 
 Sometimes user can forget to fill the name and we want somehow to interact with user and additionally to ask them the name of new category.
-It is possible due to `interact()` method. Let's create it:
+It is possible due to `interact()` method. Let’s create it:
 
 ```php
 // ...
@@ -307,14 +307,14 @@ Commands have three lifecycle methods that are invoked when running the command:
 
 In created console command we have different types of messages: simple message, question and success message.
 But all them are displayed in the same way. Symfony Console component provides possibility to use colors.
-First let's color in green the message that category is crated:
+First let’s color in green the message that category is crated:
 ```diff
 - $output->writeln('Category successfully created!');
 + $output->writeln('<fg=green>Category successfully created!</>');
 ```
 
 Available colors are: black, red, green, yellow, blue, magenta, cyan and white.  
-Also it's possible to setup background color by using `bg=red` and options like bold text: `options=bold`.
+Also it’s possible to setup background color by using `bg=red` and options like bold text: `options=bold`.
 For example red bold text on a yellow background will be setup in next way:
 ```
 <fg=red;bg=yellow;options=bold>foo</>
