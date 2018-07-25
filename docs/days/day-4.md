@@ -32,7 +32,7 @@ class JobController extends AbstractController
 For now it has no actions, but not for long.
 
 ## The Layout
-If you have a closer look at the mockups, you will notice that much of each page looks the same. You already know that code duplication is bad, whether we are talking about HTML or PHP code, so we need to find a way to prevent these common view elements from resulting in code duplication.
+If you have a closer look at the mockups, you will notice that most pages look the same. You already know that code duplication is bad, whether we are talking about HTML or PHP code, so we need to find a way to prevent these common view elements from resulting in code duplication.
 
 One way to solve the problem is to define a header and a footer and include them in each template. A better way is to use another design pattern to solve this problem: the [decorator design pattern][2].
 The decorator design pattern resolves the problem the other way around: the template is decorated after the content is rendered by a global template, called a **layout**.
