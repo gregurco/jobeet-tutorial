@@ -32,13 +32,13 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 10: The Admin](days/day-10.md)
 
-[[WIP] Jobeet Day 11: The User](days/day-11.md)
+[Jobeet Day 11: The User](days/day-11.md)
 
-<del>Jobeet Day 12: The Mailer</del>
+[[WIP] Jobeet Day 12: The API](days/day-12.md)
 
-<del>Jobeet Day 13: Translations</del>
+<del>Jobeet Day 13: The Mailer</del>
 
-<del>Jobeet Day 14: API</del>
+<del>Jobeet Day 14: Translations</del>
 
 <del>Jobeet Day 15: The Unit Tests</del>
 

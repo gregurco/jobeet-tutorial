@@ -726,7 +726,7 @@ Just few small changes remained to do in `templates/base.html.twig` template:
 
 We added `Admin Panel` button if user is authenticated and has role `ROLE_ADMIN` and also `logout` button that moves to route provided by `FOSUserBundle`.
 
-That’s all!
+That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day11][9]
 
 ## Additional information
 - [Session Management][1]
@@ -736,7 +736,7 @@ That’s all!
 
 ## Next Steps
 
-Continue this tutorial here: Jobeet Day 12: The Mailer
+Continue this tutorial here: [Jobeet Day 12: The API](day-12.md)
 
 Previous post is available here: [Jobeet Day 10: The Admin](day-10.md)
 
@@ -750,3 +750,4 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [6]: https://github.com/FriendsOfSymfony/FOSUserBundle/blob/v2.1.2/Security/UserProvider.php
 [7]: https://symfony.com/doc/4.1/bundles/override.html
 [8]: http://127.0.0.1/login
+[9]: https://github.com/gregurco/jobeet/tree/day11
