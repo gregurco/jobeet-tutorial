@@ -76,7 +76,8 @@ class JobController extends AbstractController
 
 First we see class annotation `@Route("job")` - it prepends `job` to all the routes defined in the class.
 
-Thanks to these two routes in controller:F
+Thanks to these two routes in controller:  
+
 - If user goes to `/job`, the first route is marched and `list()` method is executed.
 - If user goes to `/job/*` *(\* - means any character but at least one)*, the second route is matched and `show()` method is executed. *(Example: `/job/1`, `/job/2`, etc.)*  
 
