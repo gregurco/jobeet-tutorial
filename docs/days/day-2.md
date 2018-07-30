@@ -7,27 +7,31 @@ This day is about the project specifications. They are the same as in the origin
 > It also provides feeds and an API to interact with it programmatically.
 
 ## The User Stories
-We will have four type of users: **admin** (owns and administers the website), **user** (visits the site looking for a job), **poster** (visits the site to post jobs) and **affiliate** (re-publishes jobs on his website).
 
+We will have four type of users: **admin** (owns and administers the website), **user** (visits the site looking for a job), **poster** (visits the site to post jobs) and **affiliate** (re-publishes jobs on his website).
 
 In the original tutorial we had to make two applications, the **frontend**, where the users interact with the website, and the **backend**, where admins manage the website.
 Using Symfony 4 we would not do that anymore. We will have only one application and, in it, a separate secured section for admins.
 
 ## Story F1: On the homepage, the user sees the latest active jobs
+
 On the Jobeet homepage a user sees a list of 10 recent active jobs grouped by category. Only the location, the position, and the company are displayed for each job.
 For each category there are links that allow to list all the jobs. The user can also search for jobs or post a new job.
 
 ![Homepage mockup](../files/images/screenshot_2.png)
 
 ## Story F2: A user can ask for all the jobs in a given category
+
 The user sees a list of all the jobs from the category sorted by date and paginated with 20 jobs per page.
 
 ![Category mockup](../files/images/screenshot_3.png)
 
 ## Story F3: A user refines the list with some keywords
+
 The user can enter some keywords to refine his search. Keywords can be words found in the location, the position, the category or the company fields.
 
 ## Story F4: A user clicks on a job to see more detailed information
+
 The user can select a job from the list to see more detailed information.
 
 ![Job mockup](../files/images/screenshot_4.png)
@@ -58,6 +62,7 @@ A user can come back to re-activate or extend the validity of the job for an ext
 ![Post job mockup](../files/images/screenshot_5.png)
 
 ## Story F6: A user applies to become an affiliate
+
 A user needs to apply to become an affiliate and be authorized to use the Jobeet API. He can also choose to get jobs from a sub-set of the available categories.
 To apply, the user must give the following information:
 
@@ -68,16 +73,20 @@ To apply, the user must give the following information:
 The affiliate account must be activated by the admin. Once activated, the affiliate receives a token to use with the API via email.
 
 ## Story F7: An affiliate retrieves the current active job list
+
 An affiliate will retrieve the current job list by calling the API with his affiliate token. The list can be returned in the XML, JSON or YAML format.
 The affiliate can limit the number of jobs to be returned, and refine his query by specifying a category.
 
 ## Story B1: An admin configures the site
+
 An admin can edit the categories available on the site.
 
 ## Story B2: An admin manages the jobs
+
 An admin can edit and remove any posted job.
 
 ## Story B3: An admin manages the affiliates
+
 The admin can create or edit affiliates. He is responsible for activating an affiliate and can also disable one.
 When the admin activates a new affiliate, the system creates a unique token to be used by the affiliate.
 
