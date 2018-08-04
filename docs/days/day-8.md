@@ -8,8 +8,8 @@ rules for each field, process the values to store them in a database, display er
 
 To deal with creation of jobs we will need forms, that in Symfony are realized by [Form Component][3].
 The Form component allows you to easily create, process and reuse forms.
-We will crate a class that generally is `Form Builder` class. There we will define fields, that form should have, validation rules and many other things.
-So, let’s create a folder `src/Form` where all forms will be placed and to create our first form in file `JobType.php`:
+We will create a class that generally is `Form Builder` class. There we will define fields, that form should have, validation rules and many other things.
+So, let’s create a folder `src/Form` where all forms will be placed. In the folder we are going to create our first form in file `JobType.php`:
 
 ```php
 namespace App\Form;
@@ -91,8 +91,8 @@ class JobType extends AbstractType
 }
 ```
 
-We call method `add` on form builder and add all fields. First argument is field name. It should be the same as in entity.
-The second argument is field type. In our case we used [TextType][6], [EmailType][7] and [DateTimeType][8]. And 3rd parameter is options (we did not use it yet)
+We call method `add` on form builder and add all fields one by one. First argument is the field name which is actually a property in the entity.
+The second argument is the field type. In our case we used [TextType][6], [EmailType][7] and [DateTimeType][8]. And 3rd parameter is optional, we do not use it for now.
 Field type affects rendering of field and also provides different options for configuration.
 
 Example: `TextType` will be rendered as `<input type="text" ...>`
@@ -137,11 +137,11 @@ We need defined list of options and let’s do it in `Job` entity:
 ```php
 class Job
 {
-    const FULL_TIME_TYPE = 'full-time';
-    const PART_TIME_TYPE = 'part-time';
-    const FREELANCE_TYPE = 'freelance';
+    public const FULL_TIME_TYPE = 'full-time';
+    public const PART_TIME_TYPE = 'part-time';
+    public const FREELANCE_TYPE = 'freelance';
 
-    const TYPES = [
+    public const TYPES = [
         self::FULL_TIME_TYPE,
         self::PART_TIME_TYPE,
         self::FREELANCE_TYPE,
@@ -237,7 +237,7 @@ class JobType extends AbstractType
 
 ## Create Job Action
 
-We just created `JobType` form class. The next step is to create and render actual form.
+We have just created `JobType` form class. The next step is to create and render actual form.
 In Symfony, this is done by building a form object and then rendering it in a template.
 For now, we will create new action inside the `JobController` controller:
 
@@ -274,7 +274,7 @@ In form we will need a special form "view" object, that’s why we passed to tem
 
 ## The Form Template
 
-In previous step we passed the data to `job/create.html.twig` template, but we don’t have it yet.
+In the previous step we passed data to `job/create.html.twig` template, but we don’t have it yet.
 Let’s create it and use a set of form helper functions:
 
 ```twig
@@ -312,13 +312,13 @@ twig:
 
 Refresh the page. Now form should look in bootstrap 3 style.
 
-Also you can notice that we wrote HTML for submit button and did’t use [SubmitType][14].
+Also you may notice that we wrote HTML for submit button and did’t use [SubmitType][14].
 It’s good practice because form become more reusable. Read more [here][15].
 
 ## Form processing
 
 Form is built and rendered. Processing is next.
-If you submit the form, nothing will happen. Let’s fix it:
+If you submit the form, nothing happens. Let’s fix it:
 
 ```php
 class JobController extends AbstractController
@@ -400,8 +400,8 @@ Try to submit more than 255 characters and you will see error:
 
 ![Validation error: max length](../files/images/screenshot_9.png)
 
-Symfony has a big list of constraints out of the box. You can find all them [here][16].
-Review all fields and add relevant constraints and in final you should see something similar:
+Symfony has a big list of constraints out of the box. You can find all of them [here][16].
+Review all fields and add relevant constraints and finally you should see something similar:
 
 ```php
 namespace App\Form;
@@ -517,8 +517,8 @@ class JobType extends AbstractType
 }
 ```
 
-You can observe that we used `'required' => false` and `new NotBlank()` constraint. What is the difference?
-By default, all fields have `required` set to true and this option affects only the rendering of the field: it adds `required` to HTML field tag:
+You may have noticed that we used `'required' => false` and `new NotBlank()` constraint. What is the difference?
+By default, all fields have `required` set to true and this option affects only the rendering of the field, it adds `required` to HTML field tag:
 ```html
 <input type="text" name="company" required>
 ```
@@ -530,7 +530,7 @@ If you want to test fully the power of constraints or simply want to disable bro
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 ```
 
-Also note that there are `NotNull` and `NotBlank` validations. With choices where are Yes/No answers is better to use `NotNull`, because `NotBlank` and false option will give validation error.
+Also note that there are `NotNull` and `NotBlank` validations. With choices where Yes/No are answers it is better to use `NotNull`, because `NotBlank` and false option will give validation error.
 
 ## Handling File Uploads
 
@@ -604,8 +604,7 @@ class JobController extends Controller
 }
 ```
 
-Notice that now `JobController` extends `Controller` and not `AbstractController` because we need `getParameter` method.
-
+Note that now `JobController` extends `Controller` and not `AbstractController` because we need `getParameter` method.
 
 Even if this implementation works, let’s do this in a better way, moving logic to service and using Doctrine lifecycle callbacks.
 
@@ -826,7 +825,7 @@ twig:
         jobs_web_directory: '%jobs_web_directory%'
 ```
 
-and image block in `templates/job/show.html.twig`:
+and add image block in `templates/job/show.html.twig`:
 
 ```twig
 {% extends 'base.html.twig' %}
@@ -938,7 +937,7 @@ class JobController extends Controller
 This action is very similar to create action but there are:
 - another path and name of the route
 - job object is pre-populated to the method
-- we build form based on this job object, but not new one
+- we build form based on this job object, not the new one
 - another template
 - we do not call `persist`, because job object was already persisted
 
@@ -971,7 +970,8 @@ Now add a link to this page in `templates/job/show.html.twig` template:
   </a>
 ```
 
-If you will try to access this page now, probably you will get an error, because `logo` field is string, but form works with `File` object.
+Right now if you will try to access this page you will get an error because `logo` field is string.  
+The form needs `File` object.
 We can fix it by listening `post loading` event and replacing string by expected object:
 
 ```php
@@ -1049,7 +1049,7 @@ services:
 +           - { name: doctrine.event_listener, event: postLoad }
 ```
 
-Now it should work!
+Now it works!
 
 ## The Preview Page
 
@@ -1175,7 +1175,7 @@ return $this->redirectToRoute(
 
 ## Delete Job Action
 
-User, who created a job offer should be able to delete it. Create a method that will build a form with delete functionality:
+User, who created a job offer should also be able to delete it. Create a method that will build a form with delete functionality:
 
 ```php
 // ...
@@ -1285,7 +1285,7 @@ class JobController extends AbstractController
 
 ## Publish Job Action
 
-In `The Preview Page` section was defined a link to publish the job. The link needs to be changed to point to a new publish action:
+In `The Preview Page` section link was defined to publish the job. The link needs to be changed to point to the new publish action:
 
 ```php
 // ...
@@ -1340,7 +1340,7 @@ class JobController extends AbstractController
 }
 ```
 
-We also need to change the `preview` action to send the publish form to the template:
+We also need to change `preview` action to send publish form to the template:
 
 ```diff
   public function preview(Job $job) : Response
@@ -1368,7 +1368,7 @@ And also transmit this variable from `show.html.twig` to `control_panel.html.twi
 + } only %}
 ```
 
-We can now change the link of the "Publish" link (we will use a form here, like when deleting a job, so we will have a POST request):
+We can now change URL of the "Publish" link. We will use a form here, like when deleting a job, so we will have a POST request:
 
 ```diff
 - <a class="btn btn-default navbar-btn" href="#">
@@ -1385,8 +1385,8 @@ We can now change the link of the "Publish" link (we will use a form here, like 
 + {{ form_end(deleteForm) }}
 ```
 
-Also you can notice that we called `addFlash` method in controller. It’s a storage for special messages.
-We added message and not let’s display it in `show.html.twig`:
+Also you may have noticed that we called `addFlash` method in controller. It’s a storage for special messages.
+We added message and now let’s display it in `show.html.twig`:
 
 ```twig
 {# ... #}
