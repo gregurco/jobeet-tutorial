@@ -726,7 +726,7 @@ Just few small changes remained to do in `templates/base.html.twig` template:
 
 We added `Admin Panel` button if user is authenticated and has role `ROLE_ADMIN` and also `logout` button that moves to route provided by `FOSUserBundle`.
 
-That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day11][9]
+[//]: # (That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day11][9])
 
 ## Additional information
 - [Session Management][1]
