@@ -966,15 +966,29 @@ class Affiliate
     {
         return $this->categories;
     }
-
+    
     /**
-     * @param Category[]|ArrayCollection $categories
+     * @param Category $category
      *
      * @return self
      */
-    public function setCategories($categories) : self
+    public function addCategory(Category $category) : self
     {
-        $this->categories = $categories;
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return self
+     */
+    public function removeCategory(Category $category) : self
+    {
+        $this->categories->removeElement($category);
 
         return $this;
     }
