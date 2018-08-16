@@ -115,8 +115,7 @@ $ bin/console app:create-category
 Category Creator
 ============
 
-Whoa!
-You are about to create a category.
+Yay! You are about to create a category.
 ```
 
 ## Console Input
@@ -327,7 +326,7 @@ Wrap our question in proper style:
 + $question = new Question('<question>Please choose a name: </question>');
 ```
 
-Finally we should view next output:
+At last we may see the following result:
 
 ![Console output with colors](../files/images/screenshot_12.png)
 
