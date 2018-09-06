@@ -24,7 +24,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-All admin controllers is going to be created in this folder.
+All admin controllers are going to be created in this folder.
 
 ## Admin templates layout
 
@@ -316,7 +316,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-That’s it. Now admin user can create as much categories as she wants.
+That’s it. Now admin user can create as many categories as one wants.
 
 ### Edit action
 
@@ -358,7 +358,10 @@ class CategoryController extends AbstractController
     }
 }
 ```
-You probably have noticed that we do not have to explicitly persist Category object, it is already loaded in EntityManager and the only thing we need to do is to call `flush` method from EntityManager, that will save all changes.  
+You have probably noticed that we do not have to explicitly persist Category object. It is already loaded in EntityManager and the only thing we need to do is to call `flush` method from EntityManager in order to updated Category object.    
+Take into account that on "flush" all new/updated objects registered in the EntityManager before will be saved as well.  
+
+ all other changes registered in EntityManager are going to be saved.  
 
 Now let’s create template `templates/admin/category/edit.html.twig`:
 
