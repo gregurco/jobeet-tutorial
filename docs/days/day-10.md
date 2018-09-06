@@ -1,6 +1,6 @@
 # Jobeet Day 10: The Admin
 
-With the addition we made in day 9 on Jobeet, the frontend application is now fully useable by job seekers and job posters. It’s time to talk a bit about the backend application.  
+With the addition we made on the 9-th day, the frontend application is now fully useable by job seekers and job posters. It’s time to talk a bit about the backend application.  
 Today we will develop a complete backend interface for Jobeet in just one day.
 
 ## Main concept
@@ -24,7 +24,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-All admin controllers will be created in this folder.
+All admin controllers are going to be created in this folder.
 
 ## Admin templates layout
 
@@ -39,7 +39,7 @@ We will create admin templates and all of them will extend some layout, like we 
 But we can’t use this one, because admin layout have some differences:
 - left menu with links to all CRUDs
 - button from top menu will redirect to admin default CRUD and not to jobeet main page
-- *and probably many other things will differ with time.*
+- *and probably many other things will pop up in time.*
 
 Also like we did with controllers, we will keep admin templates separately in folder `/templates/admin`.
 Let’s create admin templates layout `base.html.twig`:
@@ -130,7 +130,7 @@ class CategoryController extends AbstractController
 ```
 
 It’s very simple and small: we get all categories from database and pass them to template.
-Just pay attention to route: path starts with `/admin/` and name starts with `admin.`. It will help us to keep admin routes grouped.  
+Just pay attention to the route: path starts with `/admin/` and name starts with `admin.`. It will help us to keep admin routes grouped.  
 
 Now create a template `admin/category/list.html.twig` where all the categories will be shown:
 
@@ -178,7 +178,7 @@ Now create a template `admin/category/list.html.twig` where all the categories w
 
 ### Create action
 
-For create action first of all we have to create form. Forms that are strictly related to admin will be placed in separate folder too.  
+For "create" action first of all we have to create form. Forms that are strictly related to admin will be placed in separate folder too.  
 Create `CategoryType` class in `/src/Form/Admin` folder:
 
 ```php
@@ -281,7 +281,7 @@ Now create template `admin/category/create.html.twig` and render the form:
 {% endblock %}
 ```
 
-Link the "Create new" button from list page with create page in `templates/admin/category/list.html.twig`:
+Now we have to link "Create new" button from list page to create page in `templates/admin/category/list.html.twig`:
 
 ```diff
 - <a href="#" class="btn btn-success">Create new</a>
@@ -289,7 +289,7 @@ Link the "Create new" button from list page with create page in `templates/admin
 ```
 
 Page is accessible and form is displayed, but not handled.  
-Add handling of form in `create` action:
+Add form handling in `create` action:
 
 ```php
 // ...
@@ -316,7 +316,7 @@ class CategoryController extends AbstractController
 }
 ```
 
-That’s it. Now admin can create as much categories as wants.
+That’s it. Now admin user can create as many categories as one wants.
 
 ### Edit action
 
@@ -358,8 +358,12 @@ class CategoryController extends AbstractController
     }
 }
 ```
+You have probably noticed that we do not have to explicitly persist Category object. It is already loaded in EntityManager and the only thing we need to do is to call `flush` method from EntityManager in order to updated Category object.    
+Take into account that on "flush" all new/updated objects registered in the EntityManager before will be saved as well.  
 
-and template `templates/admin/category/edit.html.twig`:
+ all other changes registered in EntityManager are going to be saved.  
+
+Now let’s create template `templates/admin/category/edit.html.twig`:
 
 ```twig
 {% extends 'admin/base.html.twig' %}
@@ -391,7 +395,7 @@ change link to the edit page in `list.html.twig`:
 + <a href="{{ path('admin.category.edit', {id: category.id}) }}" class="btn btn-default">Edit</a>
 ```
 
-The editing of categories works now and slug is automatically changed but the rendering of form is same in create and edit template.
+Category editing works now and slug is automatically changed but the rendering of form is the same in create and edit template.
 Move it to separate template `templates/admin/category/_form.html.twig`:
 
 ```twig
@@ -414,8 +418,8 @@ and include in both places:
 
 ### Delete action
 
-Sometimes it’s no need to create separate form type class, but we have to perform POST|PUT|DELETE action.  
-In this case we can write the form directly in template, but not to lose [CSRF][2] protection we can use [csrf_token][3] function.
+Sometimes there is no need to create separate form type class and still we have to perform POST|PUT|DELETE action.  
+In this case we can write the form directly in template, but in order to not lose [CSRF][2] protection we can use [csrf_token][3] function.
 Let’s add the form in `templates/admin/category/list.html.twig` template:
 
 ```twig
@@ -509,9 +513,10 @@ class CategoryController extends AbstractController
 
 The shortcut method `isCsrfTokenValid` was added in [Symfony 2.6][4] and helps us to validate the token manually.  
 
-It should work good, but the error will be thrown in case category has related jobs.
-It’s because doctrine doesn’t know what to do with relation: to remove jobs or to set NULL in `category_id` and default behavior is simply to restrict.  
-If we want to allow cascade delete, then we have to modify `src/Entity/Category.php`:
+It should work fine but the error may be thrown in case category has related jobs.
+It may happen because doctrine doesn’t know what to do with relations - either to remove jobs or to set `category_id` field to NULL.  
+So default behavior is simply to restrict delete action.  
+If we want to allow cascade delete, then we have to modify `src/Entity/Category.php` the following way: 
 
 ```diff
  /**

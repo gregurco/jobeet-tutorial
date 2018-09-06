@@ -171,7 +171,7 @@ class JobHistoryService
 }
 ```
 
-> We could have feasibly stored the Job objects directly into the session. This is strongly discouraged because the session variables are serialized between requests. And when the session is loaded, the Job objects are de-serialized and can be "stalled" if they have been modified or deleted in the meantime.
+> We could have stored the Job objects directly into the session. This is strongly discouraged because the session variables are serialized between requests. And when the session is loaded, the Job objects are de-serialized and can be "stalled" if they have been modified or deleted in the meantime.
 
 Open view page of random job and there will be no visible changes but we know that something should appear in session.
 To track request session open Symfony Profiler from bottom toolbar (or directly: [http://127.0.0.1/_profiler][2] and select the last request), open "Request / Response" from left menu and "Session" tab:
@@ -536,7 +536,7 @@ Just replace existing one with next content:
 ```yaml
 security:
     encoders:
-        FOS\UserBundle\Model\UserInterface: bcrypt
+        FOS\UserBundle\Model\UserInterface: argon2i
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
@@ -562,7 +562,9 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
 ```
 
-We changed `encoder` type from `plaintext` to `bcrypt`, to comply with current security standard.  
+> Note that since Symfony 3.4 new password hasher was introduced - argon2i. Today Argon2i is recommended hasher algorithm, read more [here][10]
+
+We changed `encoder` type from `plaintext` to `argon2i`, to comply with current security standard.  
 Option `role_hierarchy` is used to define role inheritance. In our case `ROLE_ADMIN` inherits all permissions of `ROLE_USER`.  
 Under the `providers` section, we defined alias `fos_userbundle` for service `fos_user.user_provider.username` from `FOSUserBundle`. [This service][6] knows how to fetch users from database.
 Next, take a look at and examine the `firewalls` section. Here we have declared a firewall named `main`. By specifying `form_login`, you have told the Symfony Framework that any time a request is made to this firewall that leads to the user needing to authenticate himself, the user will be redirected to a form where he will be able to enter his credentials.
@@ -587,9 +589,9 @@ fos_user:
 Here we specified minimum required information to start working with bundle.  
 You can notice that there is path to `User` class that we created and `main` firewall we defined recently in `security.yml` file.
 
-Try to clear cache:
+Clear the cache:
 
-```bast
+```bash
 bin/console cache:clear
 ```
 
@@ -631,7 +633,7 @@ Open [http://127.0.0.1/login][8] page:
 ![Login page without styling](../files/images/screenshot_22.png)
 
 You can notice that this login page looks very simple, because `FOSUserBundle` doesn’t know anything about styling of our application.
-Fortunately, Symfony [provides][7] us possibility easy to redefine templates and other parts of bundles.  
+Fortunately Symfony provides easy [management][7] for templates and other parts of bundles.  
 To redefine template of login page just create file `login.html.twig` in folder `templates/bundles/FOSUserBundle/Security` with next content:
 
 ```twig
@@ -682,11 +684,11 @@ To redefine template of login page just create file `login.html.twig` in folder 
 {% endblock %}
 ```
 
-Now login page looks good:
+Now login page looks decent:
 
 ![Login page with styling](../files/images/screenshot_23.png)
 
-Just few small changes remained to do in `templates/base.html.twig` template:
+Just a few small changes are left to do in `templates/base.html.twig` template:
 
 ```diff
   {# ... #}
@@ -751,3 +753,4 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [7]: https://symfony.com/doc/4.1/bundles/override.html
 [8]: http://127.0.0.1/login
 [9]: https://github.com/gregurco/jobeet/tree/day11
+[10]: https://symfony.com/blog/new-in-symfony-3-4-argon2i-password-hasher
