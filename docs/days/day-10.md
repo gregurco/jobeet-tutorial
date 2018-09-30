@@ -870,24 +870,24 @@ class JobController extends AbstractController
     // ...
     
     /**
-     * Delete category.
+     * Delete job.
      *
-     * @Route("/admin/category/{id}/delete", name="admin.category.delete", methods="DELETE", requirements={"id" = "\d+"})
+     * @Route("/admin/job/{id}/delete", name="admin.job.delete", methods="DELETE", requirements={"id" = "\d+"})
      *
      * @param Request $request
      * @param EntityManagerInterface $em
-     * @param Category $category
+     * @param Job $job
      *
      * @return Response
      */
-    public function delete(Request $request, EntityManagerInterface $em, Category $category) : Response
+    public function delete(Request $request, EntityManagerInterface $em, Job $job) : Response
     {
-        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
-            $em->remove($category);
+        if ($this->isCsrfTokenValid('delete' . $job->getId(), $request->request->get('_token'))) {
+            $em->remove($job);
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin.category.list');
+        return $this->redirectToRoute('admin.job.list');
     }
 }
 ```
