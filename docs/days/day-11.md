@@ -473,7 +473,7 @@ As we will see in coming days, it is quite powerful, as a bundle can contain any
 Today, we will install [FOSUserBundle][5] to integrate user management system:
 
 ```bash
-composer require friendsofsymfony/user-bundle "~2.1"
+composer require friendsofsymfony/user-bundle ~2.1
 ```
 
 There is a chance to see next error after install:

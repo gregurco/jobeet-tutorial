@@ -1155,7 +1155,9 @@ Then, create the `control_panel.html.twig` template:
 </nav>
 ```
 
-There is a lot of code, but most of the code is simple to understand.
+There is a lot of code, but we need to focus only on one: we used `url` function and not `path`.
+The one difference between these two functions is that `url` generates absolute URL *(with scheme and host)* and `path` generates relative URL.
+
 
 The admin bar displays the different actions depending on the job status:
 

@@ -34,7 +34,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 11: The User](days/day-11.md)
 
-[[WIP] Jobeet Day 12: The API](days/day-12.md)
+[Jobeet Day 12: The API](days/day-12.md)
 
 <del>Jobeet Day 13: The Mailer</del>
 
