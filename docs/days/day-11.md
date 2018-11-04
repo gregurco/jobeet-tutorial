@@ -683,6 +683,11 @@ bin/console doctrine:fixtures:load
 
 Check that users appeared in database.
 
+Important to know that `FOSUserBundle` provides a set of useful console commands to manipulate with users.
+See them using command `bin/console lost fos`:
+
+![Fos console commands](../files/images/screenshot_28.png)
+
 ### Templates
 
 Open [http://127.0.0.1/login][8] page:
