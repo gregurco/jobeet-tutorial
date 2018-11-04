@@ -626,6 +626,63 @@ bin/console doctrine:migration:migrate
 
 New table should appear in database.
 
+### Create fixture
+
+Table `users` appeared in database but without any initial data.
+Generally we need just two users: simple user and admin.  
+Create user fixtures class `src/DataFixtures/UserFixtures.php` and two users inside:
+
+```php
+namespace App\DataFixtures;
+
+use App\Entity\User;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\Persistence\ObjectManager;
+
+class UserFixtures extends Fixture
+{
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
+    public function load(ObjectManager $manager) : void
+    {
+        $user = new User();
+        $user->setUsername('user');
+        $user->setEmail('user@email.org');
+        $user->setPlainPassword('user');
+        $user->addRole('ROLE_USER');
+        $user->setEnabled(true);
+
+        $admin = new User();
+        $admin->setUsername('admin');
+        $admin->setEmail('admin@email.org');
+        $admin->setPlainPassword('admin');
+        $admin->addRole('ROLE_ADMIN');
+        $admin->setEnabled(true);
+
+        $manager->persist($user);
+        $manager->persist($admin);
+
+        $manager->flush();
+    }
+}
+```
+
+Note that we set the password using `setPlainPassword` and not `setPassword`.
+It gives us possibility to setup plain password and not to worry about encoding used in project.
+Special listener will replace plain password with encoded one before inserting in database.  
+Also we specifies the role for each user and activated them using `setEnabled` method.  
+
+Now run fixtures:
+
+```bash
+bin/console doctrine:fixtures:load
+```
+
+Check that users appeared in database.
+
 ### Templates
 
 Open [http://127.0.0.1/login][8] page:
@@ -727,6 +784,8 @@ Just a few small changes are left to do in `templates/base.html.twig` template:
 ```
 
 We added `Admin Panel` button if user is authenticated and has role `ROLE_ADMIN` and also `logout` button that moves to route provided by `FOSUserBundle`.
+
+Try to login with username `user` and password `user` and admin user using username `admin` and password `admin`.
 
 That’s all for today, you can find the code here: [https://github.com/gregurco/jobeet/tree/day11][9]
 
