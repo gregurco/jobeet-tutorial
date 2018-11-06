@@ -1101,10 +1101,9 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class CategoryFixtures extends Fixture implements OrderedFixtureInterface
+class CategoryFixtures extends Fixture
 {
     /**
      * @param ObjectManager $manager
@@ -1137,27 +1136,20 @@ class CategoryFixtures extends Fixture implements OrderedFixtureInterface
         $this->addReference('category-manager', $managerCategory);
         $this->addReference('category-administrator', $administratorCategory);
     }
-
-    /**
-     * @return int
-     */
-    public function getOrder() : int
-    {
-        return 1;
-    }
 }
 ```
 
-And now some jobs (src/DataFixtures/JobFixtures.php):
+And now some jobs (`src/DataFixtures/JobFixtures.php`):
+
 ```php
 namespace App\DataFixtures;
 
 use App\Entity\Job;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class JobFixtures extends Fixture implements OrderedFixtureInterface
+class JobFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * @param ObjectManager $manager
@@ -1205,16 +1197,23 @@ class JobFixtures extends Fixture implements OrderedFixtureInterface
     }
 
     /**
-     * @return int
+     * @return array
      */
-    public function getOrder() : int
+    public function getDependencies(): array
     {
-        return 2;
+        return [
+            CategoryFixtures::class,
+        ];
     }
 }
 ```
 
+Maybe you noticed that this fixture is not as the previous one. In this fixture we implemented `DependentFixtureInterface` interface and defined method `getDependencies`.
+This method helps DoctrineFixturesBundle to define the order of execution of fixtures.
+In our case `JobFixtures` depends on categories and `CategoryFixtures` should be executed earlier.
+
 Once your fixtures have been written, you can load them via the command-line by using the following command:
+
 ```bash
 bin/console doctrine:fixtures:load
 ```
@@ -1230,6 +1229,7 @@ The job fixtures file references two images. You can download them from below an
 You can find the code from day 3 here: [https://github.com/gregurco/jobeet/tree/day3][7].
 
 ## Additional information
+
 - [Databases and the Doctrine ORM][1]
 - [How to Work with Doctrine Associations / Relations][2]
 - [How to Work with Lifecycle Callbacks][3]
