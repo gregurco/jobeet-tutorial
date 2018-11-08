@@ -5,13 +5,23 @@
 From the second day’s requirements: “On the homepage, the user sees the latest active jobs”.
 But as of now, all jobs are displayed, whether they are active or not:
 ```php
-public function list() : Response
-{
-    $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
+namespace App\Controller;
 
-    return $this->render('job/list.html.twig', [
-        'jobs' => $jobs,
-    ]);
+//...
+
+class JobController extends AbstractController
+{
+    //...
+    public function list() : Response
+    {
+        $jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();
+    
+        return $this->render('job/list.html.twig', [
+            'jobs' => $jobs,
+        ]);
+    }
+    
+    //...
 }
 ```
 
@@ -21,15 +31,28 @@ We are not specifying any condition which means that all the records are retriev
 
 Let’s change it to only select active jobs:
 ```php
-public function list(EntityManagerInterface $em) : Response
-{
-    $query = $em->createQuery(
-        'SELECT j FROM App:Job j WHERE j.createdAt > :date'
-    )->setParameter('date', new \DateTime('-30 days'));
 
-    return $this->render('job/list.html.twig', [
-        'jobs' => $jobs,
-    ]);
+namespace App\Controller;
+
+//...
+use Doctrine\ORM\EntityManagerInterface;
+
+class JobController extends AbstractController
+{
+    //...
+    public function list(EntityManagerInterface $em) : Response
+    {
+        $query = $em->createQuery(
+            'SELECT j FROM App:Job j WHERE j.createdAt > :date'
+        )->setParameter('date', new \DateTime('-30 days'));
+        $jobs = $query->getResult();
+        
+        return $this->render('job/list.html.twig', [
+            'jobs' => $jobs,
+        ]);
+    }
+    
+    //...
 }
 ```
 
