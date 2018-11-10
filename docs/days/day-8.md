@@ -301,7 +301,7 @@ That’s it! Form will be rendered due to:
 
 Open the browser and access `/job/create` path to see how form is rendered.
 The form with all fields are rendered, but the styling is not the same as in [bootstrap][11].
-The good new is that [Twig Bridge][12] component, that is responsible for integration of Twig in Symfony, comes with some [themes][13] out of the box.
+The good news is that [Twig Bridge][12] component, that is responsible for integration of Twig in Symfony, comes with some [themes][13] out of the box.
 We use bootstrap 3 and will choose `bootstrap_3_horizontal_layout.html.twig` theme file. Let’s setup it in `config/packages/twig.yaml`:
 ```twig
 twig:
@@ -314,6 +314,13 @@ Refresh the page. Now form should look in bootstrap 3 style.
 
 Also you may notice that we wrote HTML for submit button and did’t use [SubmitType][14].
 It’s good practice because form become more reusable. Read more [here][15].
+
+It’s the time to link the button "Post a Job" with created action (`templates/base.html.twig`):
+
+```diff
+- <a href="#" class="btn btn-default navbar-btn">Post a Job</a>
++ <a href="{{ path('job.create') }}" class="btn btn-default navbar-btn">Post a Job</a>
+```
 
 ## Form processing
 
@@ -352,6 +359,7 @@ class JobController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+}
 ```
 
 - we added `POST` method to annotation, because form will be submitted with this method.
@@ -654,16 +662,39 @@ class FileUploader
 
 Then, define a service for this class in `config/services.yaml`:
 
-```yaml
+```diff
 # ...
 
 services:
-    # ...
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
 
-    App\Service\FileUploader:
-        arguments:
-            $targetDirectory: '%jobs_directory%'
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
++   App\Service\FileUploader:
++       arguments:
++           $targetDirectory: '%jobs_directory%'
 ```
+
+> **Important!** All custom definitions of services should be added at the end of the file, after `_defaults:`, `App\:` and `App\Controller\:` definitions.  
+> Otherwise it will create unexpected overriding of the services and unexpected behavior of Dependency Injection.
+
+If you are not familiar with "service" definition, then we advice you to read excellent article written by Symfony team: [Service Container][21].
 
 Now you’re ready to use this service in the controller:
 
@@ -1537,6 +1568,7 @@ See you tomorrow!
 - [Form Types Reference][5]
 - [Securely Generating Random Values][18]
 - [Flash Messages][20]
+- [Service Container][21]
 
 ## Next Steps
 
@@ -1566,3 +1598,4 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [18]: https://symfony.com/doc/4.1/components/security/secure_tools.html
 [19]: https://github.com/gregurco/jobeet/tree/day8
 [20]: https://symfony.com/doc/4.1/controller.html#flash-messages
+[21]: https://symfony.com/doc/4.1/service_container.html

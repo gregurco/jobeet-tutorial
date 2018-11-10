@@ -78,7 +78,7 @@ First we see class annotation `@Route("job")` - it prepends `job` to all the rou
 
 Thanks to these two routes in controller:  
 
-- If user goes to `/job`, the first route is marched and `list()` method is executed.
+- If user goes to `/job`, the first route is matched and `list()` method is executed.
 - If user goes to `/job/*` *(\* - means any character but at least one)*, the second route is matched and `show()` method is executed. *(Example: `/job/1`, `/job/2`, etc.)*  
 
 Let’s have a closer look at the second route. For this route we can not provide exact path, because ID field is generated and for job with ID 1 the route is `/job/1`, for the next one the route is `/job/2` and so on. 
