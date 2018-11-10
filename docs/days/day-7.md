@@ -268,9 +268,9 @@ and `templates/job/list.html.twig`
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h4>{{ category.name }}</h4>
-
     {% for category in categories %}
+        <h4>{{ category.name }}</h4>
+        
         {% include 'job/table.html.twig' with {
             'jobs': category.activeJobs|slice(0, max_jobs_on_homepage)
         } only %}
