@@ -36,7 +36,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 12: The API](days/day-12.md)
 
-<del>Jobeet Day 13: The Mailer</del>
+[Jobeet Day 13: The Mailer](days/day-13.md)
 
 <del>Jobeet Day 14: Translations</del>
 

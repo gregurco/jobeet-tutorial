@@ -301,6 +301,7 @@ class CategoryController extends AbstractController
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($category);
@@ -535,7 +536,7 @@ Note: no migration needed here.
 Admin should have the same CRUD for jobs and we will do it in the same way as previous CRUD, but with one small difference: we plan to have posted many jobs and we should think about pagination.  
 Let’s introduce one more variable in `config/services.yaml`, but for this time this variable will be more generic and we will be able to use it anywhere:
 
-```twig
+```yaml
 parameters:
     # ...
     max_per_page: 10
