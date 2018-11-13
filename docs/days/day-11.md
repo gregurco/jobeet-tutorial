@@ -256,9 +256,9 @@ and render in `templates/job/list.html.twig`:
         </div>
     {% endif %}
     
-    <h4>{{ category.name }}</h4>
-    
-    {# ... #}
+    {% for category in categories %}
+        {# ... #}
+    {% endfor %}
 {% endblock %}
 ```
 
@@ -290,9 +290,9 @@ and replace displaying in `job/list.html.twig`:
 {% block body %}
     {% include 'job/_job_history.html.twig' with {'historyJobs': historyJobs} only %}
 
-    <h4>{{ category.name }}</h4>
-
-    {# ... #}
+    {% for category in categories %}
+        {# ... #}
+    {% endfor %}
 {% endblock %}
 ```
 
@@ -480,7 +480,7 @@ There is a chance to see next error after install:
 
 ![FOSUserBundle install error](../files/images/screenshot_20.png)
 
-But that is critical. After composer installed the bundle, Symfony added it to `config/bundles.php` and cleared the cache.
+But that is not critical. After composer installed the bundle, Symfony added it to `config/bundles.php` and cleared the cache.
 The problem is that there is no default configuration of this bundle, but Symfony requires configuration for each connected bundle.
 We gonna fix it and clear cache manually later.
 
