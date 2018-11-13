@@ -74,7 +74,7 @@ Read more about it [here][4].
 
 After configuring and registering the command, you can execute it in the terminal:
 
-```yaml
+```bash
 php bin/console app:create-category
 ```
 
@@ -110,7 +110,7 @@ Add your own logic inside the `execute()` method, which has access to the input 
 
 Now, try executing the command:
 
-```
+```bash
 $ bin/console app:create-category
 Category Creator
 ============
@@ -158,7 +158,7 @@ class CreateCategoryCommand extends Command
 
 Now, you can pass the name to the command:
 
-```
+```bash
 $ bin/console app:create-category Tester
 Category Creator
 ============

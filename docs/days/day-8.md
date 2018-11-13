@@ -303,7 +303,8 @@ Open the browser and access `/job/create` path to see how form is rendered.
 The form with all fields are rendered, but the styling is not the same as in [bootstrap][11].
 The good news is that [Twig Bridge][12] component, that is responsible for integration of Twig in Symfony, comes with some [themes][13] out of the box.
 We use bootstrap 3 and will choose `bootstrap_3_horizontal_layout.html.twig` theme file. Let’s setup it in `config/packages/twig.yaml`:
-```twig
+
+```yaml
 twig:
     {# ... #}
     form_themes:

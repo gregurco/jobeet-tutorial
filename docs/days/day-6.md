@@ -30,8 +30,8 @@ The `$jobs = $this->getDoctrine()->getRepository(Job::class)->findAll();` method
 We are not specifying any condition which means that all the records are retrieved from the database.
 
 Let’s change it to only select active jobs:
-```php
 
+```php
 namespace App\Controller;
 
 //...
