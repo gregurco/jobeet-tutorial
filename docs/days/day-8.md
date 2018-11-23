@@ -1368,6 +1368,7 @@ class JobController extends AbstractController
     private function createPublishForm(Job $job) : FormInterface
     {
         return $this->createFormBuilder(['token' => $job->getToken()])
+            ->setAction($this->generateUrl('job.publish', ['token' => $job->getToken()]))
             ->setMethod('POST')
             ->getForm();
     }
@@ -1416,7 +1417,7 @@ We can now change URL of the "Publish" link. We will use a form here, like when 
 +         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 +         Publish
 +     </button>
-+ {{ form_end(deleteForm) }}
++ {{ form_end(publishForm) }}
 ```
 
 Also you may have noticed that we called `addFlash` method in controller. It’s a storage for special messages.
