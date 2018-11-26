@@ -283,10 +283,6 @@ and replace displaying in `job/list.html.twig`:
 ```twig
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    Jobs in the {{ category.name }} category
-{% endblock %}
-
 {% block body %}
     {% include 'job/_job_history.html.twig' with {'historyJobs': historyJobs} only %}
 
