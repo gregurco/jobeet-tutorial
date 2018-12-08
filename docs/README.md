@@ -38,7 +38,7 @@ Please be free to make any observations and improvements you consider important 
 
 [Jobeet Day 13: The Mailer](days/day-13.md)
 
-<del>Jobeet Day 14: Translations</del>
+[Jobeet Day 14: Translations](days/day-14.md)
 
 <del>Jobeet Day 15: The Unit Tests</del>
 
