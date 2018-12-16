@@ -244,7 +244,7 @@ It will prevent sending of emails to real addresses of users.
 
 ### MailHog
 
-> Important! Skip this section if you don’t use Docker.
+> **Important!** Skip this section if you don’t use Docker.
 
 If you don’t want to use 3rd party services and `delivery_addresses` option in development to catch all emails, you can use MailHog.
 [MailHog][9] is an Docker image with SMTP server inside that catches all outgoing emails and shows them in convenient interface. 
@@ -304,7 +304,7 @@ That’s all for today, you can find the code here: [https://github.com/gregurco
 
 ## Next Steps
 
-Continue this tutorial here: Jobeet Day 14: Translations
+Continue this tutorial here: [Jobeet Day 14: Translations](day-14.md)
 
 Previous post is available here: [Jobeet Day 12: The API](day-12.md)
 
