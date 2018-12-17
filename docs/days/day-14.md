@@ -619,8 +619,9 @@ That’s all for today, you can find the code here: [https://github.com/gregurco
 
 ## Additional information
 
-- [Translations][2]
-- [Using the Translator][3]
+- [Documentation: Translations][2]
+- [Documentation: Using the Translator][10]
+- [Best Practices: Internationalization][13]
 
 ## Next Steps
 
@@ -642,3 +643,4 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [10]: https://symfony.com/doc/4.1/components/translation/usage.html
 [11]: https://en.wikipedia.org/wiki/ISO_639-1
 [12]: https://en.wikipedia.org/wiki/Cross-site_scripting
+[13]: https://symfony.com/doc/4.1/best_practices/i18n.html
