@@ -122,7 +122,7 @@ services:
 ```
 
 This container has **Node.JS** and **npm** inside.
-npm is a package manager for JavaScript (like Composer for PHP).
+Npm is a package manager for JavaScript (like Composer for PHP).
 
 Build and run Node.js container:
 

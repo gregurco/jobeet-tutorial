@@ -17,6 +17,6 @@
     "textlint-rule-apostrophe": "^1.0.0",
     "textlint-rule-common-misspellings": "^1.0.1",
     "textlint-rule-no-dead-link": "^4.3.0",
-    "textlint-rule-terminology": "^1.1.29"
+    "textlint-rule-terminology": "^1.1.30"
   }
 }
