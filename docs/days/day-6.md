@@ -297,6 +297,9 @@ public function getActiveJobs()
 Change the index action accordingly:
 
 ```php
+use App\Entity\Category;
+// ...
+
 public function list(EntityManagerInterface $em) : Response
 {
     $categories = $em->getRepository(Category::class)->findWithActiveJobs();
