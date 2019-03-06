@@ -250,14 +250,14 @@ Continue this tutorial here: [Jobeet Day 5: The Routing](day-5.md)
 
 Previous post is available here: [Jobeet Day 3: The Data Model](day-3.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
 [2]: https://en.wikipedia.org/wiki/Decorator_pattern
 [3]: https://getbootstrap.com/docs/3.3/
 [4]: https://en.wikipedia.org/wiki/Content_delivery_network
 [5]: https://twig.symfony.com/doc/2.x/
-[6]: https://symfony.com/doc/4.1/routing.html
+[6]: https://symfony.com/doc/4.2/routing.html
 [7]: https://twig.symfony.com/doc/2.x/filters/index.html
 [8]: https://twig.symfony.com/doc/2.x/functions/index.html
 [9]: https://twig.symfony.com/doc/2.x/filters/date.html

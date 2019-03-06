@@ -1065,17 +1065,15 @@ class Affiliate
 
 Now we have usable entity classes with mapping information so Doctrine knows exactly how to persist it.
 Of course, we don’t yet have the corresponding product table in our database.
-Fortunately, Doctrine Migration Bundle can automatically create migrations with SQL to sync DB with entities. To do this, let’s install the bundle:
-```bash
-composer require doctrine/doctrine-migrations-bundle
-```
+Fortunately, [Doctrine Migration Bundle][4] can automatically create migrations with SQL to sync DB with entities. 
+This bundle is already installed with [symfony/orm-pack][8] and you have just to generate first migration:
 
-After that let’s generate first migration:
 ```bash
 bin/console doctrine:migration:diff
 ```
 
 New migration was generated in folder `src/Migrations` but this migration is not executed yet. Let’s execute it:
+
 ```bash
 bin/console doctrine:migration:migrate
 ```
@@ -1243,12 +1241,13 @@ Continue this tutorial here: [Jobeet Day 4: The Controller and the View](day-4.m
 
 Previous post is available here: [Jobeet Day 2: The Project](day-2.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
-[1]: https://symfony.com/doc/4.1/doctrine.html
-[2]: https://symfony.com/doc/4.1/doctrine/associations.html
-[3]: https://symfony.com/doc/4.1/doctrine/lifecycle_callbacks.html
+[1]: https://symfony.com/doc/4.2/doctrine.html
+[2]: https://symfony.com/doc/4.2/doctrine/associations.html
+[3]: https://symfony.com/doc/4.2/doctrine/lifecycle_callbacks.html
 [4]: https://symfony.com/doc/master/bundles/DoctrineMigrationsBundle/index.html
 [5]: https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 [6]: https://github.com/fzaninotto/Faker
 [7]: https://github.com/gregurco/jobeet/tree/day3
+[8]: https://packagist.org/packages/symfony/orm-pack

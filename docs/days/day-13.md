@@ -308,15 +308,15 @@ Continue this tutorial here: [Jobeet Day 14: Translations](day-14.md)
 
 Previous post is available here: [Jobeet Day 12: The API](day-12.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://github.com/gregurco/jobeet/tree/day13
 [2]: https://swiftmailer.symfony.com/
-[3]: https://symfony.com/doc/4.1/email.html
+[3]: https://symfony.com/doc/4.2/email.html
 [4]: https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol
 [5]: https://sendgrid.com/
 [6]: https://signup.sendgrid.com/
 [7]: https://swiftmailer.symfony.com/docs/introduction.html
-[8]: https://symfony.com/doc/4.1/email/dev_environment.html
+[8]: https://symfony.com/doc/4.2/email/dev_environment.html
 [9]: https://hub.docker.com/r/mailhog/mailhog/
 [10]: http://127.0.0.1:8025/

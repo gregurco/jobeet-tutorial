@@ -218,11 +218,11 @@ Continue this tutorial here: [Jobeet Day 6: More with the Entity](day-6.md)
 
 Previous post is available here: [Jobeet Day 4: The Controller and the View](day-4.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
 [2]: http://127.0.0.1/
-[3]: https://symfony.com/doc/4.1/routing.html
-[4]: https://symfony.com/doc/4.1/routing/requirements.html
+[3]: https://symfony.com/doc/4.2/routing.html
+[4]: https://symfony.com/doc/4.2/routing/requirements.html
 [5]: https://www.w3schools.com/tags/ref_httpmethods.asp
 [6]: https://github.com/gregurco/jobeet/tree/day5

@@ -1,9 +1,9 @@
 # Jobeet Day 1: Starting up the Project
 
-Today we will setup the development environment, install Symfony 4.1 and display a page of the application in the web browser.
+Today we will setup the development environment, install Symfony 4.2 and display a page of the application in the web browser.
 First of all, we need to have a friendly working environment for web development. We will use [Docker][1] with 
 nginx and PHP images from [Docker Hub][2].
-To check the minimum requirements for running Symfony 4.1 you can access this [link][3].
+To check the minimum requirements for running Symfony 4.2 you can access this [link][3].
 
 ## Docker configuration
 
@@ -40,7 +40,7 @@ jobeet-webserver   nginx -g daemon off;          Up      0.0.0.0:80->80/tcp
 
 Congratulations! Now you have prepared environment for Jobeet project.
 
-## Download and install Symfony 4.1
+## Download and install Symfony 4.2
 
 To create our Symfony project we will use method described in official [documentation][6].
 First of all, enter PHP container:
@@ -58,7 +58,7 @@ Now you are in php container. Run `php -v` to check that php exists and the vers
 After that create Symfony project in `tmp` _(temporary)_ folder, copy it to your project folder, exit from container and change permission of files to be able to edit them from your IDE:
 
 ```bash
-composer create-project symfony/website-skeleton:4.1 /tmp/jobeet/
+composer create-project symfony/website-skeleton:4.2.* /tmp/jobeet/
 cp -aR /tmp/jobeet/. .
 exit;
 sudo chown -R $USER:$USER .
@@ -104,17 +104,17 @@ See you on the next day of this tutorial where we will talk about what exactly t
 
 Continue this tutorial here: [Jobeet Day 2: The Project](day-2.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://www.docker.com/
 [2]: https://hub.docker.com/
-[3]: https://symfony.com/doc/4.1/reference/requirements.html
+[3]: https://symfony.com/doc/4.2/reference/requirements.html
 [4]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 [5]: https://docs.docker.com/compose/install/
-[6]: https://symfony.com/doc/4.1/setup.html
+[6]: https://symfony.com/doc/4.2/setup.html
 [7]: http://127.0.0.1
 [8]: https://github.com/gregurco/jobeet/tree/day1
 [9]: https://phpdocker.io/generator
-[10]: https://symfony.com/doc/4.1/setup.html
+[10]: https://symfony.com/doc/4.2/setup.html
 [11]: https://www.docker.com/what-docker
 [12]: https://docs.docker.com/compose/overview/

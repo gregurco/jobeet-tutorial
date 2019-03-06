@@ -125,7 +125,7 @@ To create the job API we gonna use bunch of two bundles: [JMSSerializerBundle][3
 First install [JMSSerializerBundle][3]:
 
 ```bash
-composer require jms/serializer-bundle ^2.4
+composer require jms/serializer-bundle ^3.1
 ```
 
 During the installation you will be asked if recipe from **contrib** repository should be applied:
@@ -141,7 +141,7 @@ Thanks to Symfony Flex and this recipe bundle will be automatically connected in
 Next install [FOSRestBundle][2]:
 
 ```bash
-composer require friendsofsymfony/rest-bundle ^2.3
+composer require friendsofsymfony/rest-bundle ^2.5
 ```
 
 There will be the same question and after that new config file will appear: `config/packages/fos_rest.yaml`.  
@@ -1035,7 +1035,7 @@ Continue this tutorial here: [Jobeet Day 13: The Mailer](day-13.md)
 
 Previous post is available here: [Jobeet Day 11: The User](day-11.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://en.wikipedia.org/wiki/Long_tail
 [2]: https://symfony.com/doc/1.5/bundles/FOSRestBundle/index.html
