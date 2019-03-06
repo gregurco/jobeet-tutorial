@@ -96,6 +96,6 @@ Continue this tutorial here: [Jobeet Day 3: The Data Model](day-3.md)
 
 Previous post is available here: [Jobeet Day 1: Starting up the Project](day-1.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/legacy/doc/jobeet/1_4/en/02?orm=Propel

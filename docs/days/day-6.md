@@ -477,9 +477,9 @@ Continue this tutorial here: [Jobeet Day 7: Playing with the Category Page](day-
 
 Previous post is available here: [Jobeet Day 5: The Routing](day-5.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
-[1]: https://symfony.com/doc/4.1/templating/global_variables.html
+[1]: https://symfony.com/doc/4.2/templating/global_variables.html
 [2]: https://symfony.com/doc/5.0/bundles/SensioFrameworkExtraBundle/annotations/converters.html
 [3]: https://github.com/gregurco/jobeet/tree/day6
 [4]: https://martinfowler.com/eaaCatalog/repository.html

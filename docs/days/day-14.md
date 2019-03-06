@@ -130,26 +130,34 @@ Build and run Node.js container:
 docker-compose up -d
 ```
 
-Enter in Node.js container:
+Enter in PHP container and install [encore][14] package:
 
 ```bash
+docker-compose run php-fpm bash
+composer require encore
+```
+
+Exit from PHP and enter in Node.js container:
+
+```bash
+exit
 docker-compose run node bash
 ```
 
 Install packages from package.json file:
 
 ```bash
-npm install
+yarn install
 ```
 
 Install jQuery and Bootstrap:
 
 ```bash
-npm install --save-dev jquery@^3.3.1
-npm install --save-dev bootstrap@^3.3.7
+yarn add jquery@^3.3.1 --dev
+yarn add bootstrap@^3.3.7 --dev
 ```
 
-Create main js file (`assets/js/app.js`), which will be included on all pages.
+Modify main js file (`assets/js/app.js`), which will be included on all pages.
 Trigger `dropdown` from bootstrap library on all elements with `dropdown-toggle` class:
 
 ```js
@@ -167,37 +175,70 @@ $(document).ready(function() {
 ```
 
 Symfony provides us a file with initial webpack configuration - `webpack.config.js`.
-Register out new `app.js` file as entry point and activate jQuery:
+Activate jQuery there:
 
 ```diff
   var Encore = require('@symfony/webpack-encore');
   
   Encore
-      // the project directory where compiled assets will be stored
+      // directory where compiled assets will be stored
       .setOutputPath('public/build/')
-      // the public path used by the web server to access the previous directory
+      // public path used by the web server to access the output path
       .setPublicPath('/build')
+      // only needed for CDN's or sub-directory deploy
+      //.setManifestKeyPrefix('build/')
+  
+      /*
+       * ENTRY CONFIG
+       *
+       * Add 1 entry for each "page" of your app
+       * (including one that's included on every page - e.g. "app")
+       *
+       * Each entry will result in one JavaScript file (e.g. app.js)
+       * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
+       */
+      .addEntry('app', './assets/js/app.js')
+      //.addEntry('page1', './assets/js/page1.js')
+      //.addEntry('page2', './assets/js/page2.js')
+  
+      // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
+      .splitEntryChunks()
+  
+      // will require an extra script tag for runtime.js
+      // but, you probably want this, unless you're building a single-page app
+      .enableSingleRuntimeChunk()
+  
+      /*
+       * FEATURE CONFIG
+       *
+       * Enable & configure other features below. For a full
+       * list of features, see:
+       * https://symfony.com/doc/current/frontend.html#adding-more-features
+       */
       .cleanupOutputBeforeBuild()
+      .enableBuildNotifications()
       .enableSourceMaps(!Encore.isProduction())
-      // uncomment to create hashed filenames (e.g. app.abc123.css)
-      // .enableVersioning(Encore.isProduction())
+      // enables hashed filenames (e.g. app.abc123.css)
+      .enableVersioning(Encore.isProduction())
   
-      // uncomment to define the assets of the project
--     // .addEntry('js/app', './assets/js/app.js')
-+     .addEntry('js/app', './assets/js/app.js')
-      // .addStyleEntry('css/app', './assets/css/app.scss')
+      // enables Sass/SCSS support
+      //.enableSassLoader()
   
-      // uncomment if you use Sass/SCSS files
-      // .enableSassLoader()
+      // uncomment if you use TypeScript
+      //.enableTypeScriptLoader()
   
-      // uncomment for legacy applications that require $/jQuery as a global variable
--     // .autoProvidejQuery()
+      // uncomment if you're having problems with a jQuery plugin
+-     //.autoProvidejQuery()
 +     .autoProvidejQuery()
 +     .autoProvideVariables({
 +         $: 'jquery',
 +         jQuery: 'jquery',
 +         'window.jQuery': 'jquery'
 +     })
+  
+      // uncomment if you use API Platform Admin (composer req api-admin)
+      //.enableReactPreset()
+      //.addEntry('admin', './assets/js/admin.js')
   ;
   
   module.exports = Encore.getWebpackConfig();
@@ -206,7 +247,7 @@ Register out new `app.js` file as entry point and activate jQuery:
 Build assets with next command in Node.js container:
 
 ```bash
-npm run dev
+yarn encore dev
 ```
 
 You can notice that new `app.js` file appeared in folder `public/build/js`.
@@ -619,6 +660,7 @@ That’s all for today, you can find the code here: [https://github.com/gregurco
 
 ## Additional information
 
+- [Managing CSS and JavaScript][15]
 - [Documentation: Translations][2]
 - [Documentation: Using the Translator][10]
 - [Best Practices: Internationalization][13]
@@ -629,10 +671,10 @@ Continue this tutorial here: Jobeet Day 15: The Unit Tests
 
 Previous post is available here: [Jobeet Day 13: The Mailer](day-13.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://github.com/gregurco/jobeet/tree/day14
-[2]: https://symfony.com/doc/4.1/translation.html
+[2]: https://symfony.com/doc/4.2/translation.html
 [3]: https://en.wikipedia.org/wiki/Internationalization
 [4]: https://packagist.org/packages/symfony/translation
 [5]: http://127.0.0.1/ru/
@@ -640,7 +682,9 @@ Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
 [7]: https://nodejs.org
 [8]: https://jquery.com/
 [9]: http://xliff.brightec.co.uk/
-[10]: https://symfony.com/doc/4.1/components/translation/usage.html
+[10]: https://symfony.com/doc/4.2/components/translation/usage.html
 [11]: https://en.wikipedia.org/wiki/ISO_639-1
 [12]: https://en.wikipedia.org/wiki/Cross-site_scripting
-[13]: https://symfony.com/doc/4.1/best_practices/i18n.html
+[13]: https://symfony.com/doc/4.2/best_practices/i18n.html
+[14]: https://github.com/symfony/webpack-encore-bundle
+[15]: https://symfony.com/doc/4.2/frontend.html

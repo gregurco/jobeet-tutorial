@@ -802,15 +802,15 @@ Continue this tutorial here: [Jobeet Day 12: The API](day-12.md)
 
 Previous post is available here: [Jobeet Day 10: The Admin](day-10.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
-[1]: https://symfony.com/doc/4.1/components/http_foundation/sessions.html
+[1]: https://symfony.com/doc/4.2/components/http_foundation/sessions.html
 [2]: http://127.0.0.1/_profiler
-[3]: https://symfony.com/doc/4.1/security.html
+[3]: https://symfony.com/doc/4.2/security.html
 [4]: https://packagist.org/explore/?type=symfony-bundle
 [5]: https://symfony.com/doc/master/bundles/FOSUserBundle/index.html
 [6]: https://github.com/FriendsOfSymfony/FOSUserBundle/blob/v2.1.2/Security/UserProvider.php
-[7]: https://symfony.com/doc/4.1/bundles/override.html
+[7]: https://symfony.com/doc/4.2/bundles/override.html
 [8]: http://127.0.0.1/login
 [9]: https://github.com/gregurco/jobeet/tree/day11
 [10]: https://symfony.com/blog/new-in-symfony-3-4-argon2i-password-hasher

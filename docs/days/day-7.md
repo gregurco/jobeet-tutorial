@@ -494,12 +494,12 @@ Continue this tutorial here: [Jobeet Day 8: The Forms](day-8.md)
 
 Previous post is available here: [Jobeet Day 6: More with the Entity](day-6.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
 [1]: https://symfony.com/doc/current/bundles/StofDoctrineExtensionsBundle/index.html
 [2]: https://github.com/Atlantic18/DoctrineExtensions
 [3]: https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/sluggable.md#setup-and-autoloading
-[4]: https://symfony.com/doc/4.1/setup/flex.html
+[4]: https://symfony.com/doc/4.2/setup/flex.html
 [5]: https://github.com/KnpLabs/KnpPaginatorBundle
 [6]: https://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/pagination.html
 [7]: https://github.com/gregurco/jobeet/tree/day7

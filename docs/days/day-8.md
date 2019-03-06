@@ -1578,26 +1578,26 @@ Continue this tutorial here: [Jobeet Day 9: Console Commands](day-9.md)
 
 Previous post is available here: [Jobeet Day 7: Playing with the Category Page](day-7.md)
 
-Main page is available here: [Symfony 4.1 Jobeet Tutorial](../index.md)
+Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 
-[1]: https://symfony.com/doc/4.1/controller/upload_file.html
-[2]: https://symfony.com/doc/4.1/form/form_customization.html
-[3]: https://symfony.com/doc/4.1/components/form.html
-[4]: https://symfony.com/doc/4.1/forms.html
-[5]: https://symfony.com/doc/4.1/reference/forms/types.html
-[6]: https://symfony.com/doc/4.1/reference/forms/types/text.html
-[7]: https://symfony.com/doc/4.1/reference/forms/types/email.html
-[8]: https://symfony.com/doc/4.1/reference/forms/types/datetime.html
-[9]: https://symfony.com/doc/4.1/reference/forms/types/choice.html
-[10]: https://symfony.com/doc/4.1/reference/forms/types/entity.html
+[1]: https://symfony.com/doc/4.2/controller/upload_file.html
+[2]: https://symfony.com/doc/4.2/form/form_customization.html
+[3]: https://symfony.com/doc/4.2/components/form.html
+[4]: https://symfony.com/doc/4.2/forms.html
+[5]: https://symfony.com/doc/4.2/reference/forms/types.html
+[6]: https://symfony.com/doc/4.2/reference/forms/types/text.html
+[7]: https://symfony.com/doc/4.2/reference/forms/types/email.html
+[8]: https://symfony.com/doc/4.2/reference/forms/types/datetime.html
+[9]: https://symfony.com/doc/4.2/reference/forms/types/choice.html
+[10]: https://symfony.com/doc/4.2/reference/forms/types/entity.html
 [11]: https://getbootstrap.com/docs/3.3/css/#forms
 [12]: https://github.com/symfony/twig-bridge/tree/v4.0.6
 [13]: https://github.com/symfony/twig-bridge/tree/v4.0.6/Resources/views/Form
-[14]: https://symfony.com/doc/4.1/reference/forms/types/submit.html
-[15]: https://symfony.com/doc/4.1/best_practices/forms.html#form-button-configuration
-[16]: https://symfony.com/doc/4.1/reference/constraints.html
-[17]: https://symfony.com/doc/4.1/doctrine/event_listeners_subscribers.html
-[18]: https://symfony.com/doc/4.1/components/security/secure_tools.html
+[14]: https://symfony.com/doc/4.2/reference/forms/types/submit.html
+[15]: https://symfony.com/doc/4.2/best_practices/forms.html#form-button-configuration
+[16]: https://symfony.com/doc/4.2/reference/constraints.html
+[17]: https://symfony.com/doc/4.2/doctrine/event_listeners_subscribers.html
+[18]: https://symfony.com/doc/4.2/components/security/secure_tools.html
 [19]: https://github.com/gregurco/jobeet/tree/day8
-[20]: https://symfony.com/doc/4.1/controller.html#flash-messages
-[21]: https://symfony.com/doc/4.1/service_container.html
+[20]: https://symfony.com/doc/4.2/controller.html#flash-messages
+[21]: https://symfony.com/doc/4.2/service_container.html
