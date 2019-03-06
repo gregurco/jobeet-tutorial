@@ -1,0 +1,8 @@
+version: 2
+
+python:
+    version: 3.6
+
+mkdocs:
+    configuration: mkdocs.yml
+    fail_on_warning: false
