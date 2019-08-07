@@ -9,7 +9,7 @@ For web development, the most common solution for organizing your code nowadays 
 
 - The **Model** layer defines the business logic (the database belongs to this layer). You already know that Symfony stores all the classes and files related to the Model in the `src/Entity/` directory of your bundles.
 - The **View** is what the user interacts with (a template engine is part of this layer). In Symfony, the View layer is mainly made of Twig templates. They are stored in various `templates/` directories as we will see later.
-- The **Controller** is a piece of code that calls the Model to get some data that it passes to the View for rendering to the client. When we installed Symfony at the beginning of this tutorial, we saw that all requests are managed by front controller (`public/index.php`). This front controller delegate the real work to actions (class methods).
+- The **Controller** is a piece of code that calls the Model to get some data that it passes to the View for rendering to the client. When we installed Symfony at the beginning of this tutorial, we saw that all requests are managed by front controller (`public/index.php`). This front controller delegates the real work to actions (class methods).
 
 ## Controller
 
