@@ -423,8 +423,8 @@ class CategoryController extends Controller
      */
     public function show(
         Category $category,
-        int $page,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        int $page
     ) : Response {
         $activeJobs = $paginator->paginate(
             $this->getDoctrine()->getRepository(Job::class)->getPaginatedActiveJobsByCategoryQuery($category),
