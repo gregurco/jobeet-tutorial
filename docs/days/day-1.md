@@ -104,9 +104,9 @@ See you on the next day of this tutorial where we will talk about what exactly t
 
 ## Troubleshooting
 
-### Couldn't connect to Docker daemon
+### Couldn’t connect to Docker daemon
 
-If you have just installed the docker on linux, there's a chance you will get the error bellow. It's expected as the current user doesn't have enough permissions.
+If you have just installed the docker on linux, there’s a chance you will get the error bellow. It’s expected as the current user doesn’t have enough permissions.
 
 ```
 ERROR: Couldn't connect to Docker daemon at http+docker://localhost - is it running?
@@ -127,7 +127,7 @@ If you have already installed on the machine a web server server then you will g
 ERROR: for webserver  Cannot start service webserver: driver failed programming external connectivity on endpoint jobeet-webserver (a2fb001830712b327605a3e77744b16fff85b5e7dfc3aa73407dea323dc49163): Error starting userland proxy: listen tcp 0.0.0.0:80: bind: address already in use
 ```
 
-In case you have met this issue please update `docker-compose.yml`, service webserver the ports parameter, change `- 80:80` with `- 8000:80` and rerun the command. Just keep in mind that in order to access the website instead of [http://127.0.0.1][7] you will have to access [http://127.0.0.1:8000][13]. 
+In case you have met this issue please update `docker-compose.yml`, service webserver the ports parameter, change `- 80:80` with `- 8000:80` and rerun the command. Just keep in mind that in order to access the site instead of [http://127.0.0.1][7] you will have to access [http://127.0.0.1:8000][13]. 
 
 ## Next Steps
 
