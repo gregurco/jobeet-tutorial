@@ -15,6 +15,8 @@ It includes PHP 7.2, MySQL 5.7 and nginx. To start containers just run next comm
 docker-compose up -d
 ```
 
+> Note: In case of error check [troubleshooting](#troubleshooting) section
+
 What we did here:
 
 * we called `docker-compose` that wraps the functionality of Docker and does working with Docker easier
@@ -100,6 +102,33 @@ See you on the next day of this tutorial where we will talk about what exactly t
 - [What is Docker][11]
 - [Overview of Docker Compose][12]
 
+## Troubleshooting
+
+### Couldn't connect to Docker daemon
+
+If you have just installed the docker on linux, there's a chance you will get the error bellow. It's expected as the current user doesn't have enough permissions.
+
+```
+ERROR: Couldn't connect to Docker daemon at http+docker://localhost - is it running?
+If it's at a non-standard location, specify the URL with the DOCKER_HOST environment variable.
+```
+
+You can fix this either by running the command as root using `sudo` (since root has all the permissions) or adding current user to the **docker** group and restarting the terminal.
+
+```
+sudo usermod -a -G docker `whoami`
+```
+
+### Address already in use
+
+If you have already installed on the machine a web server server then you will get the error that port `80` is already in use. The error looks like this:
+
+```
+ERROR: for webserver  Cannot start service webserver: driver failed programming external connectivity on endpoint jobeet-webserver (a2fb001830712b327605a3e77744b16fff85b5e7dfc3aa73407dea323dc49163): Error starting userland proxy: listen tcp 0.0.0.0:80: bind: address already in use
+```
+
+In case you have met this issue please update `docker-compose.yml`, service webserver the ports parameter, change `- 80:80` with `- 8000:80` and rerun the command. Just keep in mind that in order to access the website instead of [http://127.0.0.1][7] you will have to access [http://127.0.0.1:8000][13]. 
+
 ## Next Steps
 
 Continue this tutorial here: [Jobeet Day 2: The Project](day-2.md)
@@ -118,3 +147,4 @@ Main page is available here: [Symfony 4.2 Jobeet Tutorial](../index.md)
 [10]: https://symfony.com/doc/4.2/setup.html
 [11]: https://www.docker.com/what-docker
 [12]: https://docs.docker.com/compose/overview/
+[13]: http://127.0.0.1:8000
