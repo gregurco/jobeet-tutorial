@@ -201,7 +201,7 @@ class JobHistoryService
             $jobs[] = $jobRepository->findActiveJob($jobId);
         }
 
-        return $jobs;
+        return array_filter($jobs);
     }
 }
 ```
