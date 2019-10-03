@@ -441,7 +441,7 @@ class CategoryController extends Controller
 ```
 
 We added `page` in the URL path and defined default value, in case when page is not defined in the URL *(ex: `/category/design`)*.
-Variable `$path` is added in arguments of the method. It will be injected automatically by name in path.
+Variable `$page` is added in arguments of the method. It will be injected automatically by name in path.
 Also we need parameter `max_jobs_on_category` and `getParameter` methods to access it.
 That’s why this controller extends now `Symfony\Bundle\FrameworkBundle\Controller\Controller` but not `Symfony\Bundle\FrameworkBundle\Controller\AbstractController`.
 
