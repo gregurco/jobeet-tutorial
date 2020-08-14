@@ -409,6 +409,8 @@ public function load(ObjectManager $manager) : void
 
         $manager->persist($job);
     }
+    
+    $manager->flush();
 }
 ```
 
