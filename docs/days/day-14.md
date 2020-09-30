@@ -101,7 +101,7 @@ And define as global twig variable in `config/packages/twig.yaml`:
 
 Later we will use this variable to render selector.
 
-Till now we connected only CSS file from bootstrap library using CDN, but now we need JS file too which requires [jQuery][8].
+Till now, we connected only CSS file from bootstrap library using CDN, but now we need JS file too which requires [jQuery][8].
 Let’s see how to connect CSS/JS libraries in Symfony way!
 
 > **Important!** Skip to `npm install` command, if you don’t use docker and have Node.js installed locally.
@@ -251,7 +251,7 @@ yarn encore dev
 ```
 
 You can notice that new `app.js` file appeared in folder `public/build/js`.
-This file is build using webpack and contains all JavaScript code required for out application.
+This file is build using webpack and contains all JavaScript code required for our application.
 Include this file in base layout (`templates/base.html.twig`) and add dropdown to select the language:
 
 ```diff
@@ -601,7 +601,7 @@ The `transchoice` has 3 parts:
 * An array of placeholders
 * The number to use to determine which text to use
 
-The string that describes the different translations according to the number is formatted as follow:
+The string that describes the different translations according to the number is formatted as follows:
 
 * Each possibility is separated by a pipe character (`|`)
 * Each string is composed of a range followed by the translation
