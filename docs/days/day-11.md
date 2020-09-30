@@ -2,7 +2,7 @@
 
 Yesterday was packed with a lot of information.
 
-Today, we will discover how symfony manages persistent data between HTTP requests. As you might know, the HTTP protocol is stateless, which means that each request is independent from its preceding or proceeding ones. Modern sites need a way to persist data between requests to enhance the user experience.
+Today, we will discover how symfony manages persistent data between HTTP requests. As you might know, the HTTP protocol is stateless, which means that each request is independent of its preceding or proceeding ones. Modern sites need a way to persist data between requests to enhance the user experience.
 
 A user session can be identified using a cookie. In Symfony, the developer does not need to manipulate the session directly, but rather uses the `Session` object from `HttpFoundation` component.
 
@@ -173,7 +173,7 @@ class JobHistoryService
 
 > We could have stored the Job objects directly into the session. This is strongly discouraged because the session variables are serialized between requests. And when the session is loaded, the Job objects are de-serialized and can be "stalled" if they have been modified or deleted in the meantime.
 
-Open view page of random job and there will be no visible changes but we know that something should appear in session.
+Open view page of random job and there will be no visible changes, but we know that something should appear in session.
 To track request session open Symfony Profiler from bottom toolbar (or directly: [http://127.0.0.1/_profiler][2] and select the last request), open "Request / Response" from left menu and "Session" tab:
 
 ![Session in Profiler](../files/images/screenshot_16.png)
@@ -490,7 +490,7 @@ framework:
         engines: 'twig'
 ```
 
-`FOSUserBundle` uses `twig` templating engine and we have to specify it explicitly.
+`FOSUserBundle` uses `twig` templating engine, and we have to specify it explicitly.
 
 ### User Entity
 
@@ -607,7 +607,7 @@ fos_user:
 
 ### Create Migration
 
-We created `User` entity but we still don’t have `users` table in database.
+We created `User` entity, but we still don’t have `users` table in database.
 Run next command and create migration with difference between entities set and database state:
 
 ```bash
@@ -669,7 +669,7 @@ class UserFixtures extends Fixture
 Note that we set the password using `setPlainPassword` and not `setPassword`.
 It gives us possibility to setup plain password and not to worry about encoding used in project.
 Special listener will replace plain password with encoded one before inserting in database.  
-Also we specifies the role for each user and activated them using `setEnabled` method.  
+Also we specified the role for each user and activated them using `setEnabled` method.  
 
 Now run fixtures:
 
