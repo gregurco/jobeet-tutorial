@@ -279,7 +279,7 @@ class CategoryRepository extends EntityRepository
 }
 ```
 
-This methods will give us only categories with active jobs, but if you will call `getJobs` method on each category you will receive all jobs, including expired.
+These methods will give us only categories with active jobs, but if you will call `getJobs` method on each category you will receive all jobs, including expired.
 Let’s create `getActiveJobs` method in `Category` entity, which will return only non expired jobs:
 
 ```php
