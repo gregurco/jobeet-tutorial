@@ -20,7 +20,7 @@ It’s quite enough for the beginning.
 
 Start with creation of the account on this page: [https://signup.sendgrid.com/][6].
 
-After registration you will see the dashboard with welcome message:
+After registration, you will see the dashboard with welcome message:
 
 ![SendGrid: dashboard](../files/images/screenshot_29.png)
 
