@@ -115,7 +115,7 @@ We changed type and also defined next options: `choices` - items, that will be u
 Do the same thing with `activated` field too.
 
 Also `category` is `TextType`, but we have categories in DB and it would be good to render selector with these options.
-It looks like it should be `ChoiceType`, but choice from entities is specific case and we have separate type for it: [EntityType][10].
+It looks like it should be `ChoiceType`, but choice from entities is specific case, and we have separate type for it: [EntityType][10].
 It extends `ChoiceType` but with some additional options related to DB.
 
 ```diff
@@ -129,7 +129,7 @@ It extends `ChoiceType` but with some additional options related to DB.
 We specified `choice_label` to select a field from entity that will be shown as option in selector.
 We changed only one line of code, but in template instead of simple input we will have select with all categories in options.
 
-Now let’s change `type` field. For now it’s text field, but in the second day’s description we have next requirement:
+Now let’s change `type` field. For now, it’s text field, but in the second day’s description we have next requirement:
 > Type (full-time, part-time, or freelance)
 
 We need defined list of options and let’s do it in `Job` entity:
@@ -314,7 +314,7 @@ twig:
 Refresh the page. Now form should look in bootstrap 3 style.
 
 Also you may notice that we wrote HTML for submit button and did’t use [SubmitType][14].
-It’s good practice because form become more reusable. Read more [here][15].
+It’s a good practice because form become more reusable. Read more [here][15].
 
 It’s the time to link the button "Post a Job" with created action (`templates/base.html.twig`):
 
@@ -367,7 +367,7 @@ class JobController extends AbstractController
 - request object is added to method arguments because in request will be data of submitted form
 - entity manager is added to method arguments because we will use it to store new job
 - `handleRequest` method maps request data to form
-- `isSubmitted` method checks if form was submitted or method is called with get method and we need only to show the form
+- `isSubmitted` method checks if form was submitted or method is called with get method, and we need only to show the form
 - `isValid` method tracks if all requirements are met (we will add them in next step)
 - `redirectToRoute` is used to redirect to list of jobs and to prevent repeated submit of form (CTRL + R)
 
