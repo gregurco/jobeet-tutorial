@@ -63,7 +63,7 @@ After that create Symfony project in `tmp` _(temporary)_ folder, copy it to your
 composer create-project symfony/website-skeleton:4.2.* /tmp/jobeet/
 cp -aR /tmp/jobeet/. .
 exit;
-sudo chown -R $USER:$USER .  # if you're on a Mac, use $USER:staff instead
+sudo chown -R $USER:$USER .  # if you're on a Mac, use $USER:$staff instead
 ```
 
 We install into `tmp` directory and copy then to proper one, because `create-project` command requires target folder to be empty, but in project’s folder we already have docker files.
