@@ -10,7 +10,7 @@ For security and architectural reasons this logic should be **separated** from f
 
 ## First admin controller
 
-We have to create our first admin controller and we know that this controller should be separated from existing ones.  
+We have to create our first admin controller, and we know that this controller should be separated from existing ones.  
 Create new folder `src/Controller/Admin` with new file `CategoryController.php`:
 
 ```php
@@ -221,7 +221,7 @@ class CategoryType extends AbstractType
 ```
 
 It’s very simple form with only one field and some basic validation rules.
-Just notice that `slug` is generated automatically and we don’t have to provide it.
+Just notice that `slug` is generated automatically, and we don’t have to provide it.
 
 The next step is to create action in controller and to build form:
 
@@ -533,8 +533,8 @@ Note: no migration needed here.
 
 ## Job CRUD
 
-Admin should have the same CRUD for jobs and we will do it in the same way as previous CRUD, but with one small difference: we plan to have posted many jobs and we should think about pagination.  
-Let’s introduce one more variable in `config/services.yaml`, but for this time this variable will be more generic and we will be able to use it anywhere:
+Admin should have the same CRUD for jobs, and we will do it in the same way as previous CRUD, but with one small difference: we plan to have posted many jobs, and we should think about pagination.  
+Let’s introduce one more variable in `config/services.yaml`, but for this time this variable will be more generic, and we will be able to use it anywhere:
 
 ```yaml
 parameters:
@@ -970,7 +970,7 @@ In Twig we have global variable `app` with property `request`, where current req
 
 ## Conclusion
 
-We spent not so many time and implemented CRUDs for all the functionality we have on front side, but there is another option - to use bundles that provide admin functionality:
+We spent not so much time and implemented CRUDs for all the functionality we have on front side, but there is another option - to use bundles that provide admin functionality:
 - [EasyAdminBundle][7]
 - [SonataAdminBundle][8]
 - [and many others][9]

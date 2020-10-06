@@ -12,7 +12,7 @@ To store the jobs, affiliates and categories in the database, Symfony 4 uses Doc
 ```dotenv
 DATABASE_URL=mysql://user:password@mysql:3306/jobeet
 ```
-Now that Doctrine knows about your database, you can let it create the database for you (if you did not already created it):
+Now that Doctrine knows about your database, you can let it create the database for you (if you haven't created it already):
 
 ```bash
 bin/console doctrine:database:create --if-not-exists
@@ -406,7 +406,7 @@ class Affiliate
 }
 ```
 
-As you can notice, all properties are `private` but we should access them somehow. Let’s generate setters and getters.
+As you can notice, all properties are `private`, but we should access them somehow. Let’s generate setters and getters.
 If you use an IDE like PHPStorm, it can generate these for you. In PHPStorm, put your cursor anywhere in the class, then go to the Code -> Generate menu and select "Getters and Setters" (Alt + Insert).  
 Notice #1: for boolean variables we generate `is` and `set` methods, for collections we generate `get`, `add` and `remove` but for everyone else we generate `get` and `set` methods.  
 Notice #2: for ID we generate ONLY getter. We don’t have case when to set id, but doctrine knows how to set ID without setter.

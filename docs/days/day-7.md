@@ -11,7 +11,7 @@ We will define a pretty URL that will contain the category slug: `/category/{slu
 ## Category slug
 
 To have the slug of categories we will need [StofDoctrineExtensionsBundle][1] that wraps [DoctrineExtensions][1] package.
-It consists of different useful extensions but we will use [Sluggable][2] only for now.
+It consists of different useful extensions, but we will use [Sluggable][2] only for now.
 
 First let’s install the bundle:
 ```bash
@@ -42,7 +42,7 @@ stof_doctrine_extensions:
             sluggable: true
 ```
 
-Slug will be stored in DB and we need field for it. Add `slug` field in `Category` entity:
+Slug will be stored in DB, and we need field for it. Add `slug` field in `Category` entity:
 ```php
 // ...
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -278,9 +278,9 @@ and `templates/job/list.html.twig`
 {% endblock %}
 ```
 
-We included table template with key words `with` and `only`. That means that we pass to table template **only** jobs variables.
+We included table template with keywords `with` and `only`. That means that we pass to table template **only** jobs variables.
 
-> Read also about about [include function][8]
+> Read also about [include function][8]
 
 ## The Category Link
 
@@ -381,7 +381,7 @@ The result we send to template. Let’s use it there `templates/category/show.ht
 ```
 
 If now you open the  browser, you will see only 10 jobs on the page, but what about pagination?
-How to access second page? And what if we want to have 20 element on the page?
+How to access second page? And what if we want to have 20 elements on the page?
 
 First let’s define new parameter in `config/services.yaml`:
 ```yaml

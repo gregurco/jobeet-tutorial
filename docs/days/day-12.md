@@ -254,7 +254,7 @@ What is not done yet:
 
 ### Active affiliate
 
-For now active and inactive affiliates are able to perform request and we have to fix it.  
+For now active and inactive affiliates are able to perform request, and we have to fix it.  
 The better place to put this logic is repository class. Create repository class in `src/Repository/AffiliateRepository.php` folder:
 
 ```php
@@ -563,7 +563,7 @@ class Job
 ```
 
 We added a couple of annotations that start with `@JMS`. All these annotations are provided by `JMSSerializerBundle`.  
-The first one is: `@JMS\ExclusionPolicy("all")`. This annotations with value `all` tells to `JMSSerializerBundle` that all properties are excluded for serialization by default and only properties marked with `@JMS\Expose` will be serialized/unserialized.  
+The first one is: `@JMS\ExclusionPolicy("all")`. This annotation with value `all` tells to `JMSSerializerBundle` that all properties are excluded for serialization by default and only properties marked with `@JMS\Expose` will be serialized/unserialized.  
 Also we added annotation `@JMS\Type` to all serialized properties. This annotation force a certain format to be used. The list of supported types can e found [here][6].
 
 For computed properties, such as "logo_path" and "category_name", we added special set of annotations:
@@ -1018,7 +1018,7 @@ link buttons with actions in `templates/admin/affiliate/list.html.twig`:
 + <a href="{{ path('admin.affiliate.activate', {id: affiliate.id}) }}" class="btn btn-default">Activate</a>
 ```
 
-The page should looks like that:
+The page should look like that:
 
 ![Admin: affiliates list](../files/images/screenshot_27.png)
 

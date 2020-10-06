@@ -1,6 +1,6 @@
 # Jobeet Day 4: The Controller and the View
 
-Today, we are going to create the basic job controller. It will has the code we need for Jobeet:
+Today, we are going to create the basic job controller. It will have the code we need for Jobeet:
 - A page to list all jobs
 - A page to view job details
 
@@ -37,7 +37,7 @@ If you have a closer look at the mockups, you will notice that most pages look t
 One way to solve the problem is to define a header and a footer and include them in each template. A better way is to use another design pattern to solve this problem: the [decorator design pattern][2].
 The decorator design pattern resolves the problem the other way around: the template is decorated after the content is rendered by a global template, called a **layout**.
 
-If you take a look in the `templates` folder, you will find there `base.html.twig` template. That is the default layout that decorates our job pages right now. Open it and replace it’s content with the following:
+If you take a look in the `templates` folder, you will find there `base.html.twig` template. That is the default layout that decorates our job pages right now. Open it and replace its content with the following:
 
 ```twig
 <!DOCTYPE html>
@@ -123,7 +123,7 @@ It tells Symfony which URL path is related to which action in controller. We wil
 
 ## The Job Homepage Template
 
-In `list` we passed jobs to `job/list.html.twig` but we don’t have this file yet. Let’s create it in `templates/job` folder:
+In `list` we passed jobs to `job/list.html.twig`, but we don’t have this file yet. Let’s create it in `templates/job` folder:
 
 ```twig
 {% extends 'base.html.twig' %}

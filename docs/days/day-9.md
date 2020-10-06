@@ -250,7 +250,7 @@ class CreateCategoryCommand extends Command
 
 ## Interacting with user
 
-Sometimes user can forget to fill the name and we want somehow to interact with user and additionally to ask them the name of new category.
+Sometimes user can forget to fill the name, and we want somehow to interact with user and additionally to ask them the name of new category.
 It is possible due to `interact()` method. Let’s create it:
 
 ```php
