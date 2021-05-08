@@ -234,9 +234,9 @@ class Job
     private $email;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string",length=255)
      */
     private $expiresAt;
 
