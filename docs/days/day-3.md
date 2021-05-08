@@ -1,7 +1,7 @@
 # Jobeet Day 3: The Data Model
 
 ## The Relational Model
-The user stories from the previous day describe the main objects of our project: jobs, affiliates, and categories. Here is the corresponding entity relationship diagram:
+The user stories from the previous day describe the main objects of our project: jobs, affiliates, and categories. Here is the corresponCancel changesding entity relationship diagram:
 
 ![DB schema](../files/images/screenshot_6.png)
 
@@ -208,14 +208,14 @@ class Job
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $token;
 
     /**
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $public;
 
@@ -227,9 +227,9 @@ class Job
     private $activated;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      */
     private $email;
 
